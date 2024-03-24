@@ -1,0 +1,1 @@
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -e DEVICE_NAME="phlossyphuxxx" -e DEVICE_ID=05c3f681-faf5-49dc-8c77-2e19672e2b7b -e USER_ID=b376be2e-de78-45b3-9804-df18d819374b -e OPERATING_SYSTEM="Windows" -e USEGPUS=false --pull always ionetcontainers/io-launch:v0.1

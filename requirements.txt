@@ -1,0 +1,7 @@
+requests>=2.31
+
+# Optional, only needed for live order execution (polymanager.execution.live_execute):
+# py-clob-client>=0.20
+
+# Optional, for running the test suite:
+# pytest>=8.0

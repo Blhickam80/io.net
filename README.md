@@ -364,6 +364,28 @@ see `tests/test_risk.py::test_correlation_cap_binds_under_realistic_btc_opportun
 Real and reachable; that day's specific market conditions just hadn't
 produced enough simultaneous correlated opportunities to trigger it.
 
+**A materially different finding from the same day's audit pass**: is the
+drawdown throttle (`DRAWDOWN_RULES` above; 10%/20%/30% cuts) similarly
+reachable-but-unexercised, or is it structurally dead? Confirmed the
+latter by reading `polymanager/portfolio.py` and grepping `polymanager/cli.py`
+for writes to `state.positions`/`state.cash`: there aren't any.
+`cli.py` only ever *reads* `state.positions` (for correlation accounting)
+and never appends a `Position` or spends `cash` — because no wallet is
+configured, nothing ever actually executes. So `equity()` is permanently
+`cash` ($200, untouched) plus zero open positions, exactly equal to
+`high_water_mark` forever, and `drawdown()` is always precisely `0.0`. Not
+"hasn't triggered yet" like the correlation cap — genuinely unreachable
+given the current no-wallet architecture, and it will stay that way until
+`polymanager/execution.py` is wired to a real wallet and actually spends
+`state.cash`. Since the mandate's "Maximum Drawdown" metric can't be
+satisfied by a value permanently pinned at 0%, `polymanager/performance.py`
+now computes `hypothetical_max_drawdown_pct/usd` instead: a real
+peak-to-trough curve over this system's own *reconciled recommendation
+outcomes* (see `polymanager/pnl_stats.py`, the same math already built for
+`wallet_research.py`'s real-trader drawdown, extracted so both share it).
+It's not a substitute for real portfolio drawdown, but it's not nothing
+either — and it's honestly labeled as hypothetical throughout.
+
 ## Legal / disclaimer
 
 This is a decision-support and execution-scaffolding tool, not investment

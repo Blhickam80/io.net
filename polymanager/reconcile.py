@@ -22,6 +22,8 @@ for a record of real money changing hands.
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 from .api import PolymarketClient
 from .journal import read_journal, rewrite_all
 
@@ -95,6 +97,7 @@ def reconcile(client: PolymarketClient | None = None) -> dict:
         row["exit_price"] = f"{final_price:.4f}"
         row["profit_loss_usd"] = f"{pnl:.2f}"
         row["thesis_correct"] = str(thesis_correct)
+        row["resolved_at"] = datetime.now(timezone.utc).isoformat()
         row["lesson_learned"] = (
             f"HYPOTHETICAL (recommendation was never executed live, no wallet configured): "
             f"market resolved {row['side']} side to {final_price:.2f}. "

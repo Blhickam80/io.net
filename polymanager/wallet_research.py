@@ -43,6 +43,7 @@ from dataclasses import dataclass
 
 from .api import PolymarketClient
 from .copytrading import TraderStats
+from .pnl_stats import cumulative_pnl_drawdown
 
 # Rough keyword buckets for a specialization guess from market titles.
 # Deliberately coarse -- this is a hint, not a verified classification.
@@ -92,32 +93,13 @@ def _trade_order_drawdown(closed_positions: list[dict]) -> tuple[float, float]:
     were open, and treats every position's P/L as landing all at once at
     close) -- it is a real, honest measure of "how much cumulative realized
     P/L gave back before recovering," computed from data Polymarket
-    actually reports.
-
-    The percentage figure has a real sharp edge, confirmed live
-    (2026-08-20): normalizing by the running PEAK means a trader whose
-    cumulative P/L only ever reached a small peak (say $50) before a later
-    loss of $750 reports a mathematically-correct-but-useless "1500%
-    drawdown" -- there's no bankroll/equity base to normalize against, only
-    the cumulative-realized-dollars path itself. This is why the dollar
-    figure is returned too and should be read alongside the percentage,
-    not instead of it: a small-dollar, huge-percent drawdown on a
-    high-frequency, small-stakes trader is a very different situation from
-    a large-dollar drawdown on a whale.
+    actually reports. See polymanager.pnl_stats.cumulative_pnl_drawdown for
+    the shared math (also used by polymanager.performance) and its
+    docstring for the percentage figure's real sharp edge.
     """
     ordered = sorted(closed_positions, key=lambda p: p.get("timestamp", 0))
-    cumulative = 0.0
-    peak = 0.0
-    max_drawdown_pct = 0.0
-    max_drawdown_usd = 0.0
-    for p in ordered:
-        cumulative += float(p.get("realizedPnl", 0.0))
-        peak = max(peak, cumulative)
-        drawdown_usd = peak - cumulative
-        max_drawdown_usd = max(max_drawdown_usd, drawdown_usd)
-        if peak > 0:
-            max_drawdown_pct = max(max_drawdown_pct, drawdown_usd / peak)
-    return max_drawdown_pct * 100, max_drawdown_usd
+    pnls = [float(p.get("realizedPnl", 0.0)) for p in ordered]
+    return cumulative_pnl_drawdown(pnls)
 
 
 def fetch_wallet_stats(

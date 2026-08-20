@@ -9,6 +9,22 @@ Every number here is HYPOTHETICAL, same caveat as polymanager.reconcile:
 no wallet is configured, so these are recommendation-quality metrics
 (would this system's calls have made money if followed?), not a record of
 real trading performance.
+
+WHY hypothetical_max_drawdown EXISTS AT ALL (audited 2026-08-20):
+polymanager.risk's drawdown-throttle system (DRAWDOWN_RULES, checked every
+cycle via polymanager.cli) is structurally unreachable in this deployment.
+Confirmed by reading polymanager.portfolio.PortfolioState: cli.py never
+appends to state.positions or decrements state.cash anywhere (verified by
+grep -- the only reference to state.positions is a read, for correlation
+accounting). So equity() is permanently cash ($200, never spent) plus zero
+open positions, exactly equal to high_water_mark forever, so drawdown() is
+always precisely 0.0 -- not "hasn't triggered yet" like the correlation
+cap (see README), but genuinely unreachable given the current no-wallet
+architecture. hypothetical_max_drawdown_pct/usd below is the closest real
+substitute available without a wallet: a peak-to-trough curve over this
+system's own reconciled recommendation outcomes, giving the mandate's
+"Maximum Drawdown" metric something real to report on, rather than staying
+permanently and misleadingly at 0%.
 """
 
 from __future__ import annotations
@@ -16,6 +32,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .journal import read_journal
+from .pnl_stats import cumulative_pnl_drawdown
 
 
 @dataclass
@@ -28,6 +45,8 @@ class PerformanceReport:
     avg_loss_usd: float | None
     profit_factor: float | None  # gross wins / gross losses; None if no losses yet
     total_hypothetical_pnl_usd: float
+    hypothetical_max_drawdown_pct: float
+    hypothetical_max_drawdown_usd: float
     by_strategy: dict[str, dict]  # strategy name -> {n, win_rate_pct, pnl_usd}
 
 
@@ -77,6 +96,18 @@ def compute_performance(rows: list[dict] | None = None) -> PerformanceReport:
         bucket["pnl_usd"] = round(bucket["pnl_usd"], 2)
         del bucket["wins"]
 
+    # Order by resolved_at (when polymanager.reconcile noticed the outcome,
+    # stamped at reconciliation time) rather than the recommendation's own
+    # `date` -- a slow-resolving December market recommended today would
+    # otherwise sort before a fast-resolving one recommended tomorrow,
+    # which is backwards for a P/L-over-time curve. resolved_at is a
+    # reconciliation-cadence proxy for actual resolution time, not exact to
+    # the minute, but it's monotonically correct relative to when this
+    # system learned each outcome.
+    ordered = sorted(reconciled, key=lambda r: r.get("resolved_at", ""))
+    ordered_pnls = [p for p in (_to_float(r.get("profit_loss_usd", "")) for r in ordered) if p is not None]
+    dd_pct, dd_usd = cumulative_pnl_drawdown(ordered_pnls)
+
     return PerformanceReport(
         n_reconciled=len(reconciled),
         n_pending=len(pending),
@@ -86,6 +117,8 @@ def compute_performance(rows: list[dict] | None = None) -> PerformanceReport:
         avg_loss_usd=avg_loss_usd,
         profit_factor=profit_factor,
         total_hypothetical_pnl_usd=total_pnl,
+        hypothetical_max_drawdown_pct=round(dd_pct, 1),
+        hypothetical_max_drawdown_usd=round(dd_usd, 2),
         by_strategy=by_strategy,
     )
 
@@ -107,6 +140,10 @@ def render_report(report: PerformanceReport) -> str:
         f"Average loss: ${report.avg_loss_usd if report.avg_loss_usd is not None else 0:,.2f}",
         f"Profit factor: {report.profit_factor if report.profit_factor is not None else 'n/a (no losses yet)'}",
         f"Total hypothetical P/L: ${report.total_hypothetical_pnl_usd:+,.2f}",
+        f"Hypothetical max drawdown: {report.hypothetical_max_drawdown_pct}% "
+        f"(${report.hypothetical_max_drawdown_usd:,.2f}) -- see module docstring, "
+        "not equivalent to real portfolio drawdown (that's structurally 0% until "
+        "a wallet is configured and real capital moves; see README).",
         "",
         "By strategy:",
     ]

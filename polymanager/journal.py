@@ -29,6 +29,7 @@ FIELDNAMES = [
     "profit_loss_usd",
     "thesis_correct",
     "lesson_learned",
+    "resolved_at",
 ]
 
 
@@ -51,6 +52,7 @@ class JournalEntry:
     profit_loss_usd: str = ""
     thesis_correct: str = ""
     lesson_learned: str = ""
+    resolved_at: str = ""  # stamped by polymanager.reconcile, not at write time
 
     def __post_init__(self):
         if not self.date:

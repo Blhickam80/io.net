@@ -60,6 +60,28 @@ def test_by_strategy_breakdown():
     assert abs(t3["pnl_usd"] - 3.0) < 1e-9
 
 
+def test_hypothetical_drawdown_orders_by_resolved_at_not_recommendation_date():
+    # Recommendation order (date) is deliberately the OPPOSITE of resolution
+    # order (resolved_at) here -- a slow-resolving big winner recommended
+    # first, a fast-resolving loss that actually resolved first. Ordering
+    # by `date` would show the loss AFTER the win (no drawdown); ordering
+    # correctly by `resolved_at` shows the loss first, creating a real
+    # drawdown before the later recovery.
+    rows = [
+        _row(date="2026-01-01T00:00:00Z", resolved_at="2026-03-01T00:00:00Z", profit_loss_usd="20.00", thesis_correct="True", exit_price="1.0"),
+        _row(date="2026-01-02T00:00:00Z", resolved_at="2026-01-05T00:00:00Z", profit_loss_usd="-5.00", thesis_correct="False", exit_price="0.0"),
+    ]
+    report = compute_performance(rows)
+    # Resolved order: -5 first (peak stays 0, $5 given back from breakeven), then +20.
+    assert abs(report.hypothetical_max_drawdown_usd - 5.0) < 1e-9
+
+
+def test_hypothetical_drawdown_zero_when_no_reconciled_rows():
+    report = compute_performance([_row()])
+    assert report.hypothetical_max_drawdown_pct == 0.0
+    assert report.hypothetical_max_drawdown_usd == 0.0
+
+
 def test_render_report_handles_empty_and_populated():
     empty = render_report(compute_performance([]))
     assert "No reconciled outcomes yet" in empty

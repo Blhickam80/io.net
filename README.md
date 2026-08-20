@@ -107,6 +107,41 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   (2-9pp), each printed with an explicit capital-lock-up/execution-slippage
   caveat rather than presented as clean free money — 12-32 legs held until
   a championship resolves months out is a real cost, not a rounding error.
+  **Follow-up work, same day:** three more real issues found and fixed by
+  actually using the tool, not just building it:
+  1. **Feasibility check.** Added `minimum_basket_cost_usd()`, using each
+     leg's real `orderMinSize`, to compute the cheapest a basket could
+     possibly be executed for. Result: all 6 remaining tournament findings
+     require 22-77% of a $200 bankroll just to place the *minimum* order on
+     every leg — every one exceeds the portfolio's own 20% correlated-
+     exposure cap before any sizing decision happens. The nominal edge is
+     real; it is not accessible at this bankroll size. `main()` now prints
+     this and an explicit "NOT PRACTICALLY TRADEABLE" flag per finding.
+  2. **Liquidity-masked mass (a second completeness bug).** Live scan
+     surfaced "Highest temperature in London on August 20?" at sum=0.6%,
+     deviation=-99.4pp, minimum cost $0.03 — absurd on its face. Cause: the
+     correct answer (24C) was priced at 99.75% but had only $1,740
+     liquidity, just under the $2,000 floor, so `parse_legs` silently
+     dropped it along with essentially all the real probability mass.
+     `has_unpriced_outcomes` didn't catch this because the market *was*
+     priced, just excluded for being thin. Added `has_liquidity_masked_mass()`,
+     which compares the liquid-only sum against the sum of every *priced*
+     market regardless of liquidity; a gap bigger than the noise threshold
+     now suppresses the finding the same way an unpriced outcome does.
+  3. **In-play timing risk.** A real, liquid, well-formed finding appeared
+     on a live soccer match (Mjallby vs. Salzburg) with a genuine 3.5pp
+     deviation and feasible execution cost — but its `endDate` was already
+     ~35 minutes in the past, meaning the match was in-play or just
+     finished. A periodic REST-poll scan cannot compete with a fast-moving
+     in-play order book; that gap is far more likely stale-by-the-time-you-
+     see-it than real. Added `MIN_HOURS_TO_RESOLUTION_FOR_ARB` (24h): any
+     event with a leg resolving sooner than that is skipped for this
+     strategy entirely, independent of how good the number looks.
+
+  After all three fixes: **6 real findings remain, and all 6 are flagged
+  NOT PRACTICALLY TRADEABLE** at a $200 bankroll (last checked 2026-08-20) —
+  the honest end state is that this strategy currently has zero *actionable*
+  edge for this account size, not that it found nothing.
 - **Real copy-trading analysis** (`polymanager/wallet_research.py`) — bridges
   `polymanager/copytrading.py`'s scoring logic (previously only unit-tested
   against synthetic data) to Polymarket's actual public API. **Correction

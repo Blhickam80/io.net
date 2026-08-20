@@ -40,12 +40,24 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 
-from .config import MIN_LIQUIDITY_USD
+from .config import MIN_LIQUIDITY_USD, MAX_CORRELATED_GROUP_PCT
+from .scanner import hours_until
 
 # Matches monotonicity's materiality bar: normal market-maker overround
 # routinely sits in the 0.5-1.5pp range, so only flag deviations clearly
 # outside that.
 MIN_SUM_DEVIATION_PP = 2.0
+
+# This strategy scans periodically (minutes to hours between checks, not a
+# live order-book feed) and a real basket trade needs to fill every leg
+# before prices move. Confirmed live 2026-08-20: a Mjallby-vs-Salzburg
+# match with endDate already ~35 minutes in the past (i.e. in-play or just
+# finished) showed a real-looking 3.5pp sum deviation on liquid legs -- but
+# an in-play match's three separate order books reprice by the second, so
+# that gap is far more likely fast-moving noise a bot already closed than
+# something a periodic scan can act on. Events within this many hours of
+# their endDate are skipped for that reason, not because the math is wrong.
+MIN_HOURS_TO_RESOLUTION_FOR_ARB = 24.0
 
 
 @dataclass
@@ -54,6 +66,7 @@ class OutcomeLeg:
     question: str
     yes_price: float
     liquidity_usd: float
+    order_min_size: float = 0.0  # minimum order size in SHARES (Polymarket's orderMinSize)
 
 
 @dataclass
@@ -63,6 +76,21 @@ class SumConsistencyResult:
     sum_yes: float
     deviation_pp: float  # (sum_yes - 1.0) * 100
     direction: str  # "buy_yes_basket" (sum < 100%) or "buy_no_basket" (sum > 100%)
+
+    def minimum_basket_cost_usd(self) -> float:
+        """Dollar cost of placing the smallest possible order on every leg
+        of this basket -- e.g. for a buy_no_basket, order_min_size shares
+        of NO on each leg at (1 - yes_price). This is a FLOOR: it's the
+        cheapest this trade could possibly be executed for, not a
+        recommended size. If this floor alone eats an unreasonable share of
+        a small bankroll, the nominal edge in `deviation_pp` was never
+        really accessible at that bankroll size.
+        """
+        total = 0.0
+        for leg in self.legs:
+            price = leg.yes_price if self.direction == "buy_yes_basket" else (1 - leg.yes_price)
+            total += leg.order_min_size * price
+        return total
 
 
 def has_unpriced_outcomes(raw_markets: list[dict]) -> bool:
@@ -93,6 +121,50 @@ def has_unpriced_outcomes(raw_markets: list[dict]) -> bool:
     return False
 
 
+def _sum_of_all_priced_markets(raw_markets: list[dict]) -> float:
+    """Sum of outcomePrices[0] across every open, priced market in the raw
+    event, regardless of liquidity. Used to detect the sibling failure mode
+    to has_unpriced_outcomes: a market that DOES have a real price but sits
+    just under the liquidity floor, quietly taking its probability mass out
+    of the liquid-legs sum with it.
+    """
+    total = 0.0
+    for m in raw_markets:
+        if m.get("closed") is True or m.get("acceptingOrders") is False:
+            continue
+        try:
+            prices = m.get("outcomePrices")
+            if isinstance(prices, str):
+                prices = json.loads(prices)
+            total += float(prices[0])
+        except (TypeError, ValueError, IndexError, KeyError):
+            continue
+    return total
+
+
+def has_liquidity_masked_mass(
+    raw_markets: list[dict], liquid_legs: list["OutcomeLeg"], *, threshold_pp: float = MIN_SUM_DEVIATION_PP
+) -> bool:
+    """True if real, priced probability mass is sitting on a leg (or legs)
+    excluded from `liquid_legs` purely for falling under the liquidity
+    floor -- not because it lacks a price.
+
+    Confirmed live 2026-08-20 ("Highest temperature in London on August
+    20?"): the correct answer, 24C, was priced at 99.75% but had only
+    $1,740 liquidity -- just under the $2,000 floor. Excluding it left only
+    9 near-zero "wrong" outcomes, summing to 0.6% and reporting a
+    nonsensical "-99.4pp, buy the YES basket for pennies" finding. This
+    function catches that: if the FULL priced sum (any liquidity) differs
+    from the liquid-only sum by more than `threshold_pp`, the outcome set
+    used for scoring is missing real mass, and a sum-below-100% finding
+    built from it must not be trusted -- see check_sum_consistency, which
+    is where that suppression actually happens.
+    """
+    liquid_sum = sum(leg.yes_price for leg in liquid_legs)
+    full_sum = _sum_of_all_priced_markets(raw_markets)
+    return (full_sum - liquid_sum) > (threshold_pp / 100)
+
+
 def parse_legs(raw_markets: list[dict], *, min_liquidity_usd: float = MIN_LIQUIDITY_USD) -> list[OutcomeLeg]:
     """Extract priced, liquid, currently-tradeable outcome legs from an
     event's market list. Illiquid/unpriced placeholder markets (e.g. an
@@ -119,6 +191,7 @@ def parse_legs(raw_markets: list[dict], *, min_liquidity_usd: float = MIN_LIQUID
                 question=m.get("question", "?"),
                 yes_price=yes_price,
                 liquidity_usd=liquidity,
+                order_min_size=float(m.get("orderMinSize") or 0.0),
             )
         )
     return legs
@@ -152,13 +225,38 @@ def check_sum_consistency(
     )
 
 
+def _min_hours_to_resolution(raw_markets: list[dict]) -> float | None:
+    """Soonest endDate across the event's markets, in hours from now (can
+    be negative if already past -- e.g. an in-play match). None if no
+    market has a parseable endDate.
+    """
+    hours: list[float] = []
+    for m in raw_markets:
+        end_date = m.get("endDate")
+        if not end_date:
+            continue
+        try:
+            hours.append(hours_until(end_date))
+        except ValueError:
+            continue
+    return min(hours) if hours else None
+
+
 def scan_event(event: dict, **kwargs) -> SumConsistencyResult | None:
     raw_markets = event.get("markets", [])
+
+    min_hours = _min_hours_to_resolution(raw_markets)
+    if min_hours is not None and min_hours < MIN_HOURS_TO_RESOLUTION_FOR_ARB:
+        # See MIN_HOURS_TO_RESOLUTION_FOR_ARB: too close to (or past) a
+        # leg's resolution time for a periodic scan to trust the snapshot.
+        return None
+
     legs = parse_legs(raw_markets)
+    incomplete = has_unpriced_outcomes(raw_markets) or has_liquidity_masked_mass(raw_markets, legs)
     return check_sum_consistency(
         event.get("title", "?"),
         legs,
-        outcome_set_incomplete=has_unpriced_outcomes(raw_markets),
+        outcome_set_incomplete=incomplete,
         **kwargs,
     )
 
@@ -188,11 +286,25 @@ def run_live_scan() -> tuple[int, list[SumConsistencyResult]]:
 
 
 def main() -> None:
+    from .config import STARTING_BANKROLL_USD
+
     events_scanned, results = run_live_scan()
     for result in results:
         print(f"=== {result.event_title} ===")
         print(f"  {len(result.legs)} liquid legs, sum(YES)={result.sum_yes:.1%}, deviation={result.deviation_pp:+.1f}pp")
         print(f"  Direction: {result.direction}")
+        min_cost = result.minimum_basket_cost_usd()
+        min_cost_pct = min_cost / STARTING_BANKROLL_USD * 100
+        print(
+            f"  Minimum execution cost (smallest order on every leg): "
+            f"${min_cost:,.2f} ({min_cost_pct:.1f}% of a ${STARTING_BANKROLL_USD:.0f} bankroll)"
+        )
+        if min_cost_pct > MAX_CORRELATED_GROUP_PCT * 100:
+            print(
+                f"  NOT PRACTICALLY TRADEABLE at this bankroll size: the minimum possible "
+                f"execution already exceeds the {MAX_CORRELATED_GROUP_PCT:.0%} correlated-exposure "
+                f"cap on its own, before any sizing decision. Nominal edge is real but inaccessible."
+            )
         if result.direction == "buy_no_basket":
             print(
                 f"  CAVEAT: capturing this means buying NO on all {len(result.legs)} legs "

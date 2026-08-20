@@ -31,7 +31,7 @@ class ScreenedMarket:
     rejection_reasons: list[str]
 
 
-def _hours_until(end_date_iso: str) -> float:
+def hours_until(end_date_iso: str) -> float:
     end = datetime.fromisoformat(end_date_iso.replace("Z", "+00:00"))
     now = datetime.now(timezone.utc)
     return (end - now).total_seconds() / 3600.0
@@ -62,7 +62,7 @@ def screen_market(raw: dict) -> ScreenedMarket:
     end_date = raw.get("endDate") or ""
 
     try:
-        hours_left = _hours_until(end_date) if end_date else -1.0
+        hours_left = hours_until(end_date) if end_date else -1.0
     except ValueError:
         hours_left = -1.0
         reasons.append("Unparseable endDate.")

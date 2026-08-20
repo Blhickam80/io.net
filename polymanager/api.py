@@ -68,6 +68,20 @@ class PolymarketClient:
         results = resp.json()
         return results[0] if results else None
 
+    def get_market_by_id(self, market_id: str) -> dict | None:
+        """Single-market lookup by Gamma's numeric id, for checking whether
+        a previously-recommended market has resolved. The path-based
+        /markets/{id} route is the reliable one -- confirmed live
+        2026-08-20 that the ?id= query-param form returns an empty list
+        instead (likely expects a different param name/type); don't repeat
+        that mistake by guessing again.
+        """
+        resp = self.session.get(f"{GAMMA_API_BASE}/markets/{market_id}", timeout=_TIMEOUT)
+        if resp.status_code == 404:
+            return None
+        resp.raise_for_status()
+        return resp.json()
+
     def get_order_book(self, token_id: str) -> dict:
         """CLOB order book for a specific outcome token."""
         resp = self.session.get(

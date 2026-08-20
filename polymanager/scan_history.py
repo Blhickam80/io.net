@@ -25,6 +25,8 @@ class ScanSummary:
     sum_consistency_events_scanned: int
     sum_consistency_findings: int
     bankroll_equity: float
+    reconciled_this_run: int = 0
+    reconciled_hypothetical_pnl: float = 0.0
     notes: str = ""
 
     @classmethod

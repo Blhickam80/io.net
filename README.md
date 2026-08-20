@@ -222,6 +222,25 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   confidence output at 4/10 (`CONFIDENCE_CAP`) until this is re-validated —
   which keeps it out of Tier 1/2 sizing entirely regardless of nominal edge.
   Run `python -m polymanager.backtest` to reproduce or re-run this.
+- **Journal reconciliation** (`polymanager/reconcile.py`) — the mandate's
+  journal spec calls for filling in exit price, P/L, and "was the thesis
+  correct?" once a recommendation's market resolves; that update-after-the-
+  fact step didn't exist until this was built. Checks every journaled
+  recommendation with a captured `market_id` against Gamma's per-market
+  endpoint (`GET /markets/{id}` — confirmed live 2026-08-20 that the
+  `?id=` query-param form silently returns an empty list; use the path
+  form), and for any that have genuinely settled (price at/near 0 or 1,
+  not just `closed`), fills in the outcome. **Real validation the same
+  day**: one BTC "reach $X" market included in this repo's own live runs
+  resolved (YES, touched $72,500) within hours — confirming short-duration
+  recommendations really can resolve inside a single day's check-in
+  cadence, not just in theory. Every reconciled row is stamped
+  `HYPOTHETICAL` in `lesson_learned` and nothing here touches
+  `polymanager.portfolio`'s cash or realized P/L — no wallet is configured,
+  so this computes what a recommendation *would have* returned, strictly
+  for calibration, never as a record of real capital. `python -m
+  polymanager.scan_all` runs this first, before generating new
+  recommendations; run `python -m polymanager.reconcile` standalone too.
 
 Still deliberately **not** faked: for every other market shape,
 `estimate_true_probability()` in `polymanager/cli.py` returns `None` — which
@@ -259,6 +278,9 @@ python -m polymanager.sum_consistency
 
 # Real copy-trading analysis of the top all-time-PNL leaderboard traders:
 python -m polymanager.wallet_research
+
+# Check past recommendations against resolved markets and fill in outcomes:
+python -m polymanager.reconcile
 
 # Test suite (no network required -- all network calls are mocked/avoided):
 pip install pytest

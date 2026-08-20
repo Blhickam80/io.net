@@ -14,6 +14,7 @@ DEFAULT_JOURNAL_PATH = Path(__file__).resolve().parent.parent / "data" / "tradin
 FIELDNAMES = [
     "date",
     "market",
+    "market_id",
     "side",
     "entry_price",
     "amount_usd",
@@ -44,6 +45,7 @@ class JournalEntry:
     reason: str
     key_evidence: str
     exit_condition: str
+    market_id: str = ""
     date: str = ""
     exit_price: str = ""
     profit_loss_usd: str = ""
@@ -71,6 +73,24 @@ def read_journal(path: Path = DEFAULT_JOURNAL_PATH) -> list[dict]:
         return []
     with path.open(newline="") as f:
         return list(csv.DictReader(f))
+
+
+def rewrite_all(rows: list[dict], path: Path = DEFAULT_JOURNAL_PATH) -> None:
+    """Overwrite the journal with `rows` (dicts keyed by FIELDNAMES).
+
+    Only polymanager.reconcile should call this: read_journal(), mutate the
+    specific rows whose outcomes are now known, then rewrite_all() the
+    whole list back. Every other write path is append-only by design (see
+    module docstring) -- this is the one deliberate exception, because
+    "did this recommendation resolve well?" can only be answered after the
+    fact by editing the row it was recorded in.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({k: row.get(k, "") for k in FIELDNAMES})
 
 
 def record_no_trade(reason: str, path: Path = DEFAULT_JOURNAL_PATH) -> None:

@@ -152,6 +152,7 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
         opportunities.append(
             {
                 "market": m.question,
+                "market_id": m.market_id,
                 "side": side,
                 "current_price": side_price,
                 "target_entry": side_price,
@@ -209,6 +210,7 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
             journal.append_entry(
                 JournalEntry(
                     market=opp["market"],
+                    market_id=opp["market_id"],
                     side=opp["side"],
                     entry_price=opp["current_price"],
                     amount_usd=opp["recommended_investment"],

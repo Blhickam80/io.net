@@ -12,12 +12,23 @@ check-in, and keeps a running record besides.
 
 from __future__ import annotations
 
-from . import monotonicity, sum_consistency
+from . import monotonicity, reconcile, sum_consistency
 from .cli import run_cycle_structured
 from .scan_history import ScanSummary, append_summary
 
 
 def main() -> None:
+    print("#" * 70)
+    print("# JOURNAL RECONCILIATION (check past recommendations for resolution)")
+    print("#" * 70)
+    recon_summary = reconcile.reconcile()
+    print(f"  Checked: {recon_summary['checked']}, resolved this run: {recon_summary['resolved']}, "
+          f"still pending: {recon_summary['still_pending']}")
+    if recon_summary["resolved"]:
+        print(f"  Hypothetical P/L on newly-resolved recommendations: ${recon_summary['hypothetical_pnl_total']:+.2f} "
+              f"(win rate {recon_summary['win_rate_pct']}%) -- hypothetical, no wallet configured.")
+
+    print()
     print("#" * 70)
     print("# MAIN CYCLE (bankroll dashboard + BTC barrier-touch pricing)")
     print("#" * 70)
@@ -56,6 +67,8 @@ def main() -> None:
         sum_consistency_events_scanned=sum_events_scanned,
         sum_consistency_findings=len(sum_results),
         bankroll_equity=equity,
+        reconciled_this_run=recon_summary["resolved"],
+        reconciled_hypothetical_pnl=recon_summary["hypothetical_pnl_total"],
     )
     append_summary(summary)
     print(f"\nScan summary logged to data/scan_history.jsonl ({summary.timestamp}).")

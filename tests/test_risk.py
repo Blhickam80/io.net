@@ -34,3 +34,32 @@ def test_correlation_limit_blocks_over_concentration():
         group, open_positions, proposed_dollars=11.0, bankroll=200.0, limit_pct=0.20
     )
     assert not allowed2
+
+
+def test_correlation_cap_binds_under_realistic_btc_opportunity_counts():
+    """Regression/audit test for a real question raised 2026-08-20: with
+    both BTC and ETH touch strategies now live, does MAX_CORRELATED_GROUP_PCT
+    (20%) ever actually reject anything, or is it dead code in practice
+    given today's small Tier-3-only position sizes ($6 max each, since
+    btc_touch's CONFIDENCE_CAP=4 structurally limits it to Tier 3)?
+
+    Verified live the same day: a real cycle produced 4 simultaneous BTC
+    opportunities at $6/$6/$6/$2.59 (10.3% of a $200 bankroll) -- under the
+    cap, so nothing was rejected that day. This test confirms the mechanism
+    itself is NOT dead: replaying cli.py's accept-in-ranked-order loop with
+    8 opportunities at the real $6 Tier-3 size correctly accepts the first
+    6 (18%) and rejects the 7th and 8th (would reach 21%). The cap is real
+    and reachable; it simply hadn't been exercised by that day's specific
+    market conditions.
+    """
+    group = CorrelationGroup(label="correlated:bitcoin", market_ids=["correlated:bitcoin"])
+    accepted_positions: list[dict] = []
+    accepted_count = 0
+    for _ in range(8):
+        allowed, _pct = check_correlation_limit(group, accepted_positions, proposed_dollars=6.00, bankroll=200.0)
+        if allowed:
+            accepted_positions.append({"market_id": "correlated:bitcoin", "dollars": 6.00})
+            accepted_count += 1
+
+    assert accepted_count == 6  # 6 * $6 = $36 = 18% of $200, the last accepted step under 20%
+    assert sum(p["dollars"] for p in accepted_positions) == 36.00

@@ -352,6 +352,18 @@ identifies as something only a human can authorize.
 All defaults live in `polymanager/config.py` and are meant to be tuned, not
 treated as immutable law.
 
+**Audited live 2026-08-20**: does the correlated-group cap actually bind, or
+is it dead code given today's small Tier-3-only position sizes ($6 max
+each, since `btc_touch.py`'s `CONFIDENCE_CAP=4` structurally limits it to
+Tier 3)? A real cycle that day produced 4 simultaneous BTC opportunities
+totaling 10.3% of the bankroll — under the cap, nothing rejected. Replaying
+the real accept-in-ranked-order logic with 8 opportunities at that same
+real $6 size confirmed the mechanism itself is not dead: it accepts the
+first 6 (18%) and correctly rejects the 7th and 8th (would reach 21%) —
+see `tests/test_risk.py::test_correlation_cap_binds_under_realistic_btc_opportunity_counts`.
+Real and reachable; that day's specific market conditions just hadn't
+produced enough simultaneous correlated opportunities to trigger it.
+
 ## Legal / disclaimer
 
 This is a decision-support and execution-scaffolding tool, not investment

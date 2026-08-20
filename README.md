@@ -223,6 +223,18 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   mark-to-market drawdown, "how early they enter," and any signal from
   currently-open (not yet resolved) positions — see the module docstring's
   full list. Run `python -m polymanager.wallet_research` to reproduce.
+- **User-sourced trader watchlist** (`polymanager/watchlist.py`,
+  `data/trader_watchlist.csv`) — the leaderboard-based scan above only
+  finds top-50-by-PNL whales; it can't see a smaller, specialized trader
+  someone spots on Twitter or in an article. `add_entry()` logs an address
+  (upserted, so a second mention of the same wallet adds context rather
+  than duplicating a row) with its source and claim; `research_watchlist()`
+  runs every logged wallet through the *identical* real-data pipeline as
+  `wallet_research.py` (same `fetch_wallet_stats`, same quality scoring) —
+  a claim that someone is a good trader is a lead, never itself evidence,
+  and a wallet with no closed-position history is reported as an
+  unverified claim, not quietly dropped. Run `python -m polymanager.watchlist`
+  once entries exist. Starts empty — no addresses fabricated to seed it.
 - **Backtesting** (`polymanager/backtest.py`) — walk-forward calibration test
   for the touch-probability model against real historical BTC data. **Real
   finding from the 2026-08-20 run** (trailing 365 days, the longest history
@@ -306,6 +318,9 @@ python -m polymanager.sum_consistency
 
 # Real copy-trading analysis of the top all-time-PNL leaderboard traders:
 python -m polymanager.wallet_research
+
+# Research every wallet logged in data/trader_watchlist.csv (user-sourced leads):
+python -m polymanager.watchlist
 
 # Check past recommendations against resolved markets and fill in outcomes:
 python -m polymanager.reconcile

@@ -161,17 +161,25 @@ class PolymarketClient:
         order_by: str = "PNL",
         limit: int = 25,
         offset: int = 0,
+        user: str | None = None,
     ) -> list[dict]:
-        """Top traders by PNL or volume. `limit` is capped at 50 server-side."""
+        """Top traders by PNL or volume. `limit` is capped at 50 server-side.
+        Pass `user` (a wallet address) to limit results to that single user
+        -- per the documented API, only meaningful if that wallet actually
+        ranks within `category`/`time_period`; returns [] otherwise.
+        """
+        params = {
+            "category": category,
+            "timePeriod": time_period,
+            "orderBy": order_by,
+            "limit": limit,
+            "offset": offset,
+        }
+        if user is not None:
+            params["user"] = user
         resp = self.session.get(
             f"{DATA_API_BASE}/v1/leaderboard",
-            params={
-                "category": category,
-                "timePeriod": time_period,
-                "orderBy": order_by,
-                "limit": limit,
-                "offset": offset,
-            },
+            params=params,
             timeout=_TIMEOUT,
         )
         resp.raise_for_status()

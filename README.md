@@ -138,6 +138,11 @@ pip install -r requirements.txt
 # Offline pipeline walkthrough against synthetic, clearly-labeled sample markets:
 python -m polymanager.cli --demo
 
+# Run everything live in one go (main cycle + both cross-market scans):
+python -m polymanager.scan_all
+
+# Or individually:
+
 # Real cycle (requires network access to Polymarket's + CoinGecko's APIs):
 python -m polymanager.cli
 

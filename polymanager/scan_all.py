@@ -12,7 +12,7 @@ check-in, and keeps a running record besides.
 
 from __future__ import annotations
 
-from . import monotonicity, reconcile, sum_consistency
+from . import monotonicity, performance, reconcile, sum_consistency
 from .cli import run_cycle_structured
 from .scan_history import ScanSummary, append_summary
 
@@ -72,6 +72,12 @@ def main() -> None:
     )
     append_summary(summary)
     print(f"\nScan summary logged to data/scan_history.jsonl ({summary.timestamp}).")
+
+    print()
+    print("#" * 70)
+    print("# PERFORMANCE ANALYSIS")
+    print("#" * 70)
+    print(performance.render_report(performance.compute_performance()))
 
 
 if __name__ == "__main__":

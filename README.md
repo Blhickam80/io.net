@@ -241,6 +241,19 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   for calibration, never as a record of real capital. `python -m
   polymanager.scan_all` runs this first, before generating new
   recommendations; run `python -m polymanager.reconcile` standalone too.
+- **Performance analysis** (`polymanager/performance.py`) — the mandate's
+  PERFORMANCE ANALYSIS section (win rate, average win/loss, profit factor,
+  strategy-specific breakdown) had nowhere to be computed from:
+  `polymanager/dashboard.py` only ever renders one cycle's snapshot, never
+  the accumulated history. This aggregates every *reconciled* journal row
+  (see above) into those metrics, split out per strategy. Same
+  hypothetical caveat as reconciliation — it answers "would following this
+  system's recommendations have made money," not "did it." Empty and
+  honest right now (`python -m polymanager.scan_all` confirmed: 0
+  reconciled, 28 pending, nothing to analyze yet) since most open
+  recommendations haven't reached their resolution date — this fills in
+  automatically as `reconcile.py` closes more rows out over time. Run
+  `python -m polymanager.performance` standalone too.
 
 Still deliberately **not** faked: for every other market shape,
 `estimate_true_probability()` in `polymanager/cli.py` returns `None` — which
@@ -281,6 +294,9 @@ python -m polymanager.wallet_research
 
 # Check past recommendations against resolved markets and fill in outcomes:
 python -m polymanager.reconcile
+
+# Win rate / profit factor / strategy breakdown from reconciled journal rows:
+python -m polymanager.performance
 
 # Test suite (no network required -- all network calls are mocked/avoided):
 pip install pytest

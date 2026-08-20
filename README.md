@@ -223,6 +223,21 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   mark-to-market drawdown, "how early they enter," and any signal from
   currently-open (not yet resolved) positions — see the module docstring's
   full list. Run `python -m polymanager.wallet_research` to reproduce.
+  **Bigger correction (2026-08-21, researching a real user-watchlisted
+  wallet):** `/closed-positions` alone is survivorship-biased. A resolved
+  loss never needs to be "redeemed" (there's nothing to claim), so it can
+  sit indefinitely in `/positions` looking "open" (`curPrice=0`,
+  `endDate` already past) and never appear in `/closed-positions` — only
+  wins reliably show up there, since redeeming is how you collect the
+  payout. Confirmed on a real wallet: `/closed-positions` alone showed a
+  94.7% win rate; once the 10 genuinely-resolved-but-unredeemed losses
+  sitting in `/positions` were folded in, the real figure was 62.1%, with
+  a real $106,992 (62.3%) trade-order drawdown that the closed-positions-
+  only view completely hid. `fetch_wallet_stats()` now scans `/positions`
+  too and treats anything with `curPrice <= 0.001` as a settled loss,
+  using its `cashPnl`. This retroactively affects every wallet this module
+  has ever scored, including the original top-10-leaderboard numbers
+  above — treat pre-fix win rates as an upper bound, not fact.
 - **User-sourced trader watchlist** (`polymanager/watchlist.py`,
   `data/trader_watchlist.csv`) — the leaderboard-based scan above only
   finds top-50-by-PNL whales; it can't see a smaller, specialized trader

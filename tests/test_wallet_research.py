@@ -1,5 +1,6 @@
 from polymanager.wallet_research import (
     RealWalletStats,
+    _guess_specialty,
     _trade_order_drawdown,
     fetch_wallet_stats,
     to_trader_stats,
@@ -7,8 +8,9 @@ from polymanager.wallet_research import (
 
 
 class _FakeClient:
-    def __init__(self, pages: list[list[dict]]):
+    def __init__(self, pages: list[list[dict]], open_positions: list[dict] | None = None):
         self._pages = pages
+        self._open_positions = open_positions if open_positions is not None else []
         self.calls = 0
 
     def get_closed_positions(self, address, *, limit=50, offset=0, sort_by="REALIZEDPNL", sort_direction="DESC"):
@@ -17,6 +19,13 @@ class _FakeClient:
         if page_index >= len(self._pages):
             return []
         return self._pages[page_index]
+
+    def get_wallet_positions(self, address):
+        return self._open_positions
+
+
+def _open_position(cash_pnl: float, cur_price: float, bought: float, title: str = "Some market", end_date: str = "") -> dict:
+    return {"cashPnl": cash_pnl, "curPrice": cur_price, "totalBought": bought, "title": title, "endDate": end_date}
 
 
 def _position(pnl: float, bought: float, title: str = "Some election market", ts: int = 0) -> dict:
@@ -97,6 +106,52 @@ def test_fetch_wallet_stats_returns_none_when_no_positions():
     client = _FakeClient([[]])
     stats = fetch_wallet_stats(client, "0xabc", "testuser", lifetime_pnl_usd=0, lifetime_volume_usd=0)
     assert stats is None
+
+
+def test_fetch_wallet_stats_folds_in_unredeemed_losses():
+    # Real shape found live 2026-08-20 (a watchlisted wallet): all-win
+    # /closed-positions history, but 10 resolved losses sitting unredeemed
+    # in /positions (curPrice=0, never redeemed because there's nothing to
+    # claim on a worthless position). Confirm they get counted as losses,
+    # not silently dropped -- the whole reason this fix exists.
+    closed = [_position(1000, 2000, title="Win 1", ts=1), _position(500, 1000, title="Win 2", ts=2)]
+    open_positions = [
+        _open_position(cash_pnl=-300.0, cur_price=0.0, bought=300.0, title="Resolved loss, unredeemed", end_date="2026-08-10"),
+        _open_position(cash_pnl=150.0, cur_price=0.6, bought=250.0, title="Still genuinely open"),  # must be excluded
+    ]
+    client = _FakeClient([closed], open_positions=open_positions)
+    stats = fetch_wallet_stats(client, "0xabc", "testuser", lifetime_pnl_usd=0, lifetime_volume_usd=0)
+
+    assert stats is not None
+    # 2 closed wins + 1 unredeemed loss = 3 total; the genuinely-open one is excluded.
+    assert stats.n_closed_positions_sampled == 3
+    assert abs(stats.win_rate_pct - (2 / 3 * 100)) < 0.1
+    assert abs(stats.total_realized_pnl_usd - (1000 + 500 - 300)) < 0.01
+    assert any("unredeemed" in c.lower() for c in stats.caveats)
+
+
+def test_fetch_wallet_stats_survives_open_positions_lookup_failure():
+    class _BrokenClient(_FakeClient):
+        def get_wallet_positions(self, address):
+            raise RuntimeError("simulated API failure")
+
+    client = _BrokenClient([[_position(100, 200, ts=1)]])
+    stats = fetch_wallet_stats(client, "0xabc", "testuser", lifetime_pnl_usd=0, lifetime_volume_usd=0)
+    assert stats is not None
+    assert stats.n_closed_positions_sampled == 1
+
+
+def test_guess_specialty_catches_soccer_moneyline_phrasing():
+    # Real shape found live 2026-08-20: this exact title pattern (Polymarket's
+    # standard soccer moneyline phrasing) was previously misclassified as
+    # "unclassified" for an 18-of-19-soccer wallet.
+    titles = [
+        "Will Paris Saint-Germain win on 2026-08-12?",
+        "Will FC Groningen win on 2026-08-09?",
+        "Will West Ham United FC win on 2026-08-16?",
+        "Tōkyō Verdy vs. Kashiwa Reysol: O/U 2.5",
+    ]
+    assert _guess_specialty(titles) == "sports"
 
 
 def test_to_trader_stats_maps_fields_and_zeroes_earliness():

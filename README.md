@@ -85,6 +85,28 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   probability estimate, so it deliberately isn't forced into
   `polymanager.cli`'s per-market Kelly-sizing pipeline — it's a separate
   scan with its own entry point.
+- **Live strategy #3: mutually-exclusive outcome sum** (`polymanager/sum_consistency.py`)
+  — the classic complement to monotonicity: for a "negRisk" event where
+  exactly one outcome resolves YES (elections, championships, "who wins"
+  markets), summed YES prices across every outcome should sit near 100%.
+  Materially below 100% = a YES basket across all outcomes is underpriced;
+  materially above = a NO basket is. Run `python -m polymanager.sum_consistency`
+  to scan live. **Real findings (2026-08-20):** an initial scan of 50 active
+  negRisk events flagged 9, including two presidential-primary events
+  (Democratic Nominee 2028, Presidential Winner 2028) apparently underpriced
+  by 5-9pp — but investigation showed only 51-52 of each event's 128 total
+  candidate markets have ever traded; the other ~77 are real outcome slots
+  with zero price history, and summing *every priced* market (ignoring
+  liquidity entirely) still landed under 100%, meaning the "missing"
+  probability is genuinely sitting on those untradeable long-shot legs, not
+  capturable as a basket trade. Added `has_unpriced_outcomes()` to suppress
+  a below-100% finding whenever an event has any untraded outcome (the
+  opposite direction isn't suppressed, since missing mass only pushes an
+  already-above-100% sum higher). After that fix: **7 remaining findings**,
+  all "buy the NO basket" on long-duration tournament/range-bucket markets
+  (2-9pp), each printed with an explicit capital-lock-up/execution-slippage
+  caveat rather than presented as clean free money — 12-32 legs held until
+  a championship resolves months out is a real cost, not a rounding error.
 - **Backtesting** (`polymanager/backtest.py`) — walk-forward calibration test
   for the touch-probability model against real historical BTC data. **Real
   finding from the 2026-08-20 run** (trailing 365 days, the longest history
@@ -124,6 +146,9 @@ python -m polymanager.backtest
 
 # Scan live events for nested-outcome (ladder) pricing violations:
 python -m polymanager.monotonicity
+
+# Scan live events for mutually-exclusive-outcome sum inconsistencies:
+python -m polymanager.sum_consistency
 
 # Test suite (no network required -- all network calls are mocked/avoided):
 pip install pytest

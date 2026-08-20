@@ -79,6 +79,17 @@ def screen_market(raw: dict) -> ScreenedMarket:
         )
     if raw.get("umaResolutionStatus") in {"disputed", "flagged"}:
         reasons.append("Resolution is disputed/flagged.")
+    # Defense in depth: reject closed/non-tradeable markets even if the
+    # caller forgot to filter them out upstream. Confirmed live (2026-08-20)
+    # that Gamma's /events endpoint happily returns closed, zero-liquidity,
+    # already-resolved market instances alongside the live one for the same
+    # question text -- trusting active/closed here, not just liquidity
+    # numbers, avoids mistaking a dead market's terminal 1.0/0.0 price for a
+    # tradeable opportunity.
+    if raw.get("closed") is True:
+        reasons.append("Market is closed.")
+    if raw.get("acceptingOrders") is False:
+        reasons.append("Market is not accepting orders.")
 
     return ScreenedMarket(
         market_id=str(raw.get("id") or raw.get("conditionId") or raw.get("slug") or ""),

@@ -66,6 +66,25 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   BTC ever trades at/above $X during the window) against live spot price and
   realized volatility using a driftless-GBM touch-probability formula, and
   compares that to the market's own price.
+- **Live strategy #2: nested-outcome monotonicity** (`polymanager/monotonicity.py`)
+  — Polymarket's "ladder" events (e.g. "What price will Bitcoin hit in
+  \<month\>?") contain many nested markets ("reach $72,500," "reach $75,000,"
+  …) where a harder outcome can never legitimately be priced above an easier
+  one. This is a model-free, no-research-needed consistency check — pure
+  logic, not probability estimation. Run `python -m polymanager.monotonicity`
+  to scan live. **Real finding (2026-08-20):** a naive scan initially flagged
+  12 "violations" across 50 active events, but every one was 0.1–0.3
+  percentage points on deep out-of-the-money tail markets — smaller than
+  Polymarket's own tick size and typical spread, i.e. noise, not tradeable
+  arbitrage. Added `MIN_VIOLATION_MAGNITUDE_PP` (2.0) and a liquidity floor
+  on both legs; after filtering, **zero real violations** across the top 50
+  events by volume. Efficient-market result, not a bug — this check is
+  well-known enough that market makers actively enforce it, so don't expect
+  frequent hits. Cross-market inconsistency also produces *pair* trades
+  (short the overpriced leg, long the underpriced one), not a single-side
+  probability estimate, so it deliberately isn't forced into
+  `polymanager.cli`'s per-market Kelly-sizing pipeline — it's a separate
+  scan with its own entry point.
 - **Backtesting** (`polymanager/backtest.py`) — walk-forward calibration test
   for the touch-probability model against real historical BTC data. **Real
   finding from the 2026-08-20 run** (trailing 365 days, the longest history
@@ -102,6 +121,9 @@ python -m polymanager.cli
 
 # Re-run the BTC touch-probability model's calibration backtest:
 python -m polymanager.backtest
+
+# Scan live events for nested-outcome (ladder) pricing violations:
+python -m polymanager.monotonicity
 
 # Test suite (no network required -- all network calls are mocked/avoided):
 pip install pytest

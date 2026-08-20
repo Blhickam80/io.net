@@ -10,9 +10,23 @@ probability to the market's own price. This is Strategy A/E from the
 mandate (mispricing / near-resolution convergence) applied to one specific,
 well-defined family where real math beats narrative.
 
-Deliberately conservative: the model assumes zero price drift, so a genuine
-uptrend makes the *true* edge larger than what this reports, never smaller
--- it will not manufacture a bullish edge out of momentum alone.
+The model assumes zero price drift. That is NOT unconditionally
+conservative -- it only under-states true touch probability when the real
+future drift turns out non-negative; in a sustained downtrend it
+over-states it, symmetrically. A walk-forward calibration backtest
+(polymanager.backtest, run 2026-08-20 against the trailing 365 days of BTC
+daily closes -- a year BTC fell ~37% peak-to-trough) confirmed the
+over-statement side directly: mean predicted touch probability was 44.0%
+against an actual realized rate of 24.7% (shrinkage factor ~0.56). That
+gap is not obviously a bug in the touch-probability math -- it lines up
+almost exactly with "zero-drift model, strongly negative-drift year" -- but
+it means this strategy's raw output cannot be trusted at high confidence
+without a live re-check, since we have no way to know in advance whether
+the next few weeks will look more like a driftless walk or another trend.
+CONFIDENCE_CAP below encodes that: however tight the vol-sensitivity band
+looks, this strategy cannot output better than Tier-3/experimental
+confidence until it's re-validated (e.g. with a longer or regime-varied
+backtest, or a real drift term) and this cap is deliberately raised.
 
 "Above $X on <date>" (same-day snapshot, no "reach ... at any point"
 language) is a different payoff shape -- a terminal-distribution question,
@@ -28,6 +42,10 @@ from datetime import datetime, timezone
 from .models import touch_probability_upper_barrier
 
 _PATTERN = re.compile(r"will\s+bitcoin\s+reach\s+\$?([\d,]+)", re.IGNORECASE)
+
+# See module docstring: backtested calibration doesn't support trusting this
+# strategy above experimental sizing yet. Raise only after re-validating.
+CONFIDENCE_CAP = 4
 
 
 @dataclass
@@ -79,11 +97,14 @@ def estimate(
         confidence = 6
     else:
         confidence = 5
+    confidence = min(confidence, CONFIDENCE_CAP)
 
     evidence = (
         f"Barrier-touch model (zero-drift GBM): spot=${spot:,.0f}, barrier=${barrier:,.0f}, "
         f"60d realized daily vol={vol_60d:.2%}, {days_remaining:.1f} days remaining -> "
-        f"model P(touch)={p_model:.1%} (vs {p_model_high_vol:.1%} at 1.5x vol, "
-        f"confidence set from that sensitivity)."
+        f"model P(touch)={p_model:.1%} (vs {p_model_high_vol:.1%} at 1.5x vol). "
+        f"Confidence capped at {CONFIDENCE_CAP}/10: 2026-08-20 backtest showed this "
+        f"model overstates upside touch probability in trending (non-zero-drift) "
+        f"regimes -- see polymanager.backtest and this module's docstring."
     )
     return BtcTouchEstimate(p_true=p_model, confidence=confidence, evidence=evidence)

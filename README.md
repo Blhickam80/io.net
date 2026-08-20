@@ -6,23 +6,27 @@ tiered risk buckets, drawdown throttling, copy-trader quality scoring, and a
 trading journal — implementing the portfolio-manager mandate this repo was
 built from.
 
-## Important: this environment cannot reach Polymarket
+## Status: live data works; no capital has moved
 
-The sandbox this code was authored in has **no outbound network access** to
-`gamma-api.polymarket.com`, `clob.polymarket.com`, or `data-api.polymarket.com`
-(egress is blocked at the proxy level — confirmed directly, not assumed). That
-means:
+This started in a sandbox with no outbound network access to Polymarket at
+all. That's since been fixed by switching the Claude Code cloud environment's
+network access level to **Full** (see [Cloud environments](https://code.claude.com/docs/en/cloud-environments#access-levels) —
+the alternative is **Custom** with `gamma-api.polymarket.com`,
+`clob.polymarket.com`, `data-api.polymarket.com`, and `api.coingecko.com`
+explicitly allowlisted). `polymanager/api.py`'s endpoints and
+`polymanager/coingecko.py` are now verified live, not just written against
+docs. Still true:
 
-- No live market prices, order books, or wallet/leaderboard data could be
-  fetched from this session.
-- No real trades were or could be made. **Nothing in this repo has touched
-  real money.**
-- Every number in this README's example output is either a unit test
-  assertion or clearly-labeled synthetic `[DEMO]` data — never presented as a
-  real market or a real recommendation.
+- **No real trades have been made and no wallet is configured.** Nothing in
+  this repo has touched real money. `polymanager/execution.py` still refuses
+  to place live orders (see "Going live" below).
+- Recommendations the live cycle produces are real model output, not
+  fabricated numbers — but they reflect exactly one automated strategy
+  (`polymanager/btc_touch.py`) with a documented, imperfect calibration (see
+  "Backtesting" below). Everything else still correctly falls through to
+  `NO TRADE`.
 
-Run `python -m polymanager.cli` from a machine/environment with normal
-internet access to get real data and real recommendations.
+Run `python -m polymanager.cli` to execute a real cycle.
 
 ## What's actually implemented vs. what still needs research judgment
 
@@ -56,18 +60,34 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   load state → scan markets → screen → estimate probability → compute edge →
   size position → check correlation → journal → render dashboard.
 
-Deliberately **not** faked: **Step 5/6, "research the event and estimate its
-true probability,"** is the one step this codebase refuses to automate with a
-stub. `estimate_true_probability()` in `polymanager/cli.py` returns `None`
-for every market by default — which correctly routes everything to `NO
-TRADE` — because a real probability estimate requires actually reading news,
-polling data, court filings, official sources, etc. per market, which needs
-live tools this sandbox doesn't have. **Wire real research into that
-function** (an LLM session with live web search + this codebase's data, or a
-human analyst) before using this for real capital allocation. Treating a
-placeholder 50/50 or the market's own price as your "estimate" would silently
-defeat the entire point of the system (you can't have edge against a price by
-copying that same price).
+- **Live strategy #1: BTC barrier-touch** (`polymanager/btc_touch.py`,
+  `polymanager/models.py`, `polymanager/coingecko.py`) — prices "Will Bitcoin
+  reach $X in \<month\>?" markets (a textbook barrier option: resolves YES if
+  BTC ever trades at/above $X during the window) against live spot price and
+  realized volatility using a driftless-GBM touch-probability formula, and
+  compares that to the market's own price.
+- **Backtesting** (`polymanager/backtest.py`) — walk-forward calibration test
+  for the touch-probability model against real historical BTC data. **Real
+  finding from the 2026-08-20 run** (trailing 365 days, the longest history
+  CoinGecko's free tier allows): mean predicted touch probability was 44.0%
+  against an actual realized rate of 24.7%. That's not necessarily a bug in
+  the math — that backtest year saw BTC fall ~37% peak-to-trough, and a
+  zero-drift model *will* overstate upside-barrier touches in a sustained
+  downtrend (symmetrically, it understates them in an uptrend, which is what
+  happened during this repo's first live cycle the same day — see the
+  trading journal). Because there's no reliable way to know in advance which
+  regime the next few weeks will look like, `btc_touch.py` hard-caps its own
+  confidence output at 4/10 (`CONFIDENCE_CAP`) until this is re-validated —
+  which keeps it out of Tier 1/2 sizing entirely regardless of nominal edge.
+  Run `python -m polymanager.backtest` to reproduce or re-run this.
+
+Still deliberately **not** faked: for every other market shape,
+`estimate_true_probability()` in `polymanager/cli.py` returns `None` — which
+correctly routes to `NO TRADE` — because a real probability estimate requires
+actually reading news, polling data, official sources, etc. per market and
+per cycle. **Add more strategies the same way `btc_touch.py` was built**:
+real data source, real (ideally backtested) model, honest confidence:
+never a guess dressed up as a number.
 
 ## Running it
 
@@ -77,11 +97,13 @@ pip install -r requirements.txt
 # Offline pipeline walkthrough against synthetic, clearly-labeled sample markets:
 python -m polymanager.cli --demo
 
-# Real cycle (requires network access to Polymarket's APIs + a wired-up
-# estimate_true_probability implementation to produce any opportunities):
+# Real cycle (requires network access to Polymarket's + CoinGecko's APIs):
 python -m polymanager.cli
 
-# Test suite (no network required):
+# Re-run the BTC touch-probability model's calibration backtest:
+python -m polymanager.backtest
+
+# Test suite (no network required -- all network calls are mocked/avoided):
 pip install pytest
 pytest tests/ -q
 ```

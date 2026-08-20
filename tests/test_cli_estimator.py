@@ -42,3 +42,23 @@ def test_estimator_ignores_non_btc_market():
     estimator = make_estimator(71970.0, 0.02)
     m = _screened("Will the Fed decrease interest rates?", 0.10)
     assert estimator(m) is None
+
+
+def test_estimator_prices_eth_market_at_capped_confidence():
+    estimator = make_estimator(71970.0, 0.02, eth_spot=2330.0, eth_vol_60d=0.03)
+    m = _screened("Will Ethereum reach $3,000 in August?", 0.40)
+    result = estimator(m)
+    assert result is not None
+    p_true, confidence, evidence = result
+    from polymanager.eth_touch import CONFIDENCE_CAP
+
+    assert confidence <= CONFIDENCE_CAP
+    assert "Barrier-touch model" in evidence
+
+
+def test_estimator_returns_none_for_eth_without_eth_data():
+    # BTC data present but ETH data missing -- ETH markets must not be
+    # priced blind even though the estimator has some crypto data.
+    estimator = make_estimator(71970.0, 0.02, eth_spot=None, eth_vol_60d=None)
+    m = _screened("Will Ethereum reach $3,000 in August?", 0.40)
+    assert estimator(m) is None

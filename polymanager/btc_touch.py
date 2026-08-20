@@ -5,10 +5,11 @@ These resolve YES if BTC/USDT ever trades at or above $X on Binance during
 the stated window -- a textbook barrier option, not a narrative bet. This
 module detects that market shape, pulls live BTC spot price and realized
 volatility from CoinGecko, prices the barrier with
-polymanager.models.touch_probability_upper_barrier, and compares that model
-probability to the market's own price. This is Strategy A/E from the
-mandate (mispricing / near-resolution convergence) applied to one specific,
-well-defined family where real math beats narrative.
+polymanager.models.touch_probability_upper_barrier (via the shared engine
+in polymanager.crypto_touch), and compares that model probability to the
+market's own price. This is Strategy A/E from the mandate (mispricing /
+near-resolution convergence) applied to one specific, well-defined market
+family where real math beats narrative.
 
 The model assumes zero price drift. That is NOT unconditionally
 conservative -- it only under-states true touch probability when the real
@@ -28,6 +29,10 @@ looks, this strategy cannot output better than Tier-3/experimental
 confidence until it's re-validated (e.g. with a longer or regime-varied
 backtest, or a real drift term) and this cap is deliberately raised.
 
+This calibration finding is BTC-SPECIFIC and does not transfer to other
+assets -- see polymanager.eth_touch, whose own backtest came out worse
+(the model didn't even beat a naive baseline for ETH over the same window).
+
 "Above $X on <date>" (same-day snapshot, no "reach ... at any point"
 language) is a different payoff shape -- a terminal-distribution question,
 not a touch-anytime barrier -- and is intentionally not priced here.
@@ -35,17 +40,19 @@ not a touch-anytime barrier -- and is intentionally not priced here.
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
-from datetime import datetime, timezone
 
-from .models import touch_probability_upper_barrier
-
-_PATTERN = re.compile(r"will\s+bitcoin\s+reach\s+\$?([\d,]+)", re.IGNORECASE)
+from .crypto_touch import estimate_for_asset
 
 # See module docstring: backtested calibration doesn't support trusting this
 # strategy above experimental sizing yet. Raise only after re-validating.
 CONFIDENCE_CAP = 4
+
+_CALIBRATION_NOTE = (
+    "2026-08-20 backtest showed this model overstates upside touch probability "
+    "in trending (non-zero-drift) regimes -- see polymanager.backtest and this "
+    "module's docstring."
+)
 
 
 @dataclass
@@ -56,10 +63,9 @@ class BtcTouchEstimate:
 
 
 def extract_barrier(question: str) -> float | None:
-    m = _PATTERN.search(question)
-    if not m:
-        return None
-    return float(m.group(1).replace(",", ""))
+    from .crypto_touch import extract_barrier as _extract, make_pattern
+
+    return _extract(question, make_pattern("Bitcoin"))
 
 
 def estimate(
@@ -75,36 +81,15 @@ def estimate(
     market -- CoinGecko's free tier rate-limits per-market fetches almost
     immediately, and there's only one live BTC price per cycle anyway.
     """
-    barrier = extract_barrier(question)
-    if barrier is None:
-        return None
-
-    end = datetime.fromisoformat(end_date_iso.replace("Z", "+00:00"))
-    days_remaining = max(0.0, (end - datetime.now(timezone.utc)).total_seconds() / 86400.0)
-
-    p_model = touch_probability_upper_barrier(spot, barrier, vol_60d, days_remaining)
-
-    # Confidence reflects model/vol-regime uncertainty, not just edge size:
-    # re-price at 1.5x realized vol and see how much the estimate moves. A
-    # big swing under a plausible alternate vol assumption means the point
-    # estimate is fragile, so confidence should be lower even if the
-    # nominal edge looks large.
-    p_model_high_vol = touch_probability_upper_barrier(spot, barrier, vol_60d * 1.5, days_remaining)
-    spread = abs(p_model_high_vol - p_model)
-    if spread < 0.05:
-        confidence = 7
-    elif spread < 0.15:
-        confidence = 6
-    else:
-        confidence = 5
-    confidence = min(confidence, CONFIDENCE_CAP)
-
-    evidence = (
-        f"Barrier-touch model (zero-drift GBM): spot=${spot:,.0f}, barrier=${barrier:,.0f}, "
-        f"60d realized daily vol={vol_60d:.2%}, {days_remaining:.1f} days remaining -> "
-        f"model P(touch)={p_model:.1%} (vs {p_model_high_vol:.1%} at 1.5x vol). "
-        f"Confidence capped at {CONFIDENCE_CAP}/10: 2026-08-20 backtest showed this "
-        f"model overstates upside touch probability in trending (non-zero-drift) "
-        f"regimes -- see polymanager.backtest and this module's docstring."
+    result = estimate_for_asset(
+        question,
+        end_date_iso,
+        asset_name="Bitcoin",
+        spot=spot,
+        vol_60d=vol_60d,
+        confidence_cap=CONFIDENCE_CAP,
+        calibration_note=_CALIBRATION_NOTE,
     )
-    return BtcTouchEstimate(p_true=p_model, confidence=confidence, evidence=evidence)
+    if result is None:
+        return None
+    return BtcTouchEstimate(p_true=result.p_true, confidence=result.confidence, evidence=result.evidence)

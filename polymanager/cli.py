@@ -9,12 +9,15 @@ This module deliberately never invents a probability estimate for a real
 market and calls it a recommendation. Steps 5-6 (research the event,
 estimate true probability) require actual investigation -- news, base
 rates, official sources -- that a human or an LLM-with-live-tools must
-perform per market. `estimate_true_probability` below currently wires in
-exactly one automated, real strategy: polymanager.btc_touch, which prices
-"Will Bitcoin reach $X in <month>?" markets against live spot price and
-realized volatility (see that module for the math). Every other market
-shape still has no automated estimator and correctly falls through to NO
-TRADE -- extend this function with more strategies as they're built and
+perform per market. `estimate_true_probability` below wires in two
+automated, real strategies sharing polymanager.crypto_touch's engine:
+polymanager.btc_touch and polymanager.eth_touch, which price "Will
+Bitcoin/Ethereum reach $X in <month>?" markets against live spot price and
+realized volatility (see those modules for the math and, critically, each
+asset's own separately-backtested confidence cap -- BTC's finding does not
+transfer to ETH, whose backtest came out worse). Every other market shape
+still has no automated estimator and correctly falls through to NO TRADE
+-- extend this function with more strategies as they're built and
 verified, never with a guess dressed up as a model.
 """
 
@@ -29,22 +32,28 @@ from .btc_touch import estimate as btc_touch_estimate
 from .coingecko import CoinGeckoClient
 from .config import TIERS
 from .dashboard import render_buy_action, render_full_dashboard
+from .eth_touch import estimate as eth_touch_estimate
 from .journal import JournalEntry
 from .kelly import recommended_position_size
 from .risk import CorrelationGroup, check_correlation_limit, drawdown_multiplier
 from .scanner import passing_markets
 
 
-def make_estimator(btc_spot: float | None, btc_vol_60d: float | None):
+def make_estimator(
+    btc_spot: float | None,
+    btc_vol_60d: float | None,
+    eth_spot: float | None = None,
+    eth_vol_60d: float | None = None,
+):
     """Build the per-cycle estimate_true_probability function, closing over
-    ONE fetch of BTC spot/vol (CoinGecko's free tier rate-limits per-market
-    fetches almost immediately, and there's only one live BTC price per
-    cycle regardless of how many BTC markets are being screened).
+    ONE fetch each of BTC/ETH spot/vol (CoinGecko's free tier rate-limits
+    per-market fetches almost immediately, and there's only one live price
+    per asset per cycle regardless of how many matching markets exist).
 
-    If btc_spot/btc_vol_60d are None (the CoinGecko fetch failed this
-    cycle), BTC markets are correctly skipped rather than priced with stale
-    or fabricated numbers -- that failure is surfaced separately by the
-    caller, not silently folded into "no edge."
+    If a given asset's spot/vol is None (its CoinGecko fetch failed this
+    cycle), that asset's markets are correctly skipped rather than priced
+    with stale or fabricated numbers -- that failure is surfaced separately
+    by the caller, not silently folded into "no edge."
     """
 
     def estimate_true_probability(screened_market) -> tuple[float, int, str] | None:
@@ -57,6 +66,15 @@ def make_estimator(btc_spot: float | None, btc_vol_60d: float | None):
             )
             if btc is not None:
                 return btc.p_true, btc.confidence, btc.evidence
+        if eth_spot is not None and eth_vol_60d is not None:
+            eth = eth_touch_estimate(
+                screened_market.question,
+                screened_market.end_date,
+                spot=eth_spot,
+                vol_60d=eth_vol_60d,
+            )
+            if eth is not None:
+                return eth.p_true, eth.confidence, eth.evidence
         return None
 
     return estimate_true_probability
@@ -104,9 +122,12 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
     btc_spot: float | None = None
     btc_vol_60d: float | None = None
     btc_data_error: str | None = None
+    eth_spot: float | None = None
+    eth_vol_60d: float | None = None
+    eth_data_error: str | None = None
     if not demo:
+        cg = CoinGeckoClient()
         try:
-            cg = CoinGeckoClient()
             btc_spot = cg.get_spot_price("bitcoin")
             btc_vol_60d = cg.get_realized_daily_vol("bitcoin", days=60)
         except Exception as e:  # noqa: BLE001 - report distinctly from "no edge"
@@ -116,8 +137,18 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
                 "BTC barrier-touch markets will be skipped this cycle rather than priced blind.",
                 file=sys.stderr,
             )
+        try:
+            eth_spot = cg.get_spot_price("ethereum")
+            eth_vol_60d = cg.get_realized_daily_vol("ethereum", days=60)
+        except Exception as e:  # noqa: BLE001 - report distinctly from "no edge"
+            eth_data_error = repr(e)
+            print(
+                f"[polymanager] Could not fetch ETH price data from CoinGecko ({eth_data_error}). "
+                "ETH barrier-touch markets will be skipped this cycle rather than priced blind.",
+                file=sys.stderr,
+            )
 
-    estimate_true_probability = make_estimator(btc_spot, btc_vol_60d)
+    estimate_true_probability = make_estimator(btc_spot, btc_vol_60d, eth_spot, eth_vol_60d)
 
     opportunities = []
     for m in screened:
@@ -200,10 +231,11 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
 
     if not opportunities:
         btc_note = f" BTC data fetch failed ({btc_data_error})." if btc_data_error else ""
+        eth_note = f" ETH data fetch failed ({eth_data_error})." if eth_data_error else ""
         journal.record_no_trade(
             f"{data_source_note} {len(screened)} markets passed the quality filter; "
             "none had a defensible probability estimate exceeding the edge/confidence bar "
-            f"(drawdown throttle: {dd_reason}).{btc_note}"
+            f"(drawdown throttle: {dd_reason}).{btc_note}{eth_note}"
         )
     else:
         for opp in opportunities:
@@ -231,13 +263,16 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
 def _correlation_key(question: str) -> str:
     """Coarse correlation grouping: markets on the same underlying asset
     move together even when their specific thresholds differ. This is
-    deliberately narrow -- it catches the one clear case this codebase
-    currently produces (multiple BTC "reach/dip to $X" opportunities in one
-    cycle), not a general correlation-detection engine. Extend it as more
-    correlated-market strategies are added.
+    deliberately narrow -- it catches the clear cases this codebase
+    currently produces (multiple BTC or ETH "reach/dip to $X" opportunities
+    in one cycle), not a general correlation-detection engine. Extend it as
+    more correlated-market strategies are added.
     """
-    if "bitcoin" in question.lower():
+    lower = question.lower()
+    if "bitcoin" in lower:
         return "correlated:bitcoin"
+    if "ethereum" in lower:
+        return "correlated:ethereum"
     return f"standalone:{question}"
 
 

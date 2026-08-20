@@ -101,12 +101,27 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   given the model's confidence cap. See the trading journal for the exact
   entries.
 
-- **Live strategy #1: BTC barrier-touch** (`polymanager/btc_touch.py`,
-  `polymanager/models.py`, `polymanager/coingecko.py`) — prices "Will Bitcoin
-  reach $X in \<month\>?" markets (a textbook barrier option: resolves YES if
-  BTC ever trades at/above $X during the window) against live spot price and
-  realized volatility using a driftless-GBM touch-probability formula, and
-  compares that to the market's own price.
+- **Live strategy #1: crypto barrier-touch** (`polymanager/crypto_touch.py`
+  is the shared engine; `polymanager/btc_touch.py` and
+  `polymanager/eth_touch.py` are thin per-asset wrappers, each with its own
+  `CONFIDENCE_CAP`; `polymanager/models.py`, `polymanager/coingecko.py`) —
+  prices "Will Bitcoin/Ethereum reach $X in \<month\>?" markets (a textbook
+  barrier option: resolves YES if the asset ever trades at/above $X during
+  the window) against live spot price and realized volatility using a
+  driftless-GBM touch-probability formula, and compares that to the
+  market's own price. **Each asset's confidence cap comes from that
+  asset's own backtest — one never transfers to the other.** BTC's capped
+  at 4/10 (see below). Ran the identical backtest against ETH's own price
+  history (2026-08-20): ETH fell ~46% over the window (steeper than BTC's
+  ~37%), and the model's Brier score (0.2359) came out *worse* than a
+  naive always-predict-the-base-rate baseline (0.2320) — it doesn't
+  currently beat a coin flip for ETH. `eth_touch.py`'s `CONFIDENCE_CAP` is
+  set to 2, below every risk tier's `min_confidence` floor (Tier 3's is 4)
+  — deliberately wired into the live pipeline for visibility rather than
+  disabled outright, but structurally incapable of sizing a trade.
+  Confirmed live: real ETH "reach $X" markets get evaluated and produce
+  real model estimates each cycle, but never qualify for a sized
+  recommendation.
 - **Live strategy #2: nested-outcome monotonicity** (`polymanager/monotonicity.py`)
   — Polymarket's "ladder" events (e.g. "What price will Bitcoin hit in
   \<month\>?") contain many nested markets ("reach $72,500," "reach $75,000,"

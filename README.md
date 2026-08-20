@@ -107,6 +107,31 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   (2-9pp), each printed with an explicit capital-lock-up/execution-slippage
   caveat rather than presented as clean free money — 12-32 legs held until
   a championship resolves months out is a real cost, not a rounding error.
+- **Real copy-trading analysis** (`polymanager/wallet_research.py`) — bridges
+  `polymanager/copytrading.py`'s scoring logic (previously only unit-tested
+  against synthetic data) to Polymarket's actual public API. **Correction
+  worth flagging on its own:** an earlier version of this repo and its
+  `polymanager/api.py` docstring claimed no public leaderboard endpoint
+  exists — that was wrong, caused by guessing plausible-looking unversioned
+  paths (`/leaderboard`) instead of checking `docs.polymarket.com`. The real
+  path is `/v1/leaderboard`, found via the official OpenAPI spec and now
+  wired up correctly. Also found: `/closed-positions` returns Polymarket's
+  own already-computed per-market `realizedPnl` — no manual P/L
+  reconstruction from raw trades needed. **Real findings (2026-08-20)**,
+  pulling closed-position history for the top 10 all-time-PNL traders:
+  confirmed authentic data (Theo4's top positions are exactly the famous
+  2024 Trump-popular-vote / Kamala-NO bets reported in the press). Built
+  real, verifiable stats — win rate, capital-weighted ROI, concentration
+  (largest win as % of realized gains), and a "trade-order drawdown."
+  That last one exposed its own bug in testing: normalizing by a running
+  cumulative-P/L peak can report >1000% "drawdown" when the peak itself was
+  small (confirmed live: swisstony showed 1646%, which is mathematically
+  correct but means little as a percentage) — fixed by reporting the dollar
+  drawdown alongside the percentage rather than hiding or clamping it.
+  Explicitly NOT computed, and documented as such rather than guessed: true
+  mark-to-market drawdown, "how early they enter," and any signal from
+  currently-open (not yet resolved) positions — see the module docstring's
+  full list. Run `python -m polymanager.wallet_research` to reproduce.
 - **Backtesting** (`polymanager/backtest.py`) — walk-forward calibration test
   for the touch-probability model against real historical BTC data. **Real
   finding from the 2026-08-20 run** (trailing 365 days, the longest history
@@ -154,6 +179,9 @@ python -m polymanager.monotonicity
 
 # Scan live events for mutually-exclusive-outcome sum inconsistencies:
 python -m polymanager.sum_consistency
+
+# Real copy-trading analysis of the top all-time-PNL leaderboard traders:
+python -m polymanager.wallet_research
 
 # Test suite (no network required -- all network calls are mocked/avoided):
 pip install pytest

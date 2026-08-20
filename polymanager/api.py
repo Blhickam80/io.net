@@ -6,11 +6,18 @@ private key, which is never read from or written to this repo.
 
 Verified live against gamma-api.polymarket.com, clob.polymarket.com, and
 data-api.polymarket.com on 2026-08-20 from an environment with network
-access: /markets, /book, /price, and data-api's /positions and /trades all
-work as implemented below. There is no public /leaderboard endpoint on
-data-api (confirmed: 404, along with every other plausible path tried) --
-see get_wallet_positions/get_wallet_activity for the per-wallet alternative
-that does exist, which is what copy-trading analysis should be built on.
+access: /markets, /book, /price, and data-api's /positions, /trades,
+/closed-positions, and /v1/leaderboard all work as implemented below.
+
+CORRECTION (2026-08-20, same day): an earlier version of this module and
+its docstring claimed no public /leaderboard endpoint exists on data-api.
+That was wrong -- the real path is /v1/leaderboard (versioned, undocumented
+without checking docs.polymarket.com/api-reference directly; guessing
+plausible unversioned paths like /leaderboard is what produced the false
+404-everywhere conclusion). Confirmed against the official OpenAPI spec at
+https://docs.polymarket.com/api-reference/core/get-trader-leaderboard-rankings.md
+and tested live. Lesson: prefer checking documented API specs over guessing
+endpoint shapes from pattern-matching other paths.
 
 Network note: these calls need outbound HTTPS to the three hosts above.
 Some sandboxed execution environments restrict egress to an allowlist that
@@ -91,6 +98,66 @@ class PolymarketClient:
         resp = self.session.get(
             f"{DATA_API_BASE}/activity",
             params={"user": wallet_address, "limit": limit},
+            timeout=_TIMEOUT,
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def get_wallet_trades(self, wallet_address: str, *, limit: int = 500, offset: int = 0) -> list[dict]:
+        resp = self.session.get(
+            f"{DATA_API_BASE}/trades",
+            params={"user": wallet_address, "limit": limit, "offset": offset},
+            timeout=_TIMEOUT,
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def get_closed_positions(
+        self,
+        wallet_address: str,
+        *,
+        limit: int = 50,
+        offset: int = 0,
+        sort_by: str = "REALIZEDPNL",
+        sort_direction: str = "DESC",
+    ) -> list[dict]:
+        """Per-market realized P/L for a wallet's already-resolved positions.
+        `limit` is capped at 50 server-side; paginate with `offset` (up to
+        100000) for more history.
+        """
+        resp = self.session.get(
+            f"{DATA_API_BASE}/closed-positions",
+            params={
+                "user": wallet_address,
+                "limit": limit,
+                "offset": offset,
+                "sortBy": sort_by,
+                "sortDirection": sort_direction,
+            },
+            timeout=_TIMEOUT,
+        )
+        resp.raise_for_status()
+        return resp.json()
+
+    def get_leaderboard(
+        self,
+        *,
+        category: str = "OVERALL",
+        time_period: str = "ALL",
+        order_by: str = "PNL",
+        limit: int = 25,
+        offset: int = 0,
+    ) -> list[dict]:
+        """Top traders by PNL or volume. `limit` is capped at 50 server-side."""
+        resp = self.session.get(
+            f"{DATA_API_BASE}/v1/leaderboard",
+            params={
+                "category": category,
+                "timePeriod": time_period,
+                "orderBy": order_by,
+                "limit": limit,
+                "offset": offset,
+            },
             timeout=_TIMEOUT,
         )
         resp.raise_for_status()

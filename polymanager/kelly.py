@@ -62,6 +62,15 @@ def recommended_position_size(
     then floored again against tier_min *only if* it clears the tier's own
     edge/confidence bar (callers are expected to have already screened that;
     this function trusts its inputs).
+
+    Audit (2026-08-20): under the live config (config.TIERS, which caps
+    Tier 1 -- the highest -- at 0.12, and config.DRAWDOWN_RULES, whose
+    multipliers are all <= 1.0), hard_cap_pct is currently redundant:
+    tier_capped * drawdown_multiplier can never exceed 0.12 in the first
+    place, so the `min(final_pct, hard_cap_pct)` line never actually
+    changes the output. It is not dead code, though (see
+    test_hard_cap_does_bind_if_a_tier_max_ever_exceeds_it) -- it starts
+    binding immediately if a tier's max_pct is ever widened past 12%.
     """
     f_full = full_kelly_fraction(p_true, price)
     if f_full <= 0.0:

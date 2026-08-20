@@ -55,6 +55,52 @@ def test_recommended_position_size_respects_hard_cap():
     assert result["dollar_amount"] <= 24.01
 
 
+def test_hard_cap_is_redundant_under_current_live_config():
+    # Audit (2026-08-20): does MAX_SINGLE_POSITION_PCT (0.12) ever bind
+    # distinctly from the tier system in practice? Under the live config,
+    # no -- every TIERS[*].max_pct is <= 0.12 (Tier 1's own max_pct IS
+    # 0.12) and every DRAWDOWN_RULES multiplier is <= 1.0, so
+    # tier_capped * drawdown_multiplier can never exceed 0.12 in the first
+    # place. Confirm this by running the real config's own tier maxes
+    # through recommended_position_size with a deliberately enormous edge
+    # (p_true=0.99, price=0.01) that would blow past 12% full-Kelly for
+    # every tier, and showing hard_cap_pct=0.12 vs. an absurdly high
+    # hard_cap_pct (no cap at all) produce the identical result.
+    from polymanager.config import DRAWDOWN_RULES, MAX_SINGLE_POSITION_PCT, TIERS
+
+    assert all(tier.max_pct <= MAX_SINGLE_POSITION_PCT for tier in TIERS.values())
+    assert all(mult <= 1.0 for _, mult, _ in DRAWDOWN_RULES)
+
+    for tier in TIERS.values():
+        capped = recommended_position_size(
+            bankroll=200.0, p_true=0.99, price=0.01, confidence=9,
+            tier_min_pct=tier.min_pct, tier_max_pct=tier.max_pct,
+            drawdown_multiplier=1.0, hard_cap_pct=MAX_SINGLE_POSITION_PCT,
+        )
+        uncapped = recommended_position_size(
+            bankroll=200.0, p_true=0.99, price=0.01, confidence=9,
+            tier_min_pct=tier.min_pct, tier_max_pct=tier.max_pct,
+            drawdown_multiplier=1.0, hard_cap_pct=1.0,  # effectively no hard cap
+        )
+        assert capped == uncapped, f"hard cap changed the outcome for {tier.name}"
+
+
+def test_hard_cap_does_bind_if_a_tier_max_ever_exceeds_it():
+    # The hard cap is redundant under *current* config values, but it is
+    # not dead code the way the drawdown throttle was -- it's live
+    # defense-in-depth that would immediately start binding the moment
+    # someone raised a tier's max_pct past 12% (e.g. widening Tier 1).
+    # Simulate that directly: a hypothetical tier_max_pct=0.20 with a
+    # huge edge should still be clamped to the hard cap.
+    result = recommended_position_size(
+        bankroll=200.0, p_true=0.99, price=0.01, confidence=9,
+        tier_min_pct=0.05, tier_max_pct=0.20,
+        drawdown_multiplier=1.0, hard_cap_pct=0.12,
+    )
+    assert result["final_pct"] == 12.0
+    assert result["tier_capped_pct"] > 12.0  # tier alone would have allowed more
+
+
 def test_recommended_position_size_zero_when_no_edge():
     result = recommended_position_size(
         bankroll=200.0,

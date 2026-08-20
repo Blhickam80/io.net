@@ -416,6 +416,25 @@ outcomes* (see `polymanager/pnl_stats.py`, the same math already built for
 It's not a substitute for real portfolio drawdown, but it's not nothing
 either — and it's honestly labeled as hypothetical throughout.
 
+**Third audit in the same series (2026-08-20)**: does `MAX_SINGLE_POSITION_PCT`
+(12%, the "hard cap" row above) ever bind distinctly from the tier system, or
+is it redundant given `tier_capped = min(f_fractional, tier_max_pct)` already
+happens first? Under the *live config* it's redundant: every `TIERS[*].max_pct`
+is ≤ 0.12 (Tier 1's own max_pct **is** 0.12) and every `DRAWDOWN_RULES`
+multiplier is ≤ 1.0, so `tier_capped * drawdown_multiplier` can never exceed
+12% in the first place — confirmed by running each tier's real max through
+`recommended_position_size` with a deliberately enormous edge and showing
+`hard_cap_pct=0.12` vs. effectively no cap produce identical output (see
+`tests/test_kelly.py::test_hard_cap_is_redundant_under_current_live_config`).
+Unlike the drawdown throttle, though, this one is *not* dead code — it's live
+defense-in-depth that would immediately start binding the moment a tier's
+`max_pct` is ever widened past 12% (e.g. loosening Tier 1), confirmed by
+feeding the function a hypothetical `tier_max_pct=0.20` directly and watching
+the hard cap clamp the result back to 12% (see
+`test_hard_cap_does_bind_if_a_tier_max_ever_exceeds_it`). Leave it in place —
+it's cheap insurance against a future config change, just not currently doing
+any work.
+
 ## Legal / disclaimer
 
 This is a decision-support and execution-scaffolding tool, not investment

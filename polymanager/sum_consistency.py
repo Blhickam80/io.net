@@ -163,7 +163,10 @@ def scan_event(event: dict, **kwargs) -> SumConsistencyResult | None:
     )
 
 
-def main() -> None:
+def run_live_scan() -> tuple[int, list[SumConsistencyResult]]:
+    """Returns (events_scanned, [result, ...]) for every negRisk event with
+    a material sum-consistency finding.
+    """
     import requests
 
     resp = requests.get(
@@ -174,14 +177,19 @@ def main() -> None:
     resp.raise_for_status()
     events = resp.json()
 
-    found = 0
+    results = []
     for event in events:
         if not event.get("negRisk"):
             continue
         result = scan_event(event)
-        if result is None:
-            continue
-        found += 1
+        if result is not None:
+            results.append(result)
+    return len(events), results
+
+
+def main() -> None:
+    events_scanned, results = run_live_scan()
+    for result in results:
         print(f"=== {result.event_title} ===")
         print(f"  {len(result.legs)} liquid legs, sum(YES)={result.sum_yes:.1%}, deviation={result.deviation_pp:+.1f}pp")
         print(f"  Direction: {result.direction}")
@@ -193,7 +201,7 @@ def main() -> None:
                 "that many legs against the nominal edge before sizing anything."
             )
 
-    print(f"\nScanned {len(events)} events. Material sum-consistency findings: {found}.")
+    print(f"\nScanned {events_scanned} events. Material sum-consistency findings: {len(results)}.")
 
 
 if __name__ == "__main__":

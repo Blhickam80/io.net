@@ -62,6 +62,16 @@ def make_estimator(btc_spot: float | None, btc_vol_60d: float | None):
 
 
 def run_cycle(*, demo: bool) -> str:
+    dashboard, _opportunities, _equity = run_cycle_structured(demo=demo)
+    return dashboard
+
+
+def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
+    """Same as run_cycle, but also returns the raw opportunities list and
+    resulting equity for callers that want structured data (e.g.
+    polymanager.scan_all logging a summary) instead of parsing the
+    rendered dashboard text.
+    """
     state = portfolio.load()
 
     if demo:
@@ -83,7 +93,7 @@ def run_cycle(*, demo: bool) -> str:
             state.update_high_water_mark()
             dashboard = render_full_dashboard(state, [], [], [])
             journal.record_no_trade("Market data unavailable (network/API error).")
-            return dashboard
+            return dashboard, [], state.equity()
 
     screened = passing_markets(raw_markets)
 
@@ -160,7 +170,8 @@ def run_cycle(*, demo: bool) -> str:
             f"(drawdown throttle: {dd_reason}).{btc_note}"
         )
 
-    return render_full_dashboard(state, opportunities, position_entries, actions)
+    dashboard = render_full_dashboard(state, opportunities, position_entries, actions)
+    return dashboard, opportunities, state.equity()
 
 
 def _select_tier(edge_pp: float, confidence: int) -> str | None:

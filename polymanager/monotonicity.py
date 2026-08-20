@@ -149,14 +149,15 @@ def scan_event_markets(raw_markets: list[dict]) -> list[MonotonicityViolation]:
     return find_violations(rungs)
 
 
-def main() -> None:
-    """Live scan: pull active events with the most markets (ladder-style
-    events tend to have the highest market counts) from Gamma's /events
-    endpoint and check each one for violations. This is a separate entry
-    point from polymanager.cli's per-market cycle -- a violation is a pair
-    trade (short the overpriced rung, long the underpriced one), not a
-    single-side probability estimate, so it doesn't fit that pipeline's
-    Kelly-sizing interface without forcing a shape it wasn't designed for.
+def run_live_scan() -> tuple[int, list[tuple[str, MonotonicityViolation]]]:
+    """Pull active events with the most markets (ladder-style events tend
+    to have the highest market counts) from Gamma's /events endpoint and
+    check each one for violations. Returns (events_scanned, [(event_title,
+    violation), ...]). Separate from polymanager.cli's per-market cycle --
+    a violation is a pair trade (short the overpriced rung, long the
+    underpriced one), not a single-side probability estimate, so it
+    doesn't fit that pipeline's Kelly-sizing interface without forcing a
+    shape it wasn't designed for.
     """
     import requests
 
@@ -168,23 +169,26 @@ def main() -> None:
     resp.raise_for_status()
     events = resp.json()
 
-    total_violations = 0
+    found: list[tuple[str, MonotonicityViolation]] = []
     for event in events:
         markets = event.get("markets", [])
         if len(markets) < 3:
             continue
-        violations = scan_event_markets(markets)
-        if violations:
-            total_violations += len(violations)
-            print(f"=== {event.get('title')} (event {event.get('id')}) ===")
-            for v in violations:
-                print(
-                    f"  VIOLATION: '{v.easier.question}' @ {v.easier.yes_price:.1%} vs "
-                    f"'{v.harder.question}' @ {v.harder.yes_price:.1%} "
-                    f"(harder outcome overpriced by {v.magnitude_pp:.1f}pp)"
-                )
+        for v in scan_event_markets(markets):
+            found.append((event.get("title", "?"), v))
+    return len(events), found
 
-    print(f"\nScanned {len(events)} events. Total violations found: {total_violations}.")
+
+def main() -> None:
+    events_scanned, found = run_live_scan()
+    for title, v in found:
+        print(f"=== {title} ===")
+        print(
+            f"  VIOLATION: '{v.easier.question}' @ {v.easier.yes_price:.1%} vs "
+            f"'{v.harder.question}' @ {v.harder.yes_price:.1%} "
+            f"(harder outcome overpriced by {v.magnitude_pp:.1f}pp)"
+        )
+    print(f"\nScanned {events_scanned} events. Total violations found: {len(found)}.")
 
 
 if __name__ == "__main__":

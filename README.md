@@ -163,7 +163,8 @@ pip install -r requirements.txt
 # Offline pipeline walkthrough against synthetic, clearly-labeled sample markets:
 python -m polymanager.cli --demo
 
-# Run everything live in one go (main cycle + both cross-market scans):
+# Run everything live in one go (main cycle + both cross-market scans),
+# logging a summary row to data/scan_history.jsonl each time:
 python -m polymanager.scan_all
 
 # Or individually:

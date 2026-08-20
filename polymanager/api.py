@@ -4,11 +4,19 @@ No API key is required for read-only market/trader data. Order execution
 (polymanager.execution) additionally requires a funded Polygon wallet
 private key, which is never read from or written to this repo.
 
-Network note: these calls need outbound HTTPS to gamma-api.polymarket.com,
-clob.polymarket.com, and data-api.polymarket.com. Some sandboxed execution
-environments (including the one this code was authored in) block that
-egress entirely -- calls will raise requests.RequestException in that case.
-Run this from an environment with normal internet access to get real data.
+Verified live against gamma-api.polymarket.com, clob.polymarket.com, and
+data-api.polymarket.com on 2026-08-20 from an environment with network
+access: /markets, /book, /price, and data-api's /positions and /trades all
+work as implemented below. There is no public /leaderboard endpoint on
+data-api (confirmed: 404, along with every other plausible path tried) --
+see get_wallet_positions/get_wallet_activity for the per-wallet alternative
+that does exist, which is what copy-trading analysis should be built on.
+
+Network note: these calls need outbound HTTPS to the three hosts above.
+Some sandboxed execution environments restrict egress to an allowlist that
+excludes them by default -- if calls raise requests.RequestException,
+check the environment's network access level before assuming the API is
+down.
 """
 
 from __future__ import annotations
@@ -69,16 +77,6 @@ class PolymarketClient:
         )
         resp.raise_for_status()
         return float(resp.json()["price"])
-
-    def get_leaderboard(self, *, window: str = "30d", limit: int = 50) -> list[dict]:
-        """Top traders by realized P/L over the given window."""
-        resp = self.session.get(
-            f"{DATA_API_BASE}/leaderboard",
-            params={"window": window, "limit": limit},
-            timeout=_TIMEOUT,
-        )
-        resp.raise_for_status()
-        return resp.json()
 
     def get_wallet_positions(self, wallet_address: str) -> list[dict]:
         resp = self.session.get(

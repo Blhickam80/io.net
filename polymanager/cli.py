@@ -9,9 +9,13 @@ This module deliberately never invents a probability estimate for a real
 market and calls it a recommendation. Steps 5-6 (research the event,
 estimate true probability) require actual investigation -- news, base
 rates, official sources -- that a human or an LLM-with-live-tools must
-perform per market. Wire your estimator into `estimate_true_probability`
-below; until you do, every market falls through to NO TRADE, which is the
-only honest default.
+perform per market. `estimate_true_probability` below currently wires in
+exactly one automated, real strategy: polymanager.btc_touch, which prices
+"Will Bitcoin reach $X in <month>?" markets against live spot price and
+realized volatility (see that module for the math). Every other market
+shape still has no automated estimator and correctly falls through to NO
+TRADE -- extend this function with more strategies as they're built and
+verified, never with a guess dressed up as a model.
 """
 
 from __future__ import annotations
@@ -21,6 +25,8 @@ import sys
 
 from . import journal, portfolio
 from .api import PolymarketClient
+from .btc_touch import estimate as btc_touch_estimate
+from .coingecko import CoinGeckoClient
 from .config import TIERS
 from .dashboard import render_full_dashboard
 from .kelly import recommended_position_size
@@ -28,18 +34,31 @@ from .risk import drawdown_multiplier
 from .scanner import passing_markets
 
 
-def estimate_true_probability(screened_market) -> tuple[float, int, str] | None:
-    """Return (p_true, confidence_1_to_10, evidence_summary) for a screened
-    market, or None if there isn't a defensible estimate.
+def make_estimator(btc_spot: float | None, btc_vol_60d: float | None):
+    """Build the per-cycle estimate_true_probability function, closing over
+    ONE fetch of BTC spot/vol (CoinGecko's free tier rate-limits per-market
+    fetches almost immediately, and there's only one live BTC price per
+    cycle regardless of how many BTC markets are being screened).
 
-    THIS IS THE RESEARCH HOOK. The default implementation refuses to
-    guess -- it has no news/polling/base-rate access from inside this pure
-    function -- so it always returns None (i.e. "no edge identified"),
-    which correctly routes every market to NO TRADE rather than fabricating
-    an edge. Replace this with real research (news search, base rates,
-    official data) before relying on this for actual capital allocation.
+    If btc_spot/btc_vol_60d are None (the CoinGecko fetch failed this
+    cycle), BTC markets are correctly skipped rather than priced with stale
+    or fabricated numbers -- that failure is surfaced separately by the
+    caller, not silently folded into "no edge."
     """
-    return None
+
+    def estimate_true_probability(screened_market) -> tuple[float, int, str] | None:
+        if btc_spot is not None and btc_vol_60d is not None:
+            btc = btc_touch_estimate(
+                screened_market.question,
+                screened_market.end_date,
+                spot=btc_spot,
+                vol_60d=btc_vol_60d,
+            )
+            if btc is not None:
+                return btc.p_true, btc.confidence, btc.evidence
+        return None
+
+    return estimate_true_probability
 
 
 def run_cycle(*, demo: bool) -> str:
@@ -70,6 +89,24 @@ def run_cycle(*, demo: bool) -> str:
 
     dd_pct = state.drawdown()
     dd_mult, dd_reason = drawdown_multiplier(dd_pct)
+
+    btc_spot: float | None = None
+    btc_vol_60d: float | None = None
+    btc_data_error: str | None = None
+    if not demo:
+        try:
+            cg = CoinGeckoClient()
+            btc_spot = cg.get_spot_price("bitcoin")
+            btc_vol_60d = cg.get_realized_daily_vol("bitcoin", days=60)
+        except Exception as e:  # noqa: BLE001 - report distinctly from "no edge"
+            btc_data_error = repr(e)
+            print(
+                f"[polymanager] Could not fetch BTC price data from CoinGecko ({btc_data_error}). "
+                "BTC barrier-touch markets will be skipped this cycle rather than priced blind.",
+                file=sys.stderr,
+            )
+
+    estimate_true_probability = make_estimator(btc_spot, btc_vol_60d)
 
     opportunities = []
     for m in screened:
@@ -116,10 +153,11 @@ def run_cycle(*, demo: bool) -> str:
     portfolio.save(state)
 
     if not opportunities:
+        btc_note = f" BTC data fetch failed ({btc_data_error})." if btc_data_error else ""
         journal.record_no_trade(
             f"{data_source_note} {len(screened)} markets passed the quality filter; "
             "none had a defensible probability estimate exceeding the edge/confidence bar "
-            f"(drawdown throttle: {dd_reason})."
+            f"(drawdown throttle: {dd_reason}).{btc_note}"
         )
 
     return render_full_dashboard(state, opportunities, position_entries, actions)

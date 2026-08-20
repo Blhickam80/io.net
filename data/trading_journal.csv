@@ -1,1 +1,2 @@
 date,market,side,entry_price,amount_usd,estimated_true_probability,expected_edge_pp,confidence,strategy,reason,key_evidence,exit_condition,exit_price,profit_loss_usd,thesis_correct,lesson_learned
+2026-08-20T13:59:23.407753+00:00,NO TRADE,-,0.0,0.0,0.0,0.0,0,-,Live data from gamma-api.polymarket.com. 93 markets passed the quality filter; none had a defensible probability estimate exceeding the edge/confidence bar (drawdown throttle: Normal sizing.).,-,-,,,,

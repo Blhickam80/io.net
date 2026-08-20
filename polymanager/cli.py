@@ -28,9 +28,10 @@ from .api import PolymarketClient
 from .btc_touch import estimate as btc_touch_estimate
 from .coingecko import CoinGeckoClient
 from .config import TIERS
-from .dashboard import render_full_dashboard
+from .dashboard import render_buy_action, render_full_dashboard
+from .journal import JournalEntry
 from .kelly import recommended_position_size
-from .risk import drawdown_multiplier
+from .risk import CorrelationGroup, check_correlation_limit, drawdown_multiplier
 from .scanner import passing_markets
 
 
@@ -124,14 +125,23 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
         if est is None:
             continue
         p_true, confidence, evidence = est
-        edge_pp = (p_true - m.yes_price) * 100
+
+        # Check both sides: a probability estimate below the YES price is
+        # exactly a positive edge on NO (p_true_NO = 1-p_true, price_NO =
+        # 1-price_YES), and cli.py used to only ever evaluate YES -- which
+        # silently missed every NO-side opportunity. Confirmed live
+        # 2026-08-20: with BTC having rallied further, several "reach $X"
+        # markets showed a real 3-5pp edge on NO (the model saying the
+        # market overpriced YES) that this loop was discarding entirely.
+        side, side_price, side_p_true, edge_pp = _best_side(m, p_true)
+
         tier = _select_tier(edge_pp, confidence)
         if tier is None:
             continue
         sizing = recommended_position_size(
             bankroll=state.cash,
-            p_true=p_true,
-            price=m.yes_price,
+            p_true=side_p_true,
+            price=side_price,
             confidence=confidence,
             tier_min_pct=TIERS[tier].min_pct,
             tier_max_pct=TIERS[tier].max_pct,
@@ -142,10 +152,10 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
         opportunities.append(
             {
                 "market": m.question,
-                "side": "YES",
-                "current_price": m.yes_price,
-                "target_entry": m.yes_price,
-                "estimated_probability": p_true,
+                "side": side,
+                "current_price": side_price,
+                "target_entry": side_price,
+                "estimated_probability": side_p_true,
                 "edge_pp": edge_pp,
                 "recommended_investment": sizing["dollar_amount"],
                 "confidence": confidence,
@@ -156,8 +166,33 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
 
     opportunities.sort(key=lambda o: o["edge_pp"] * o["confidence"], reverse=True)
 
+    # STEP 9: check portfolio correlation. Opportunities are accepted in
+    # ranked order (best edge*confidence first); an opportunity that would
+    # push its correlation group's cumulative exposure over
+    # MAX_CORRELATED_GROUP_PCT is dropped rather than resized -- found live
+    # 2026-08-20 that this check existed and was tested in polymanager.risk
+    # but was never actually called from here, so multiple BTC "reach $X"
+    # opportunities (all correlated on the same underlying) could in
+    # principle have summed past the cap with nothing stopping it. Today's
+    # numbers happened to stay under it by coincidence, not by enforcement.
+    accepted_positions = [
+        {"market_id": _correlation_key(p.question), "dollars": p.dollars_invested} for p in state.positions
+    ]
+    accepted_opportunities = []
+    for opp in opportunities:
+        key = _correlation_key(opp["market"])
+        group = CorrelationGroup(label=key, market_ids=[key])
+        allowed, _resulting_pct = check_correlation_limit(
+            group, accepted_positions, opp["recommended_investment"], state.cash
+        )
+        if not allowed:
+            continue
+        accepted_positions.append({"market_id": key, "dollars": opp["recommended_investment"]})
+        accepted_opportunities.append(opp)
+    opportunities = accepted_opportunities
+
     position_entries = []  # no live marks available without network; see README
-    actions = []
+    actions = [render_buy_action(opp) for opp in opportunities]
 
     state.update_high_water_mark()
     portfolio.save(state)
@@ -169,9 +204,59 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
             "none had a defensible probability estimate exceeding the edge/confidence bar "
             f"(drawdown throttle: {dd_reason}).{btc_note}"
         )
+    else:
+        for opp in opportunities:
+            journal.append_entry(
+                JournalEntry(
+                    market=opp["market"],
+                    side=opp["side"],
+                    entry_price=opp["current_price"],
+                    amount_usd=opp["recommended_investment"],
+                    estimated_true_probability=opp["estimated_probability"],
+                    expected_edge_pp=opp["edge_pp"],
+                    confidence=opp["confidence"],
+                    strategy=opp["strategy"],
+                    reason="Recommended by live cycle; not yet executed (no wallet configured).",
+                    key_evidence=opp["reason"],
+                    exit_condition="Re-evaluate next cycle; exit if edge closes or model assumptions are invalidated.",
+                )
+            )
 
     dashboard = render_full_dashboard(state, opportunities, position_entries, actions)
     return dashboard, opportunities, state.equity()
+
+
+def _correlation_key(question: str) -> str:
+    """Coarse correlation grouping: markets on the same underlying asset
+    move together even when their specific thresholds differ. This is
+    deliberately narrow -- it catches the one clear case this codebase
+    currently produces (multiple BTC "reach/dip to $X" opportunities in one
+    cycle), not a general correlation-detection engine. Extend it as more
+    correlated-market strategies are added.
+    """
+    if "bitcoin" in question.lower():
+        return "correlated:bitcoin"
+    return f"standalone:{question}"
+
+
+def _best_side(screened_market, p_true_yes: float) -> tuple[str, float, float, float]:
+    """Return (side, price, side_p_true, edge_pp) for whichever of YES/NO
+    has the better (higher) edge, given a probability estimate for YES.
+
+    Exactly one side can have positive edge at a time (they're mirror
+    images: edge_NO = -edge_YES), so this just picks whichever is less bad
+    -- callers still gate on _select_tier, so a negative edge_pp here
+    simply won't qualify for any tier and the market gets skipped, same as
+    before.
+    """
+    yes_edge_pp = (p_true_yes - screened_market.yes_price) * 100
+    no_price = screened_market.no_price
+    p_true_no = 1.0 - p_true_yes
+    no_edge_pp = (p_true_no - no_price) * 100
+
+    if no_edge_pp > yes_edge_pp:
+        return "NO", no_price, p_true_no, no_edge_pp
+    return "YES", screened_market.yes_price, p_true_yes, yes_edge_pp
 
 
 def _select_tier(edge_pp: float, confidence: int) -> str | None:

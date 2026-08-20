@@ -48,11 +48,23 @@ DRAWDOWN_RULES = [
 ]
 
 # Fractional-Kelly multipliers by confidence bucket (1-10 scale).
+#
+# Confidence 4 exists here to match T3_EXPERIMENTAL.min_confidence (4) --
+# without it, kelly.recommended_position_size gave confidence-4
+# opportunities a 0.0 multiplier (the next bucket down was 5), which
+# always zeroed out sizing even for a real, tier-qualifying edge. Found
+# live 2026-08-20: polymanager.btc_touch caps its own confidence at
+# CONFIDENCE_CAP=4 (deliberately, per that module's backtest finding),
+# which meant that entire strategy could never produce a trade regardless
+# of edge size -- a live BTC market showing a real, tier-qualifying 5.2pp
+# edge sized to exactly $0. 1/8-Kelly is deliberately the most
+# conservative nonzero fraction in this table, one step down from 1/4.
 KELLY_FRACTION_BY_CONFIDENCE = [
     (9, 0.5),   # very high confidence -> up to half-Kelly
     (7, 1 / 3),
     (5, 0.25),
-    (0, 0.0),   # below 5/10 confidence: no Kelly-sized bet, tier floor only (or skip)
+    (4, 1 / 8),
+    (0, 0.0),   # below 4/10 confidence: below every tier's floor, no bet
 ]
 
 MAX_SINGLE_POSITION_PCT = 0.12  # hard ceiling regardless of Kelly output

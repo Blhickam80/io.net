@@ -25,7 +25,19 @@ def test_kelly_multiplier_scales_with_confidence():
     assert kelly_multiplier_for_confidence(9) == 0.5
     assert kelly_multiplier_for_confidence(7) == 1 / 3
     assert kelly_multiplier_for_confidence(5) == 0.25
+    assert kelly_multiplier_for_confidence(4) == 1 / 8
     assert kelly_multiplier_for_confidence(2) == 0.0
+
+
+def test_kelly_multiplier_confidence_4_matches_t3_floor():
+    # T3_EXPERIMENTAL.min_confidence is 4 -- a confidence-4 opportunity
+    # that qualifies for Tier 3 must not size to exactly zero, or the
+    # tier's own floor becomes unfundable by construction. Regression for
+    # the real bug found live 2026-08-20 (polymanager.btc_touch's
+    # CONFIDENCE_CAP=4 meant that whole strategy could never trade).
+    from polymanager.config import TIERS
+
+    assert kelly_multiplier_for_confidence(TIERS["T3_EXPERIMENTAL"].min_confidence) > 0.0
 
 
 def test_recommended_position_size_respects_hard_cap():

@@ -88,6 +88,28 @@ def render_positions(entries: list[str]) -> str:
     return "EXISTING POSITIONS\n" + "\n\n".join(entries)
 
 
+def render_buy_action(opp: dict) -> str:
+    """Render one opportunity as the mandate's required BUY action format.
+
+    "Do not chase above" is the price at which half the estimated edge
+    would already be given up (chasing further means the trade is no
+    longer worth what justified it): for a positive edge_pp on the side
+    priced at current_price, that's current_price + half the edge in price
+    terms.
+    """
+    chase_ceiling = opp["current_price"] + (opp["edge_pp"] / 100) / 2
+    return "\n".join(
+        [
+            "BUY",
+            f"Market: {opp['market']}",
+            f"Side: {opp['side']}",
+            f"Maximum Entry Price: ${opp['current_price']:.3f}",
+            f"Investment: ${opp['recommended_investment']:.2f}",
+            f"Do not chase above: ${chase_ceiling:.3f}",
+        ]
+    )
+
+
 def render_actions(actions: list[str]) -> str:
     if not actions:
         return "ACTIONS\nNO TRADE\nNo opportunities currently clear the expected-value bar. Preserve the bankroll and continue searching."

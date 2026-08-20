@@ -60,6 +60,47 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   load state → scan markets → screen → estimate probability → compute edge →
   size position → check correlation → journal → render dashboard.
 
+  **Three real gaps found and fixed by actually running this end-to-end
+  (2026-08-20), not just building it:**
+  1. **YES-only blind spot.** The opportunity loop only ever evaluated the
+     YES side of a market. A probability estimate below the market's YES
+     price is exactly a positive edge on NO (`p_true_NO = 1-p_true`,
+     `price_NO = 1-price_YES`) — the loop was silently discarding every
+     NO-side opportunity. Live: with BTC having rallied further, several
+     "reach $X" markets showed a real 3-5pp edge on NO that never
+     surfaced. Added `_best_side()` to evaluate both sides and take
+     whichever has the better edge.
+  2. **Confidence-4 opportunities always sized to $0.** `T3_EXPERIMENTAL`
+     accepts `confidence >= 4`, but `KELLY_FRACTION_BY_CONFIDENCE`'s floor
+     was 5 — any confidence-4 opportunity got a 0.0 Kelly multiplier no
+     matter its edge. This silently neutered `btc_touch.py`'s own
+     `CONFIDENCE_CAP=4`: an entire strategy could never produce a trade
+     regardless of edge size. Fixed by adding an explicit, deliberately
+     conservative 1/8-Kelly bucket at confidence 4 in `config.py`.
+  3. **ACTIONS section and journal entries were dead code for real
+     opportunities.** `actions` was hardcoded to `[]` and only `NO TRADE`
+     ever got journaled — a cycle with 5 real opportunities in "BEST
+     OPPORTUNITIES" still printed "ACTIONS: NO TRADE" underneath them, and
+     nothing was ever recorded for an actual recommendation. Also:
+     `polymanager/risk.py`'s correlation-exposure check was fully built and
+     unit-tested but never actually called from the cycle — multiple
+     correlated BTC opportunities in one cycle could in principle have
+     summed past `MAX_CORRELATED_GROUP_PCT` with nothing stopping it (today's
+     numbers stayed under it by coincidence, not enforcement). Fixed all
+     three together: opportunities are now accepted in ranked order against
+     `check_correlation_limit`, rendered as real `BUY` actions
+     (`dashboard.render_buy_action`, matching the mandate's exact format
+     including a "do not chase above" ceiling), and journaled via
+     `journal.append_entry` — not just `NO TRADE`.
+
+  After these fixes, the same live BTC rally that closed the earlier
+  edges opened new ones on the downside: the system's first-ever real
+  output was 6 ranked NO-side opportunities on "reach $X" markets (BTC has
+  overshot several thresholds; the barrier-touch model says the market is
+  now overpricing further upside), sized $1.25-$6.00 each, all Tier 3
+  given the model's confidence cap. See the trading journal for the exact
+  entries.
+
 - **Live strategy #1: BTC barrier-touch** (`polymanager/btc_touch.py`,
   `polymanager/models.py`, `polymanager/coingecko.py`) — prices "Will Bitcoin
   reach $X in \<month\>?" markets (a textbook barrier option: resolves YES if

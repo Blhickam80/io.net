@@ -91,6 +91,46 @@ def test_low_liquidity_violation_is_filtered():
     assert scan_event_markets(markets) == []
 
 
+def test_parse_rung_handles_decimal_threshold():
+    # Real bug found live 2026-08-21: _REACH_PATTERN's character class was
+    # [\d,]+, which doesn't include ".", so "$1.80" truncated to threshold
+    # 1.0 -- identical to "$1.60" and "$1.40" truncating the same way. BTC
+    # ladders never hit this (always whole-dollar thresholds); the first
+    # decimal-priced ladder scanned (XRP) immediately produced 3 bogus
+    # "monotonicity violations" that were really just three different real
+    # thresholds getting collapsed into one and compared against each other.
+    rung = parse_rung(_raw("Will XRP reach $1.80 in August?", 0.029))
+    assert rung is not None
+    assert rung.threshold == 1.80
+
+
+def test_no_false_violation_across_decimal_thresholds():
+    # Regression for the exact live shape: three distinct real thresholds
+    # ($1.40 easiest, $1.60, $1.80 hardest) with correctly-decreasing
+    # prices as difficulty rises -- must NOT be flagged, now that decimal
+    # parsing distinguishes them instead of collapsing them all to "1".
+    markets = [
+        _raw("Will XRP reach $1.40 in August?", 0.578),
+        _raw("Will XRP reach $1.60 in August?", 0.104),
+        _raw("Will XRP reach $1.80 in August?", 0.029),
+    ]
+    assert scan_event_markets(markets) == []
+
+
+def test_real_violation_still_detected_with_decimal_thresholds():
+    # A genuine violation (harder $1.80 priced above easier $1.60) must
+    # still be caught once thresholds are parsed correctly.
+    markets = [
+        _raw("Will XRP reach $1.40 in August?", 0.578),
+        _raw("Will XRP reach $1.60 in August?", 0.104),
+        _raw("Will XRP reach $1.80 in August?", 0.20),
+    ]
+    violations = scan_event_markets(markets)
+    assert len(violations) == 1
+    assert violations[0].easier.threshold == 1.60
+    assert violations[0].harder.threshold == 1.80
+
+
 def test_closed_stale_instance_does_not_trigger_false_violation():
     # Real-world shape from live data (2026-08-20): a closed instance sits
     # at a stale 1.0 price next to the live, currently-tradeable instance.

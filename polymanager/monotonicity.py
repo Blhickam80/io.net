@@ -22,6 +22,19 @@ makers actively enforce, so violations should be rare and likely small/
 short-lived when they do appear. Re-run this regularly; it costs nothing
 but a market fetch and is a legitimate live opportunity scan even though
 today's answer was "nothing here."
+
+**Real bug found live 2026-08-21**: after a full day of correctly finding
+zero violations (every ladder scanned was BTC, always whole-dollar
+thresholds), the first decimal-priced ladder swept in ("What price will
+XRP hit in August?", thresholds $1.40/$1.60/$1.80) immediately produced 3
+"violations." Cause: `_REACH_PATTERN`/`_DIP_PATTERN`'s capture group was
+`[\d,]+`, which doesn't include `.` -- every XRP threshold truncated to
+`1.0`, so three genuinely different, correctly-monotonic prices got
+compared as if they were three copies of the same market. Fixed by
+extending the capture group to `[\d,]+(?:\.\d+)?`. This was silent and
+undetected for the module's entire life because nothing decimal-priced had
+been scanned before; any future asset ladder with a non-integer dollar
+threshold (ETH sub-markets, altcoins) would have hit the same bug.
 """
 
 from __future__ import annotations
@@ -31,8 +44,8 @@ from dataclasses import dataclass
 
 from .config import MIN_LIQUIDITY_USD
 
-_REACH_PATTERN = re.compile(r"reach\s+\$?([\d,]+)", re.IGNORECASE)
-_DIP_PATTERN = re.compile(r"dip\s+to\s+\$?([\d,]+)", re.IGNORECASE)
+_REACH_PATTERN = re.compile(r"reach\s+\$?([\d,]+(?:\.\d+)?)", re.IGNORECASE)
+_DIP_PATTERN = re.compile(r"dip\s+to\s+\$?([\d,]+(?:\.\d+)?)", re.IGNORECASE)
 
 # Live-checked 2026-08-20: a naive scan across 50 active events found 12
 # "violations," every one of them 0.1-0.3pp on deep out-of-the-money tail

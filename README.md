@@ -141,6 +141,19 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   probability estimate, so it deliberately isn't forced into
   `polymanager.cli`'s per-market Kelly-sizing pipeline — it's a separate
   scan with its own entry point.
+  **Real bug found live (2026-08-21):** after a full day of correctly
+  finding zero violations (every ladder scanned had been BTC, always
+  whole-dollar thresholds), the first decimal-priced ladder swept in
+  ("What price will XRP hit in August?", $1.40/$1.60/$1.80) immediately
+  produced 3 "violations." Cause: the threshold-parsing regex's capture
+  group was `[\d,]+`, which doesn't include `.` — every XRP threshold
+  silently truncated to `1.0`, so three genuinely different, correctly
+  monotonic prices got compared as if they were three copies of the same
+  market. Fixed by extending the capture group to `[\d,]+(?:\.\d+)?`;
+  re-ran the live scan after the fix — back to 0 violations, confirming the
+  "finding" was purely a parsing bug, not a real inconsistency. This had
+  been silently wrong since the module was written; nothing decimal-priced
+  had ever been scanned before to trigger it.
 - **Live strategy #3: mutually-exclusive outcome sum** (`polymanager/sum_consistency.py`)
   — the classic complement to monotonicity: for a "negRisk" event where
   exactly one outcome resolves YES (elections, championships, "who wins"

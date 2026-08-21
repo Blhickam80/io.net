@@ -35,6 +35,16 @@ docs. Still true:
   depth at that price), separate from and in addition to the no-wallet
   limitation above — worth wiring in before `execution.py` ever places a
   real order, not before.
+- **`polymanager/risk.py` had a real zero-bankroll edge case, fixed
+  2026-08-21.** `check_correlation_limit()`'s old divide-by-zero guard
+  made `resulting_pct` fall back to `0.0` whenever `bankroll <= 0`, so any
+  proposed dollar amount — even $1,000 — was reported as "0% exposure"
+  and always allowed. Exactly backwards: zero or negative capital should
+  block any *new* correlated exposure, not wave it through. Currently
+  unreachable in this deployment (`state.cash` never actually decreases —
+  same root cause as the drawdown-throttle finding), but a genuine
+  correctness bug regardless, fixed the same way as `crypto_touch.py`'s
+  pre-emptive decimal fix: before it can ever fire, not after.
 
 Run `python -m polymanager.cli` to execute a real cycle.
 

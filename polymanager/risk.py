@@ -58,7 +58,18 @@ def check_correlation_limit(
 ) -> tuple[bool, float]:
     """Return (allowed, resulting_pct) for adding `proposed_dollars` more to
     a correlated group, given a cap on aggregate correlated exposure.
+
+    Real edge case found live 2026-08-21 (currently unreachable in this
+    deployment since state.cash never actually decreases -- see the
+    drawdown-throttle finding in README -- but a genuine correctness bug):
+    with bankroll <= 0, the old `.../bankroll if bankroll > 0 else 0.0`
+    guard made resulting_pct fall back to 0.0 regardless of proposed size,
+    so any proposed_dollars was reported as "0% exposure" and always
+    allowed -- the exact opposite of correct: zero or negative capital
+    should block any *new* correlated exposure, not wave it through.
     """
+    if bankroll <= 0:
+        return proposed_dollars <= 0, 0.0
     existing_pct = correlated_exposure_pct(group, open_positions, bankroll)
-    resulting_pct = existing_pct + (proposed_dollars / bankroll if bankroll > 0 else 0.0)
+    resulting_pct = existing_pct + proposed_dollars / bankroll
     return resulting_pct <= limit_pct, resulting_pct

@@ -36,6 +36,36 @@ def test_correlation_limit_blocks_over_concentration():
     assert not allowed2
 
 
+def test_correlation_limit_blocks_new_exposure_at_zero_bankroll():
+    # Real bug found live 2026-08-21: the old fallback made resulting_pct
+    # default to 0.0 whenever bankroll <= 0, reporting ANY proposed_dollars
+    # as "0% exposure" and always allowing it -- the exact opposite of
+    # correct (zero capital should block any new exposure, not wave it
+    # through). Currently unreachable in this deployment since state.cash
+    # never actually decreases, but a genuine correctness bug regardless.
+    group = CorrelationGroup(label="x", market_ids=["m1"])
+    allowed, resulting_pct = check_correlation_limit(
+        group, [], proposed_dollars=1000.0, bankroll=0.0, limit_pct=0.20
+    )
+    assert allowed is False
+    assert resulting_pct == 0.0
+
+
+def test_correlation_limit_blocks_new_exposure_at_negative_bankroll():
+    group = CorrelationGroup(label="x", market_ids=["m1"])
+    allowed, _ = check_correlation_limit(group, [], proposed_dollars=1000.0, bankroll=-50.0, limit_pct=0.20)
+    assert allowed is False
+
+
+def test_correlation_limit_allows_zero_proposed_at_zero_bankroll():
+    # A no-op proposal (adding nothing) at zero bankroll is harmless and
+    # should not be blocked -- only a genuinely new positive exposure
+    # should be rejected when there's no capital to size it against.
+    group = CorrelationGroup(label="x", market_ids=["m1"])
+    allowed, _ = check_correlation_limit(group, [], proposed_dollars=0.0, bankroll=0.0, limit_pct=0.20)
+    assert allowed is True
+
+
 def test_correlation_cap_binds_under_realistic_btc_opportunity_counts():
     """Regression/audit test for a real question raised 2026-08-20: with
     both BTC and ETH touch strategies now live, does MAX_CORRELATED_GROUP_PCT

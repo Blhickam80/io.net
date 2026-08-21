@@ -368,8 +368,23 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   net hypothetical P/L +$1.40). n=4 is nowhere near enough to say anything
   about the model's real calibration (see the backtest section above for
   that, which used a full year of history) — this is the pipeline's first
-  live out-of-sample data point, not a verdict. This fills in automatically
-  as `reconcile.py` closes more rows out over time. Run `python -m
+  live out-of-sample data point, not a verdict.
+  **A 5th reconciled outcome, same day, shows a real, coherent pattern
+  worth flagging even at this tiny sample:** all 5 resolved markets are
+  "reach $X" bets on the same "August 17-23" window at $74k/$75k/$76k —
+  and BTC visibly trended up through all three levels (spot is $76,428 as
+  of this scan). Both wins were `YES` bets on touching $74k (correct — it
+  got touched). All 3 losses were `NO` bets against touching $74k/$75k/$76k
+  (wrong — each got touched anyway as price climbed). Win rate is now 40%
+  (2/5), profit factor 1.04, net still barely positive (+$0.18), and
+  hypothetical max drawdown widened to 93.5% ($2.60). This is exactly the
+  directional risk the backtest section above already flagged
+  theoretically (zero-drift model *understates* upside-touch probability
+  in a sustained uptrend) — here it's a live, concrete instance of it,
+  not a new finding, but real confirmation rather than just theory. Still
+  n=5: not remotely enough to revisit `CONFIDENCE_CAP`, which already
+  exists because of this exact risk. This fills in automatically as
+  `reconcile.py` closes more rows out over time. Run `python -m
   polymanager.performance` standalone too.
 
 Still deliberately **not** faked: for every other market shape,

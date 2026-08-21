@@ -239,6 +239,15 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
         )
     else:
         for opp in opportunities:
+            # Skip re-journaling a market/side that's already an open,
+            # unresolved recommendation from an earlier cycle -- otherwise
+            # a still-open opportunity gets a fresh row every single cycle
+            # it stays open, and performance.py ends up counting one real
+            # market outcome as N independent trials once it resolves. See
+            # journal.has_open_unresolved_entry's docstring for the real
+            # case (2026-08-21) this fixes.
+            if journal.has_open_unresolved_entry(opp["market_id"], opp["side"]):
+                continue
             journal.append_entry(
                 JournalEntry(
                     market=opp["market"],

@@ -65,6 +65,9 @@ def test_correlation_cap_enforced_across_correlated_opportunities(tmp_path, monk
     monkeypatch.setattr(portfolio, "save", functools.partial(portfolio.save, path=state_path))
     monkeypatch.setattr(journal, "append_entry", functools.partial(journal.append_entry, path=journal_path))
     monkeypatch.setattr(journal, "record_no_trade", functools.partial(journal.record_no_trade, path=journal_path))
+    monkeypatch.setattr(
+        journal, "has_open_unresolved_entry", functools.partial(journal.has_open_unresolved_entry, path=journal_path)
+    )
 
     with (
         patch.object(cli, "PolymarketClient") as MockClient,
@@ -96,3 +99,42 @@ def test_correlation_cap_enforced_across_correlated_opportunities(tmp_path, monk
     rows = read_journal(journal_path)
     assert len(rows) == len(opportunities)
     assert all(row["market"].startswith("Will Bitcoin reach") for row in rows)
+
+
+def test_still_open_opportunity_is_not_rejournaled_every_cycle(tmp_path, monkeypatch):
+    # Real bug found live 2026-08-21: with no wallet configured,
+    # state.positions never actually gets an accepted opportunity added to
+    # it (see the drawdown-throttle finding), so a still-open opportunity
+    # never stops looking like a fresh opportunity to cli.py -- it got
+    # journaled again every single cycle it stayed open. One real market
+    # ("$77,500 in August" NO) was journaled 7 separate times this way
+    # before it resolved, and all 7 rows counted as independent losses in
+    # performance.py's aggregate stats. Reproduce with two back-to-back
+    # cycles on the identical unresolved market/price: only one journal
+    # row should exist after both.
+    market = _btc_market(300_000, 0.90)
+
+    state_path = tmp_path / "portfolio_state.json"
+    journal_path = tmp_path / "trading_journal.csv"
+    portfolio.save(portfolio.PortfolioState(), state_path)
+    monkeypatch.setattr(portfolio, "load", functools.partial(portfolio.load, path=state_path))
+    monkeypatch.setattr(portfolio, "save", functools.partial(portfolio.save, path=state_path))
+    monkeypatch.setattr(journal, "append_entry", functools.partial(journal.append_entry, path=journal_path))
+    monkeypatch.setattr(journal, "record_no_trade", functools.partial(journal.record_no_trade, path=journal_path))
+    monkeypatch.setattr(
+        journal, "has_open_unresolved_entry", functools.partial(journal.has_open_unresolved_entry, path=journal_path)
+    )
+
+    with (
+        patch.object(cli, "PolymarketClient") as MockClient,
+        patch.object(cli, "CoinGeckoClient") as MockCoinGecko,
+    ):
+        MockClient.return_value.get_markets.return_value = [market]
+        MockCoinGecko.return_value.get_spot_price.return_value = 72000.0
+        MockCoinGecko.return_value.get_realized_daily_vol.return_value = 0.02
+
+        cli.run_cycle_structured(demo=False)
+        cli.run_cycle_structured(demo=False)
+
+    rows = read_journal(journal_path)
+    assert len(rows) == 1, f"expected exactly one journal row across two identical cycles, got {len(rows)}"

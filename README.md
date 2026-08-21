@@ -386,6 +386,34 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   exists because of this exact risk. This fills in automatically as
   `reconcile.py` closes more rows out over time. Run `python -m
   polymanager.performance` standalone too.
+  **Real bug found live (2026-08-21), when n jumped from 5 to 14 in one
+  cycle:** win rate crashed to 14.3% and hypothetical P/L to -$24.64 —
+  but inspecting the newly-resolved rows showed this wasn't 9 fresh
+  independent trials. `polymanager/cli.py` journals every opportunity
+  that clears the edge bar on *every* cycle, with nothing checking
+  whether that same market/side is already an open, unresolved
+  recommendation from an earlier cycle — because `state.positions` is
+  never actually written (see the drawdown-throttle finding above), a
+  still-open opportunity never moves out of "opportunity" and into
+  "existing position," so it just keeps getting re-journaled every cycle
+  it stays open. One real market ("Will Bitcoin reach $77,500 in August?"
+  NO) got journaled **7 separate times** this way before it finally
+  resolved, and all 7 rows reconciled as losses simultaneously — one
+  wrong prediction weighted 7x as if it were 7 independent tests of the
+  model. The 14 "reconciled recommendations" were really only **6
+  distinct market/side bets** (1 win, 5 losses — a true ~17% win rate,
+  not the reported 14.3%, though close by coincidence here; the dollar
+  P/L was overstated far more, since the repeated $77,500 loss alone was
+  counted 7x). Fixed with `journal.has_open_unresolved_entry()`, checked
+  in `cli.py` before journaling — confirmed live immediately after: the
+  next cycle correctly skipped re-journaling every still-open opportunity
+  and fell through to `NO TRADE` instead of manufacturing more
+  duplicates. **This does not retroactively fix the 14 already-recorded
+  rows** (the journal is intentionally append-only outside of
+  `reconcile.py`'s resolution rewrite) — treat every performance number
+  computed before this fix as overstating both sample size and loss
+  severity, not as fact. Going forward, `n` in the per-strategy breakdown
+  now means what it says.
 
 Still deliberately **not** faked: for every other market shape,
 `estimate_true_probability()` in `polymanager/cli.py` returns `None` — which

@@ -95,6 +95,32 @@ def rewrite_all(rows: list[dict], path: Path = DEFAULT_JOURNAL_PATH) -> None:
             writer.writerow({k: row.get(k, "") for k in FIELDNAMES})
 
 
+def has_open_unresolved_entry(market_id: str, side: str, path: Path = DEFAULT_JOURNAL_PATH) -> bool:
+    """True if a still-open (not yet resolved) journal entry already exists
+    for this exact market_id + side.
+
+    Real bug found live 2026-08-21: cli.py journals every opportunity that
+    clears the bar on every cycle, with nothing checking whether that same
+    market/side is already an open recommendation from an earlier cycle --
+    because state.positions is never actually written (see the drawdown-
+    throttle finding in the README), a still-open opportunity never moves
+    out of "opportunity" into "existing position" and so keeps getting
+    re-journaled every cycle until it resolves. One real market ("Will
+    Bitcoin reach $77,500 in August?" NO) got journaled 7 separate times
+    this way before resolving, and all 7 rows reconciled as losses
+    simultaneously -- corrupting performance.py's win-rate/profit-factor
+    stats by weighting one real prediction 7x as if it were 7 independent
+    trials. Callers should skip appending a new entry when this returns
+    True.
+    """
+    if not market_id:
+        return False
+    return any(
+        row.get("market_id") == market_id and row.get("side") == side and not row.get("resolved_at")
+        for row in read_journal(path)
+    )
+
+
 def record_no_trade(reason: str, path: Path = DEFAULT_JOURNAL_PATH) -> None:
     entry = JournalEntry(
         market="NO TRADE",

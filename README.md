@@ -194,6 +194,18 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   so this hadn't fired live — fixed pre-emptively with the identical regex
   change rather than waiting for it to. No other `re.compile`/`_PATTERN`
   definitions in the package use this shape.
+  **First genuine violation, confirmed live (2026-08-21, later the same
+  day):** "Will Bitcoin reach $87,500 in August?" (harder, higher
+  threshold) priced at 28.5% YES, above "Will Bitcoin reach $85,000 in
+  August?" (easier) at 19.8% — an 8.7pp inconsistency, both whole-dollar
+  thresholds (no decimal-parsing involvement). Checked both legs directly
+  against Gamma: both open, `acceptingOrders: true`, not closed, and both
+  clear `MIN_LIQUIDITY_USD` ($52,107 and $2,645 respectively, floor is
+  $2,000). Unlike every earlier "violation" this module ever reported,
+  this one is real — not a parsing bug, not a stale-instance artifact, not
+  sub-threshold noise. First actual confirmation, after a full day of
+  either zero violations or bugs, that the mechanism catches a genuine
+  live inconsistency when one exists.
 - **Live strategy #3: mutually-exclusive outcome sum** (`polymanager/sum_consistency.py`)
   — the classic complement to monotonicity: for a "negRisk" event where
   exactly one outcome resolves YES (elections, championships, "who wins"

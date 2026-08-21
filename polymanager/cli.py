@@ -238,6 +238,7 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
             f"(drawdown throttle: {dd_reason}).{btc_note}{eth_note}"
         )
     else:
+        newly_journaled = 0
         for opp in opportunities:
             # Skip re-journaling a market/side that's already an open,
             # unresolved recommendation from an earlier cycle -- otherwise
@@ -248,6 +249,7 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
             # case (2026-08-21) this fixes.
             if journal.has_open_unresolved_entry(opp["market_id"], opp["side"]):
                 continue
+            newly_journaled += 1
             journal.append_entry(
                 JournalEntry(
                     market=opp["market"],
@@ -263,6 +265,21 @@ def run_cycle_structured(*, demo: bool) -> tuple[str, list[dict], float]:
                     key_evidence=opp["reason"],
                     exit_condition="Re-evaluate next cycle; exit if edge closes or model assumptions are invalidated.",
                 )
+            )
+        if newly_journaled == 0:
+            # Every opportunity this cycle was a duplicate of an already-
+            # open recommendation -- the dedup fix above correctly wrote
+            # nothing new, but a cycle that runs and finds nothing new
+            # should still leave a trace, not a silent gap in the journal.
+            # Found live 2026-08-21 immediately after shipping the dedup
+            # fix: a cycle with 6 real opportunities, all already open,
+            # wrote zero journal rows with nothing distinguishing it from
+            # the pipeline simply not having run.
+            journal.record_no_trade(
+                f"{len(opportunities)} opportunit"
+                f"{'y' if len(opportunities) == 1 else 'ies'} identified this cycle, but "
+                "all already have an open, unresolved recommendation from an earlier cycle "
+                "-- nothing new to journal."
             )
 
     dashboard = render_full_dashboard(state, opportunities, position_entries, actions)

@@ -22,6 +22,37 @@ def _future_iso(days: float) -> str:
     return (datetime.now(timezone.utc) + timedelta(days=days)).isoformat().replace("+00:00", "Z")
 
 
+def _patch_journal_paths(monkeypatch, journal_path) -> None:
+    """Route journal writes to a tmp path for the duration of a test.
+
+    Not a plain functools.partial(fn, path=journal_path) for each function:
+    journal.record_no_trade() internally calls append_entry(entry, path)
+    positionally, and that call resolves `append_entry` via journal.py's
+    module namespace at call time -- so if append_entry is *also*
+    monkeypatched to a partial with `path` pre-bound as a keyword, the
+    positional `path` record_no_trade passes collides with it
+    ("got multiple values for argument 'path'"). Wrapping in plain
+    functions with `path` as a normal default (not partial-bound) avoids
+    the collision either way it's called.
+    """
+    original_append_entry = journal.append_entry
+    original_record_no_trade = journal.record_no_trade
+    original_has_open = journal.has_open_unresolved_entry
+
+    def _append_entry(entry, path=journal_path):
+        return original_append_entry(entry, path)
+
+    def _record_no_trade(reason, path=journal_path):
+        return original_record_no_trade(reason, path)
+
+    def _has_open_unresolved_entry(market_id, side, path=journal_path):
+        return original_has_open(market_id, side, path)
+
+    monkeypatch.setattr(journal, "append_entry", _append_entry)
+    monkeypatch.setattr(journal, "record_no_trade", _record_no_trade)
+    monkeypatch.setattr(journal, "has_open_unresolved_entry", _has_open_unresolved_entry)
+
+
 def _btc_market(barrier: float, yes_price: float) -> dict:
     return {
         "id": f"btc-{barrier}",
@@ -63,11 +94,7 @@ def test_correlation_cap_enforced_across_correlated_opportunities(tmp_path, monk
     portfolio.save(portfolio.PortfolioState(), state_path)
     monkeypatch.setattr(portfolio, "load", functools.partial(portfolio.load, path=state_path))
     monkeypatch.setattr(portfolio, "save", functools.partial(portfolio.save, path=state_path))
-    monkeypatch.setattr(journal, "append_entry", functools.partial(journal.append_entry, path=journal_path))
-    monkeypatch.setattr(journal, "record_no_trade", functools.partial(journal.record_no_trade, path=journal_path))
-    monkeypatch.setattr(
-        journal, "has_open_unresolved_entry", functools.partial(journal.has_open_unresolved_entry, path=journal_path)
-    )
+    _patch_journal_paths(monkeypatch, journal_path)
 
     with (
         patch.object(cli, "PolymarketClient") as MockClient,
@@ -119,11 +146,44 @@ def test_still_open_opportunity_is_not_rejournaled_every_cycle(tmp_path, monkeyp
     portfolio.save(portfolio.PortfolioState(), state_path)
     monkeypatch.setattr(portfolio, "load", functools.partial(portfolio.load, path=state_path))
     monkeypatch.setattr(portfolio, "save", functools.partial(portfolio.save, path=state_path))
-    monkeypatch.setattr(journal, "append_entry", functools.partial(journal.append_entry, path=journal_path))
-    monkeypatch.setattr(journal, "record_no_trade", functools.partial(journal.record_no_trade, path=journal_path))
-    monkeypatch.setattr(
-        journal, "has_open_unresolved_entry", functools.partial(journal.has_open_unresolved_entry, path=journal_path)
-    )
+    _patch_journal_paths(monkeypatch, journal_path)
+
+    with (
+        patch.object(cli, "PolymarketClient") as MockClient,
+        patch.object(cli, "CoinGeckoClient") as MockCoinGecko,
+    ):
+        MockClient.return_value.get_markets.return_value = [market]
+        MockCoinGecko.return_value.get_spot_price.return_value = 72000.0
+        MockCoinGecko.return_value.get_realized_daily_vol.return_value = 0.02
+
+        cli.run_cycle_structured(demo=False)
+        cli.run_cycle_structured(demo=False)
+
+    # Exactly one BUY row across both cycles -- the second cycle correctly
+    # recognizes the market/side as already open and does not duplicate it
+    # (a distinct NO-TRADE trace row for the second cycle is expected and
+    # covered by test_all_opportunities_already_open_leaves_no_trade_trace
+    # below; this test's own concern is strictly "no duplicate BUY").
+    rows = read_journal(journal_path)
+    buy_rows = [r for r in rows if r["market"] != "NO TRADE"]
+    assert len(buy_rows) == 1, f"expected exactly one BUY row across two identical cycles, got {len(buy_rows)}"
+
+
+def test_all_opportunities_already_open_leaves_no_trade_trace(tmp_path, monkeypatch):
+    # Real gap found live 2026-08-21, immediately after shipping the dedup
+    # fix above: a cycle where every opportunity is already an open
+    # recommendation correctly writes zero new BUY rows -- but it wrote
+    # nothing at all, not even a NO TRADE marker, so the journal had no
+    # record the cycle ran. Reproduce: second cycle on the identical
+    # unresolved market should append exactly one NO TRADE row, not zero.
+    market = _btc_market(300_000, 0.90)
+
+    state_path = tmp_path / "portfolio_state.json"
+    journal_path = tmp_path / "trading_journal.csv"
+    portfolio.save(portfolio.PortfolioState(), state_path)
+    monkeypatch.setattr(portfolio, "load", functools.partial(portfolio.load, path=state_path))
+    monkeypatch.setattr(portfolio, "save", functools.partial(portfolio.save, path=state_path))
+    _patch_journal_paths(monkeypatch, journal_path)
 
     with (
         patch.object(cli, "PolymarketClient") as MockClient,
@@ -137,4 +197,7 @@ def test_still_open_opportunity_is_not_rejournaled_every_cycle(tmp_path, monkeyp
         cli.run_cycle_structured(demo=False)
 
     rows = read_journal(journal_path)
-    assert len(rows) == 1, f"expected exactly one journal row across two identical cycles, got {len(rows)}"
+    assert len(rows) == 2, f"expected 1 BUY row + 1 NO TRADE trace row, got {len(rows)}"
+    assert rows[0]["market"] != "NO TRADE"
+    assert rows[1]["market"] == "NO TRADE"
+    assert "already have an open" in rows[1]["reason"]

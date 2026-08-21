@@ -397,14 +397,14 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   still-open opportunity never moves out of "opportunity" and into
   "existing position," so it just keeps getting re-journaled every cycle
   it stays open. One real market ("Will Bitcoin reach $77,500 in August?"
-  NO) got journaled **7 separate times** this way before it finally
-  resolved, and all 7 rows reconciled as losses simultaneously — one
-  wrong prediction weighted 7x as if it were 7 independent tests of the
+  NO) got journaled **8 separate times** this way before it finally
+  resolved, and all 8 rows reconciled as losses simultaneously — one
+  wrong prediction weighted 8x as if it were 8 independent tests of the
   model. The 14 "reconciled recommendations" were really only **6
-  distinct market/side bets** (1 win, 5 losses — a true ~17% win rate,
+  distinct market/side bets** (1 win, 5 losses — a true 16.7% win rate,
   not the reported 14.3%, though close by coincidence here; the dollar
   P/L was overstated far more, since the repeated $77,500 loss alone was
-  counted 7x). Fixed with `journal.has_open_unresolved_entry()`, checked
+  counted 8x). Fixed with `journal.has_open_unresolved_entry()`, checked
   in `cli.py` before journaling — confirmed live immediately after: the
   next cycle correctly skipped re-journaling every still-open opportunity
   and fell through to `NO TRADE` instead of manufacturing more
@@ -414,6 +414,34 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   computed before this fix as overstating both sample size and loss
   severity, not as fact. Going forward, `n` in the per-strategy breakdown
   now means what it says.
+  **Follow-up audit (2026-08-21): even the very first "n=4"/"n=5"
+  checkpoints above already had one undetected duplicate baked in.**
+  Grepping the journal's `(market_id, side)` pairs by actual resolution
+  order shows the "first real data" batch that resolved together
+  (2026-08-21T02:36) was `$74,000 NO` (loss), `$74,000 YES` (win),
+  `$74,000 YES` (the *same* win, journaled and counted twice), and
+  `$75,000 NO` (loss) — 3 distinct bets, not 4: 1 win + 2 losses (a true
+  33% win rate), not the reported "2 wins, 2 losses, 50%." The n=5
+  checkpoint added one genuinely new distinct bet (`$76,000 NO`, a real
+  loss), making it 4 distinct bets, 1 win + 3 losses (25% true), not the
+  reported 40%. So this bug wasn't a one-time spike introduced right
+  before the n=14 batch — it was present from this system's very first
+  reconciled outcome, just small enough (2x on one market) to not stand
+  out until the $77,500 market's 8x repeat made it impossible to miss.
+  Not worth rewriting the historical rows over (same append-only
+  reasoning as above), but worth knowing the true distinct-bet picture
+  was always more loss-weighted than what was reported live, at every
+  checkpoint, not just the last one.
+  **A second, subtler bug surfaced immediately while verifying the fix
+  above:** re-running `scan_all` on a cycle where *every* opportunity was
+  already an open recommendation correctly wrote zero duplicate BUY
+  rows — but wrote nothing else either, not even a `NO TRADE` marker, so
+  the journal had no record that cycle had run at all. A silent gap is
+  better than a silent duplicate, but still not honest bookkeeping.
+  Fixed by having `cli.py` record an explicit `NO TRADE`-style trace row
+  ("N opportunities identified, all already open") whenever every
+  opportunity is a duplicate — confirmed live immediately after: the next
+  cycle correctly appended exactly one such row instead of leaving a gap.
 
 Still deliberately **not** faked: for every other market shape,
 `estimate_true_probability()` in `polymanager/cli.py` returns `None` — which

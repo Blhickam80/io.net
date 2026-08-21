@@ -130,8 +130,21 @@ def research_watchlist(path: Path = DEFAULT_WATCHLIST_PATH, client: PolymarketCl
         return
     ranked = rank_traders([to_trader_stats(r) for r in results])
     print("=== Quality-score ranking ===")
+    print("  (repeatability/style signal only -- NOT a profitability gate; see 'copy target bar' below)")
     for row in ranked:
         print(f"  {row['quality_score']:>5.1f}  {row['stats'].address}  type={row['type']}")
+
+    print()
+    print("=== Copy-target bar (positive ROI, n>=30, win rate>=55%, drawdown<=50%) ===")
+    any_pass = False
+    for row in ranked:
+        if row["meets_copy_target_bar"]:
+            any_pass = True
+            print(f"  PASS  {row['stats'].address}")
+        else:
+            print(f"  FAIL  {row['stats'].address}: {'; '.join(row['copy_target_gaps'])}")
+    if not any_pass:
+        print("  No watchlisted wallet currently clears the copy-target bar.")
 
 
 def main() -> None:

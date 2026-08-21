@@ -63,6 +63,45 @@ def trader_quality_score(t: TraderStats) -> float:
     return round(score, 1)
 
 
+# Audit (2026-08-21): a quality_score ranking alone is not a copy
+# recommendation. Live run against the 5 real watchlisted wallets in
+# data/trader_watchlist.csv (2026-08-21) showed BTC1UPDOWN -- the one
+# wallet with *negative* real capital-weighted ROI (-2.19%) -- scoring
+# HIGHEST of the five (60.3), ahead of every wallet with real positive
+# edge. Why: roi_component maxes out at just 20 of 100 points (and a
+# modest +7.46% ROI earns under 1.5 of those), while sample size, win
+# rate, and low concentration are scored independently of whether the
+# trader is actually profitable -- a large, consistent, low-concentration
+# *loser* still racks up 60+ points. The score is a repeatability/style
+# signal, not a profitability gate. meets_copy_target_bar() below is the
+# actual profitability + risk gate; use it, not raw score, to decide
+# whether a wallet is fit to copy.
+MIN_COPY_TARGET_SAMPLE_SIZE = 30
+MIN_COPY_TARGET_WIN_RATE_PCT = 55.0
+MAX_COPY_TARGET_DRAWDOWN_PCT = 50.0
+
+
+def meets_copy_target_bar(t: TraderStats) -> tuple[bool, list[str]]:
+    """Hard pass/fail gate for "fit to copy 1:1", independent of quality_score.
+
+    Requires real positive edge (ROI > 0) plus enough sample size, win
+    rate, and drawdown discipline that copying this wallet's future trades
+    isn't a coin flip on catching them at a lucky moment. All four
+    conditions are evaluated and every failure reported, so a caller sees
+    the full gap rather than the first blocking reason.
+    """
+    reasons = []
+    if t.roi_pct <= 0:
+        reasons.append(f"capital-weighted ROI is not positive ({t.roi_pct:+.2f}%)")
+    if t.markets_traded < MIN_COPY_TARGET_SAMPLE_SIZE:
+        reasons.append(f"sample size too small ({t.markets_traded} < {MIN_COPY_TARGET_SAMPLE_SIZE})")
+    if t.win_rate_pct < MIN_COPY_TARGET_WIN_RATE_PCT:
+        reasons.append(f"win rate below {MIN_COPY_TARGET_WIN_RATE_PCT}% ({t.win_rate_pct:.1f}%)")
+    if t.max_drawdown_pct > MAX_COPY_TARGET_DRAWDOWN_PCT:
+        reasons.append(f"drawdown exceeds {MAX_COPY_TARGET_DRAWDOWN_PCT:.0f}% ({t.max_drawdown_pct:.1f}%)")
+    return (len(reasons) == 0, reasons)
+
+
 def classify_trader_type(t: TraderStats) -> str:
     if t.avg_position_usd > 5000:
         return "whale"
@@ -81,6 +120,8 @@ def rank_traders(traders: list[TraderStats]) -> list[dict]:
             "address": t.address,
             "quality_score": trader_quality_score(t),
             "type": classify_trader_type(t),
+            "meets_copy_target_bar": meets_copy_target_bar(t)[0],
+            "copy_target_gaps": meets_copy_target_bar(t)[1],
             "stats": t,
         }
         for t in traders

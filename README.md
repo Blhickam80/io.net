@@ -250,6 +250,28 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   and a wallet with no closed-position history is reported as an
   unverified claim, not quietly dropped. Run `python -m polymanager.watchlist`
   once entries exist. Starts empty — no addresses fabricated to seed it.
+  **Real finding (2026-08-21), running the 5 wallets logged so far**: the
+  quality-score ranking alone is not a copy recommendation, and running it
+  against real data proved why. BTC1UPDOWN — the *only* one of the 5 with
+  negative real capital-weighted ROI (-2.19%) — scored **highest** (60.3),
+  ahead of all four wallets with genuine positive edge. Cause: `roi_component`
+  in `trader_quality_score()` tops out at 20 of 100 points (and a modest
+  +7.46% ROI earns under 1.5 of those), while sample size, win rate, and low
+  concentration are scored independently of whether the trader is actually
+  profitable — so a large-sample, low-concentration net *loser* still racks
+  up 60+ points on style alone. Added `meets_copy_target_bar()` to
+  `copytrading.py` — a hard pass/fail gate (positive ROI, ≥30 sampled
+  positions, ≥55% win rate, ≤50% trade-order drawdown) reported alongside,
+  never instead of, the score — and wired it into `research_watchlist()`'s
+  output. Real result against the current 5: **zero pass**. Four fail purely
+  on drawdown (58.2%–114.7%, all well past 50%), one (BTC1UPDOWN) fails on
+  negative ROI. So the honest answer to "is any of these 5 a good copy
+  target" is no — not because they're bad traders (four of five have real,
+  positive lifetime PNL on the leaderboard) but because copying any of them
+  1:1 today would mean living through a real 58%+ peak-to-trough swing along
+  the way. See `tests/test_copytrading.py` (new file — this module had zero
+  test coverage before this audit) for the regression test reproducing the
+  exact BTC1UPDOWN-outranks-a-real-winner paradox.
 - **Backtesting** (`polymanager/backtest.py`) — walk-forward calibration test
   for the touch-probability model against real historical BTC data. **Real
   finding from the 2026-08-20 run** (trailing 365 days, the longest history

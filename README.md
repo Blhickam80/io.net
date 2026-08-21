@@ -449,6 +449,24 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   ("N opportunities identified, all already open") whenever every
   opportunity is a duplicate — confirmed live immediately after: the next
   cycle correctly appended exactly one such row instead of leaving a gap.
+  **Real bug found live (2026-08-21), in `performance.py` this time:**
+  close-read `reconcile.py` (nothing in the mandate matters more than
+  trusting what "resolved" means) and found it permanently skips any
+  journal row with no `market_id` (`skipped_no_market_id`, rows recorded
+  before that field was captured) — those rows can never be checked
+  against a real market again. But `performance.py`'s "Still pending"
+  count didn't know that: it counted every unreconciled recommendation
+  row the same way, `market_id` or not. 11 real rows from this project's
+  very first hour (2026-08-20T16:51-16:52, before `market_id` capture
+  existed) were sitting in "Still pending," implying they were just
+  waiting on a market to settle, when `reconcile.py` will never look at
+  them again. Split `n_pending` (has a `market_id`, genuinely awaiting
+  resolution) from a new `n_unreconcilable` (no `market_id`, permanently
+  stuck) in `PerformanceReport`, surfaced as a distinct line in
+  `render_report()` only when nonzero. Confirmed live: "Still pending"
+  dropped from 71 to the true 60, with the 11 now honestly labeled
+  separately instead of silently inflating a count that implied they'd
+  eventually resolve.
 
 Still deliberately **not** faked: for every other market shape,
 `estimate_true_probability()` in `polymanager/cli.py` returns `None` — which

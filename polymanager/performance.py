@@ -39,6 +39,7 @@ from .pnl_stats import cumulative_pnl_drawdown
 class PerformanceReport:
     n_reconciled: int
     n_pending: int
+    n_unreconcilable: int
     n_no_trade_cycles: int
     win_rate_pct: float | None
     avg_win_usd: float | None
@@ -63,7 +64,15 @@ def compute_performance(rows: list[dict] | None = None) -> PerformanceReport:
     no_trade_rows = [r for r in rows if r.get("market") == "NO TRADE"]
     recommendation_rows = [r for r in rows if r.get("side") in ("YES", "NO")]
     reconciled = [r for r in recommendation_rows if r.get("exit_price")]
-    pending = [r for r in recommendation_rows if not r.get("exit_price")]
+    unreconciled = [r for r in recommendation_rows if not r.get("exit_price")]
+    # polymanager.reconcile permanently skips any row with no market_id
+    # (recorded before that field was captured) -- it will never resolve,
+    # so it isn't "pending" in the sense of "waiting for a market to
+    # settle." Real gap found live 2026-08-21: 11 such rows from the
+    # project's first hour were silently inflating this count with no
+    # path to ever becoming reconciled.
+    pending = [r for r in unreconciled if r.get("market_id")]
+    unreconcilable = [r for r in unreconciled if not r.get("market_id")]
 
     wins = [r for r in reconciled if r.get("thesis_correct") == "True"]
     losses = [r for r in reconciled if r.get("thesis_correct") == "False"]
@@ -111,6 +120,7 @@ def compute_performance(rows: list[dict] | None = None) -> PerformanceReport:
     return PerformanceReport(
         n_reconciled=len(reconciled),
         n_pending=len(pending),
+        n_unreconcilable=len(unreconcilable),
         n_no_trade_cycles=len(no_trade_rows),
         win_rate_pct=win_rate_pct,
         avg_win_usd=avg_win_usd,
@@ -130,6 +140,11 @@ def render_report(report: PerformanceReport) -> str:
         f"Still pending (market not yet resolved): {report.n_pending}",
         f"NO TRADE cycles: {report.n_no_trade_cycles}",
     ]
+    if report.n_unreconcilable:
+        lines.append(
+            f"Unreconcilable (recorded before market_id capture existed -- will never resolve): "
+            f"{report.n_unreconcilable}"
+        )
     if report.n_reconciled == 0:
         lines.append("No reconciled outcomes yet -- nothing to analyze until markets resolve.")
         return "\n".join(lines)

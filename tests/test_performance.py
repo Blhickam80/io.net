@@ -4,6 +4,7 @@ from polymanager.performance import compute_performance, render_report
 def _row(**overrides) -> dict:
     base = {
         "market": "Will Bitcoin reach $75,000 in August?",
+        "market_id": "12345",
         "side": "NO",
         "strategy": "Tier 3 - Experimental",
         "exit_price": "",
@@ -44,6 +45,30 @@ def test_no_losses_yet_gives_none_profit_factor():
     report = compute_performance(rows)
     assert report.profit_factor is None
     assert report.avg_loss_usd is None
+
+
+def test_rows_missing_market_id_are_unreconcilable_not_pending():
+    # Real bug found live 2026-08-21: polymanager.reconcile permanently
+    # skips any row with no market_id (recorded before that field was
+    # captured) -- it can never resolve, so counting it as "pending"
+    # (implying it's just waiting for a market to settle) is misleading.
+    # 11 real rows from this project's first hour were doing exactly this.
+    rows = [
+        _row(),  # genuinely pending: has a market_id, just not yet resolved
+        _row(market_id=""),  # unreconcilable: no market_id, will never resolve
+        _row(market_id=""),
+    ]
+    report = compute_performance(rows)
+    assert report.n_pending == 1
+    assert report.n_unreconcilable == 2
+
+
+def test_render_report_shows_unreconcilable_line_only_when_nonzero():
+    with_unreconcilable = render_report(compute_performance([_row(market_id="")]))
+    assert "Unreconcilable" in with_unreconcilable
+
+    without = render_report(compute_performance([_row()]))
+    assert "Unreconcilable" not in without
 
 
 def test_by_strategy_breakdown():

@@ -198,6 +198,18 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   NOT PRACTICALLY TRADEABLE** at a $200 bankroll (last checked 2026-08-20) —
   the honest end state is that this strategy currently has zero *actionable*
   edge for this account size, not that it found nothing.
+  **Persistence check (2026-08-21):** a stable finding *count* across scans
+  (5-7 findings, repeatedly, over 9+ hours) doesn't by itself prove it's the
+  same mispricing recurring rather than a different rotating set of events
+  landing on a similar count by coincidence — `scan_history.jsonl` only
+  logged counts until this was fixed to also log event titles (see
+  `polymanager.scan_history.persistent_sum_consistency_titles()`). First
+  real check against two tagged scans 78 minutes apart: **all 6 events found
+  in the first scan reappeared identically in the second** (UEFA Champions
+  League, EPL, NBA, and Pro Football 2027 champions; Brazil Presidential
+  Election; 2026 Men's US Open) — genuine persistence, not coincidence,
+  though still NOT PRACTICALLY TRADEABLE per the capital-lock-up finding
+  above.
 - **Real copy-trading analysis** (`polymanager/wallet_research.py`) — bridges
   `polymanager/copytrading.py`'s scoring logic (previously only unit-tested
   against synthetic data) to Polymarket's actual public API. **Correction
@@ -312,12 +324,17 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   the accumulated history. This aggregates every *reconciled* journal row
   (see above) into those metrics, split out per strategy. Same
   hypothetical caveat as reconciliation — it answers "would following this
-  system's recommendations have made money," not "did it." Empty and
-  honest right now (`python -m polymanager.scan_all` confirmed: 0
-  reconciled, 28 pending, nothing to analyze yet) since most open
-  recommendations haven't reached their resolution date — this fills in
-  automatically as `reconcile.py` closes more rows out over time. Run
-  `python -m polymanager.performance` standalone too.
+  system's recommendations have made money," not "did it." Was empty for
+  the first day (`python -m polymanager.scan_all` confirmed: 0 reconciled,
+  28 pending). **First real data (2026-08-21):** 4 recommendations
+  reconciled — all Tier 3 `btc_touch` "reach $X" markets from the same
+  underlying BTC move (2 wins, 2 losses, 50% win rate, profit factor 1.46,
+  net hypothetical P/L +$1.40). n=4 is nowhere near enough to say anything
+  about the model's real calibration (see the backtest section above for
+  that, which used a full year of history) — this is the pipeline's first
+  live out-of-sample data point, not a verdict. This fills in automatically
+  as `reconcile.py` closes more rows out over time. Run `python -m
+  polymanager.performance` standalone too.
 
 Still deliberately **not** faked: for every other market shape,
 `estimate_true_probability()` in `polymanager/cli.py` returns `None` — which

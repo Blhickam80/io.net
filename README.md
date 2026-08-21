@@ -52,7 +52,14 @@ Implemented as real, tested code (`tests/` passes with no network needed):
 - **Portfolio state & trading journal** (`polymanager/portfolio.py`,
   `polymanager/journal.py`) — persisted bankroll/position state in
   `data/portfolio_state.json`, append-only decision log in
-  `data/trading_journal.csv`.
+  `data/trading_journal.csv`. **Audited (2026-08-21)**: `portfolio.py`
+  itself had zero test coverage despite underlying several of the drawdown
+  findings above; a close read plus 10 new tests (`equity()`/`drawdown()`
+  math, high-water-mark ratcheting, save/load round-trip) found no
+  independent bug in the module's own logic — its only real issue is the
+  already-documented one (nothing ever populates `state.positions`, not a
+  flaw in how `equity()`/`drawdown()` compute from whatever state they're
+  given).
 - **Dashboard renderer** (`polymanager/dashboard.py`) — produces the exact
   Bankroll / Best Opportunities / Existing Positions / Actions format from
   the mandate.

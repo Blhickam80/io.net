@@ -25,6 +25,16 @@ docs. Still true:
   (`polymanager/btc_touch.py`) with a documented, imperfect calibration (see
   "Backtesting" below). Everything else still correctly falls through to
   `NO TRADE`.
+- **The CLOB order-book client is written but never used.** `polymanager/api.py`
+  implements `get_order_book()` and `get_price()` against `clob.polymarket.com`
+  — real, correct code, now with its own test coverage — but a repo-wide
+  grep (2026-08-21) confirms neither is called from anywhere else in the
+  codebase. Every strategy prices markets from Gamma's static `outcomePrices`
+  snapshot field instead, never the live order book. That's a real gap for
+  execution quality (a snapshot price isn't the same as confirmed tradeable
+  depth at that price), separate from and in addition to the no-wallet
+  limitation above — worth wiring in before `execution.py` ever places a
+  real order, not before.
 
 Run `python -m polymanager.cli` to execute a real cycle.
 

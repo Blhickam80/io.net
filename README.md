@@ -207,8 +207,18 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   real check against two tagged scans 78 minutes apart: **all 6 events found
   in the first scan reappeared identically in the second** (UEFA Champions
   League, EPL, NBA, and Pro Football 2027 champions; Brazil Presidential
-  Election; 2026 Men's US Open) — genuine persistence, not coincidence,
-  though still NOT PRACTICALLY TRADEABLE per the capital-lock-up finding
+  Election; 2026 Men's US Open) — genuine persistence, not coincidence.
+  **Refined with a 3rd tagged scan (2026-08-21, ~2h36m span):** the picture
+  sharpens rather than just repeating — 5 events (UEFA, EPL, NBA, Pro
+  Football, Brazil) held across *all three* scans and are the real signal,
+  while the 2026 Men's US Open and a later-appearing EWC 2026 CS2 finding
+  each showed up in only 2 of 3 scans. Checking their actual deviations
+  explains why: both sat right at the 2.0pp `MIN_SUM_DEVIATION_PP` threshold
+  (US Open was +2.1pp when it appeared), so small odds movements between
+  scans flip them in and out of the finding set — boundary noise, not a
+  real mispricing coming and going. The 5 that persisted every time were
+  never close to the threshold (2.6-5.1pp). Still NOT PRACTICALLY TRADEABLE
+  per the capital-lock-up finding
   above.
 - **Real copy-trading analysis** (`polymanager/wallet_research.py`) — bridges
   `polymanager/copytrading.py`'s scoring logic (previously only unit-tested

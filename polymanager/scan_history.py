@@ -9,7 +9,7 @@ can't be met from a single run.
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -28,6 +28,13 @@ class ScanSummary:
     reconciled_this_run: int = 0
     reconciled_hypothetical_pnl: float = 0.0
     notes: str = ""
+    # Which specific events had a sum-consistency finding this run. A raw
+    # *count* staying stable across scans (e.g. "6 findings" every time)
+    # doesn't tell you whether it's the same structural mispricing persisting
+    # or a different rotating set of events coincidentally landing on the
+    # same count -- added 2026-08-21 to make that answerable from the log
+    # instead of requiring a fresh live scan each time.
+    sum_consistency_event_titles: list[str] = field(default_factory=list)
 
     @classmethod
     def now(cls, **kwargs) -> "ScanSummary":
@@ -45,3 +52,15 @@ def read_history(path: Path = DEFAULT_HISTORY_PATH) -> list[dict]:
         return []
     with path.open() as f:
         return [json.loads(line) for line in f if line.strip()]
+
+
+def persistent_sum_consistency_titles(history: list[dict]) -> set[str]:
+    """Event titles that had a sum-consistency finding in *every* scan that
+    recorded any titles at all (older entries with no titles field are
+    ignored rather than treated as "title absent"). Empty if fewer than 2
+    such scans exist -- persistence isn't meaningful from a single sample.
+    """
+    tagged_runs = [set(h["sum_consistency_event_titles"]) for h in history if h.get("sum_consistency_event_titles")]
+    if len(tagged_runs) < 2:
+        return set()
+    return set.intersection(*tagged_runs)

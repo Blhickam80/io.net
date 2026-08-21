@@ -66,6 +66,7 @@ def main() -> None:
         monotonicity_violations=len(mono_found),
         sum_consistency_events_scanned=sum_events_scanned,
         sum_consistency_findings=len(sum_results),
+        sum_consistency_event_titles=[result.event_title for result in sum_results],
         bankroll_equity=equity,
         reconciled_this_run=recon_summary["resolved"],
         reconciled_hypothetical_pnl=recon_summary["hypothetical_pnl_total"],

@@ -205,7 +205,14 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   this one is real — not a parsing bug, not a stale-instance artifact, not
   sub-threshold noise. First actual confirmation, after a full day of
   either zero violations or bugs, that the mechanism catches a genuine
-  live inconsistency when one exists.
+  live inconsistency when one exists. **Closed the loop roughly an hour
+  later (2026-08-21):** re-scanned and the violation was gone — not
+  because the market closed, but because it self-corrected: $85,000 moved
+  to 17.6% and $87,500 to 9.0%, correctly monotonic again. A real,
+  briefly-mispriced inefficiency that the market itself arbitraged away —
+  further confirmation the original finding was genuine, not a data
+  artifact, and a small demonstration of exactly the efficient-market
+  self-correction this module's docstring predicted from day one.
 - **Live strategy #3: mutually-exclusive outcome sum** (`polymanager/sum_consistency.py`)
   — the classic complement to monotonicity: for a "negRisk" event where
   exactly one outcome resolves YES (elections, championships, "who wins"

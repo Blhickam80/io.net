@@ -31,7 +31,14 @@ class CryptoTouchEstimate:
 
 
 def make_pattern(asset_name: str) -> re.Pattern:
-    return re.compile(rf"will\s+{re.escape(asset_name)}\s+reach\s+\$?([\d,]+)", re.IGNORECASE)
+    # Capture group must allow a decimal tail -- see polymanager.monotonicity's
+    # module docstring for the real live bug (2026-08-21) this pattern shares
+    # the shape of: [\d,]+ alone silently truncates "$1.80" to "1", which
+    # would corrupt this module's barrier (and therefore its probability
+    # estimate) the same way it corrupted that module's ladder comparisons.
+    # No BTC/ETH "reach $X" market has used a decimal threshold yet, but
+    # nothing here depends on that staying true.
+    return re.compile(rf"will\s+{re.escape(asset_name)}\s+reach\s+\$?([\d,]+(?:\.\d+)?)", re.IGNORECASE)
 
 
 def extract_barrier(question: str, pattern: re.Pattern) -> float | None:

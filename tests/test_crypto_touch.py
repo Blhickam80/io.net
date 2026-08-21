@@ -16,6 +16,16 @@ def test_make_pattern_matches_asset_name_only():
     assert extract_barrier("Will Ethereum reach $3,000 in August?", btc_pattern) is None
 
 
+def test_extract_barrier_handles_decimal_threshold():
+    # Same bug class as polymanager.monotonicity (found live 2026-08-21):
+    # [\d,]+ alone would silently truncate "$4,500.50" to 4500.0, which
+    # here would corrupt the barrier fed into touch_probability_upper_barrier
+    # and therefore the resulting probability estimate. No live BTC/ETH
+    # market has used a decimal threshold yet -- this guards against one.
+    pattern = make_pattern("Ethereum")
+    assert extract_barrier("Will Ethereum reach $4,500.50 in August?", pattern) == 4500.50
+
+
 def test_estimate_for_asset_respects_confidence_cap():
     result = estimate_for_asset(
         "Will Ethereum reach $2,400 in August?",

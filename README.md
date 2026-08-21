@@ -154,6 +154,19 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   "finding" was purely a parsing bug, not a real inconsistency. This had
   been silently wrong since the module was written; nothing decimal-priced
   had ever been scanned before to trigger it.
+  **Follow-up spot-check (2026-08-21):** grepped the rest of `polymanager/`
+  for the same `[\d,]+`-without-decimal pattern. Found one more instance —
+  `polymanager/crypto_touch.py`'s `make_pattern()`/`extract_barrier()`, the
+  shared engine behind `btc_touch.py`/`eth_touch.py`'s real probability
+  estimates. This one is more consequential than the monotonicity
+  false-positive: a truncated barrier there wouldn't just produce a benign
+  duplicate-market flag, it would silently feed the wrong barrier into
+  `touch_probability_upper_barrier()` and corrupt the resulting edge/sizing
+  recommendation. No live BTC/ETH "reach $X" market has used a decimal
+  threshold yet (same reason the monotonicity bug went undetected all day),
+  so this hadn't fired live — fixed pre-emptively with the identical regex
+  change rather than waiting for it to. No other `re.compile`/`_PATTERN`
+  definitions in the package use this shape.
 - **Live strategy #3: mutually-exclusive outcome sum** (`polymanager/sum_consistency.py`)
   — the classic complement to monotonicity: for a "negRisk" event where
   exactly one outcome resolves YES (elections, championships, "who wins"

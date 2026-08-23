@@ -305,13 +305,13 @@ def main() -> None:
                 f"execution already exceeds the {MAX_CORRELATED_GROUP_PCT:.0%} correlated-exposure "
                 f"cap on its own, before any sizing decision. Nominal edge is real but inaccessible."
             )
-        if result.direction == "buy_no_basket":
-            print(
-                f"  CAVEAT: capturing this means buying NO on all {len(result.legs)} legs "
-                "near-simultaneously and holding until the event resolves (often months for a "
-                "championship market) -- weigh capital lock-up and execution slippage across "
-                "that many legs against the nominal edge before sizing anything."
-            )
+        side = "NO" if result.direction == "buy_no_basket" else "YES"
+        print(
+            f"  CAVEAT: capturing this means buying {side} on all {len(result.legs)} legs "
+            "near-simultaneously and holding until the event resolves (often months for a "
+            "championship market) -- weigh capital lock-up and execution slippage across "
+            "that many legs against the nominal edge before sizing anything."
+        )
 
     print(f"\nScanned {events_scanned} events. Material sum-consistency findings: {len(results)}.")
 

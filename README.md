@@ -292,6 +292,17 @@ Implemented as real, tested code (`tests/` passes with no network needed):
   never close to the threshold (2.6-5.1pp). Still NOT PRACTICALLY TRADEABLE
   per the capital-lock-up finding
   above.
+  **Output gap found and fixed (2026-08-23):** `main()` only printed the
+  multi-leg execution-risk CAVEAT (near-simultaneous fills across every leg,
+  capital locked until resolution) for `buy_no_basket` findings, never for
+  `buy_yes_basket` ones — even though the same execution risk applies
+  identically to buying YES across N legs. This asymmetry went unnoticed
+  because every live finding through 2026-08-22 happened to be
+  `buy_no_basket` (baskets running *over* 100%, the far more common case on
+  Polymarket). The first live `buy_yes_basket` finding (2026-08-23, an Elon
+  Musk tweet-count-range event, sum(YES)=97.6%) surfaced it: the caveat was
+  silently missing from that finding's printed output. Fixed to print
+  regardless of direction, naming the correct side (YES vs NO).
 - **Real copy-trading analysis** (`polymanager/wallet_research.py`) — bridges
   `polymanager/copytrading.py`'s scoring logic (previously only unit-tested
   against synthetic data) to Polymarket's actual public API. **Correction

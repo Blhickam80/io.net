@@ -1,0 +1,5 @@
+# One Solana wallet address per line, pulled from the fomo.app leaderboard/Top Traders screen.
+# Lines starting with # are ignored.
+#
+# example:
+# 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM

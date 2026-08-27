@@ -42,6 +42,7 @@ Direction confirmed and brand name chosen: **Yardwick** (after TradeStack and St
 - **What Claude does next:** Generate the affiliate links, UTM parameters, and disclosure-compliant content immediately once credentials/links are dropped in (they can be pasted into `data/affiliate-links.csv` — see template Claude will create).
 
 ## 6. Social media account handles (only for channels we decide to actually run — see SOCIAL_PLAN.md)
+- **Status:** YouTube done — https://www.youtube.com/@yardwick is live (confirmed 2026-08-27). TikTok still open (recommended next — see SOCIAL_PLAN.md); Instagram/X remain deprioritized until YouTube/TikTok show traction.
 - **What:** Handle/account creation on the 1–2 channels the Market Intelligence + Social Growth analysis recommends starting with (likely YouTube + one short-form platform, not all seven).
 - **Brand name to register under:** **Yardwick**. Use `yardwick` as the handle everywhere it's free (YouTube: @yardwick, X: @yardwick, Instagram: @yardwick, TikTok: @yardwick). If a platform's exact handle is taken, use `@getyardwick` or `@yardwickhq` consistently rather than a different handle per platform — cross-platform consistency matters more than winning the shortest handle. Note whichever variant you actually land on so it can be recorded in `SOCIAL_PLAN.md`.
 - **Why:** Claude can write scripts/captions/plans but cannot create accounts, verify phone numbers, or upload video from this environment.

@@ -72,13 +72,16 @@ Every industry/money page must sell the *stack*, not a single product. One acqui
 
 ## 5. Acquisition engine priority (80/20 allocation for Phase 1–3)
 
-**80% of effort — high-confidence, compounding:**
-- Engine A (high-intent SEO) — money keywords: "best AI receptionist for {industry}", "{product} pricing", "{product} vs {competitor}"
-- Engine G/H (lead magnets & free tools) — missed-call revenue calculator ships in the MVP (see BACKLOG.md)
-- Engine C (alternative pages) — low competition, high intent, fast to produce well
+**Revised 2026-08-27 after a real production constraint surfaced (see DECISIONS.md): video requires either the operator's voice/face or a much more elaborate no-voiceover edit to be watchable as actual content — Claude has no camera or speech synthesis available in this environment, so a "faceless video channel" isn't actually faceless-and-autonomous, it's operator-time-gated. Written/SEO content, by contrast, is fully executable end-to-end with zero ongoing operator time. Reweighted accordingly: SEO content is no longer "80% alongside video at 20%" — it is effectively the whole of the autonomous 80%, and video moves to opportunistic/operator-gated rather than a standing allocation.**
 
-**20% of effort — experiments to generate evidence:**
-- Engine D/E (YouTube/Shorts demoing the software) — high effort, but a durable owned asset; start with 1 channel, faceless screen-recording style
+**~90% of effort — high-confidence, compounding, fully autonomous:**
+- Engine A (high-intent SEO) — money keywords: "best AI receptionist for {industry}", "{product} pricing", "{product} vs {competitor}"
+- Engine C (alternative/comparison pages) — low competition, high intent, fast to produce well
+- Engine G/H (lead magnets & free tools) — missed-call revenue calculator ships in the MVP; more calculators queued (see BACKLOG.md)
+- Every published page carries the full Customer Monetization Stack (§4) — this is the actual compounding lever, not additional channels
+
+**~10% of effort — operator-gated experiments, not a standing channel:**
+- Engine D/E (video) — downgraded from a planned channel to an on-demand asset: Claude can produce a real screen-recording of a tool with computed numbers and burned-in captions (see `automation/record_calculator_short.py`) on request, but treating this as a content pipeline without the operator's voice or face overstates what it actually is. Revisit as a real channel only if/when the operator wants to record voiceover regularly, or a genuinely voice-free format (e.g., pure data/animation) proves out — track as an experiment in EXPERIMENTS.md, don't assume it into the plan.
 - Engine J (direct outreach) — to marketing agencies/consultants as a distribution partner test, not spam
 
 Explicitly deprioritized for now (revisit at scale): paid ads (violates $0–300 constraint and instructions to minimize paid spend), Pinterest/Facebook (low buyer-intent fit for B2B SMB software), cold email at volume (compliance risk without a properly warmed domain/mailbox — start small and personalized only).

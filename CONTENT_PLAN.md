@@ -10,8 +10,8 @@ One research topic → 1 long article/comparison page (website) + 1 YouTube vide
 | 2 | GoHighLevel vs Votel.ai vs alternatives | Comparison page | **Published** (website/public/compare) | GoHighLevel, Votel (context only) |
 | 3 | Best AI Receptionist for Roofing Companies | Industry page | **Published** | MyAIFrontDesk, Rosie, AI-Receptionist.com |
 | 4 | Best AI Receptionist for Dental Practices | Industry page | **Published** | same |
-| 5 | Best AI Receptionist for Real Estate Agents | Industry page | Queued | same |
-| 6 | GoHighLevel Review | Review page | Queued | GoHighLevel |
+| 5 | Best AI Receptionist for Real Estate Agents | Industry page | **Published** | same |
+| 6 | GoHighLevel Review | Review page | **Published** (website/public/reviews) | GoHighLevel |
 | 7 | AI Automation Checklist for Local Businesses | Lead magnet (PDF/page) | Queued | multiple |
 
 All published pages use affiliate-link placeholders (`href="#affiliate:<slug>"`) rather than live links — see `automation/apply_affiliate_links.py` and `data/affiliate-links.csv`. Real tracked links get swapped in automatically once accounts are approved (ACCESS_NEEDED.md #5).

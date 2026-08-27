@@ -13,5 +13,5 @@
 - Screen-recording demos: show the AI receptionist/GHL product handling a realistic call/workflow, voiceover explaining the ROI angle (ties to missed-call calculator numbers).
 - Title/thumbnail pattern: concrete numbers + industry (e.g., "This AI Answered 300 Calls So a Roofer Didn't Have To").
 
-## Cadence
-Channel exists; first 3 Shorts scripts are ready in `video/scripts/` (shorts-01 through shorts-03), built around the Missed Call Revenue Calculator so no vendor demo footage is required to start — just a screen recording of the calculator itself plus voiceover/text-on-screen, or a talking-to-camera delivery. Post shorts-01 first; it's the most self-contained hook. Target cadence once posting starts: 3x/week Shorts, reassess after 2 weeks per the EXPERIMENTS.md check-in window.
+## Cadence — downgraded to on-demand, not a scheduled channel (see STRATEGY.md §5, DECISIONS.md 2026-08-27 "post-launch")
+Video is no longer treated as a channel with its own posting cadence. Reality check: Claude has no voice or camera, so a Short is either the operator's own voiceover/face (their time, their pace) or a silent screen-recording of a tool (Short 01, delivered — real, but thin as standalone content on its own). No standing production schedule is set. If the operator wants to record voiceover for future Shorts, or picks up shots-02/03-style renders, generate them on request via `automation/record_calculator_short.py` — but this isn't a recurring backlog item the way the written-content pipeline is.

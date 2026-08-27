@@ -51,11 +51,24 @@ Rationale: zero backlink budget means authority must be concentrated on one doma
 
 **Secondary (evaluate after MVP traction):** marketing agencies and consultants who resell/recommend software to their own SMB clients (e.g., GoHighLevel's audience) — higher LTV per referred account, more competitive content space.
 
-## 4. Initial monetization stack hypothesis (to be replaced by AFFILIATES.md top 3–5 once scored)
-1. An AI receptionist/voice-agent program (Votel.ai vs. named competitors — winner decided by AOS, not by which was suggested first)
-2. A CRM/all-in-one platform with strong recurring affiliate economics (e.g., category leader by AOS — GoHighLevel-style programs are known for high recurring %, to be verified)
-3. A scheduling or reputation-management tool that pairs naturally with the above in the same buyer journey
-4. A website/hosting or workflow-automation program as a lower-intent, higher-volume complementary offer
+## 4. The Customer Monetization Stack (default content template — not optional)
+
+Every industry/money page must sell the *stack*, not a single product. One acquired reader is worth 4-6x more if the page monetizes every complementary need in the buying journey instead of stopping at the first affiliate link. This is now a hard content rule (see `CONTENT_PLAN.md` "Content quality rules") — a published industry page without a stack section is incomplete, not just an SEO opportunity left on the table.
+
+**Default stack (swap per vertical only when a category genuinely doesn't apply — e.g., skip reputation management for a business that is pre-revenue):**
+
+| Leg | Default program | Commission | Placeholder |
+|---|---|---|---|
+| AI receptionist / phone | MyAIFrontDesk (Rosie / AI-Receptionist.com as alternates) | 30% recurring, uncapped | `#affiliate:myaifrontdesk` |
+| CRM | Close CRM | 30% recurring, capped 12mo | `#affiliate:close-crm` |
+| Scheduling | Calendly | 10-30% recurring (varies) | `#affiliate:calendly` |
+| Email/SMS marketing | ActiveCampaign | 20-30% recurring, capped 12mo | `#affiliate:activecampaign` |
+| Reputation management | Podium | 30% recurring, full year | `#affiliate:podium` |
+| Website/hosting (lower priority, include only if page has room) | Cloudways | $30 + 7% lifetime recurring | `#affiliate:cloudways` |
+
+**Illustrative stack economics** (per referred customer, all 5 core legs converting — an upper bound, not an expectation): $234 (AI receptionist) + $150 (CRM) + ~$180 (email/SMS) + $867 (reputation) + a scheduling commission ≈ **$1,400+ in blended Commission LTV from one acquired customer**, versus ~$120-$234 from a single-product page. Even a 20-30% stack-wide conversion rate on the secondary legs meaningfully changes unit economics — this is the single biggest lever available at zero additional traffic cost, since it's the same visitor.
+
+**Anchor program (highest individual AOS, leads the agency/reseller segment separately from the stack above):** GoHighLevel — 40% recurring for life, `#affiliate:gohighlevel`. GHL substitutes for several stack legs at once (it bundles CRM + scheduling + some marketing automation) for readers who want one platform instead of best-of-breed tools; present it as an alternative path, not an additional stack leg, to avoid double-pitching the same buying decision.
 
 ## 5. Acquisition engine priority (80/20 allocation for Phase 1–3)
 

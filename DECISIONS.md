@@ -4,6 +4,11 @@ Append-only. Newest first. Each entry: date, decision, why, alternatives rejecte
 
 ---
 
+### 2026-08-27 (later) — Every money page must sell the full Customer Monetization Stack, not one affiliate link
+**Decision:** Made this a hard content rule (CONTENT_PLAN.md) rather than an aspiration: every industry/money page must include a "Complete Software Stack" section pitching AI receptionist + CRM + scheduling + email/SMS + reputation management (STRATEGY.md §4), not just the single product implied by the page's target keyword. Retrofitted the two already-published industry pages (roofing, dental) to comply.
+**Why:** Operator feedback pointed out that the strategy already described this ("Customer Monetization Stack," STRATEGY.md §3) but the actual shipped pages didn't practice it — each only pitched one AI-receptionist affiliate link. A single acquired reader converting on all stack legs is worth roughly 4-6x a single-product page (~$1,400+ blended Commission LTV vs. ~$120-234) at zero additional traffic cost, since it's the same visitor. This is a bigger lever than adding more pages.
+**Alternatives rejected:** Leaving the stack concept as a strategy-doc aspiration and only applying it "when natural" — too easy to skip under time pressure; making it a template requirement instead removes the judgment call per page.
+
 ### 2026-08-27 — Repo structure & company memory established
 **Decision:** Adopt the directory structure and memory-file set specified in the founding brief (COMPANY.md, STRATEGY.md, AFFILIATES.md, etc.) at the repo root rather than nesting under a `/company` subfolder.
 **Why:** This repo (`blhickam80/io.net`) is dedicated to this venture — no need for an extra nesting level. Keeps root-level docs discoverable to future sessions immediately.

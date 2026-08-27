@@ -20,6 +20,7 @@ All published pages use affiliate-link placeholders (`href="#affiliate:<slug>"`)
 - Never claim "we tested this" unless genuinely tested — default framing is "based on publicly available pricing, features, and reviews as of [date]."
 - Distinguish factual research vs. vendor claims vs. public reviews vs. our own testing, explicitly, in every review page.
 - Affiliate disclosure linked/present on every monetized page.
+- **Every industry/money page must include a "Complete Software Stack" section** (STRATEGY.md §4) covering AI receptionist, CRM, scheduling, email/SMS, and reputation management where relevant — not just the single product implied by the page's headline keyword. A page that stops at one affiliate link is treated as incomplete, not shippable, per the portfolio-over-single-offer principle in DECISIONS.md.
 
 ## Repurposing checklist per topic
 - [ ] Long article/comparison (website)

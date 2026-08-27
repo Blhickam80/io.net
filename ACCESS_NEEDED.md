@@ -5,16 +5,11 @@ For each: What / Why / Where to get it / Cost / Permissions / What happens next.
 
 ---
 
-## 1. Approve the business architecture & niche before public assets go live
-- **What:** A yes/no on the initial direction in `STRATEGY.md` (target niche(s), the single-site programmatic-SEO architecture, and the initial 3–5 affiliate programs to lead with once `AFFILIATES.md` scoring is complete).
-- **Why:** Everything downstream (domain, content, affiliate signups) depends on this. It's cheap to redirect now, expensive after 50 pages are written.
-- **Where:** Read `STRATEGY.md` and `AFFILIATES.md` (top opportunities table) and reply with approval or redirection.
-- **Cost:** $0.
-- **Permissions:** None — just a decision.
-- **What Claude does next:** Proceeds to build the MVP site content and lead magnets around the approved direction immediately.
+## 1. ~~Approve the business architecture & niche~~ — RESOLVED
+Direction confirmed and brand name chosen: **StackFront** (operator's initial pick, TradeStack, was overridden after a collision check — see DECISIONS.md). Site already rebranded (header/footer/schema across all published pages). No longer blocking.
 
 ## 2. A domain name
-- **What:** Register a domain for the owned website (candidate names will be proposed in `STRATEGY.md`/`BACKLOG.md`).
+- **What:** Register **stackfront.com** if available; fall back to stackfront.io / stackfront.co / getstackfront.com / usestackfront.com in that order if .com is taken. A basic web search turned up no dedicated business or trademark currently operating under "StackFront" (unlike TradeStack), but registrar-level availability was not checked — confirm before paying for anything.
 - **Why:** Needed for a real, indexable, affiliate-program-eligible website. Most affiliate/partner programs require a live business website with real content and a business identity, not a raw GitHub Pages URL, though we can start on a free subdomain.
 - **Where:** Any registrar (Cloudflare Registrar has no markup; Namecheap/Porkbun are also cheap, ~$8–12/yr for a .com).
 - **Cost:** ~$8–15/year.
@@ -48,11 +43,12 @@ For each: What / Why / Where to get it / Cost / Permissions / What happens next.
 
 ## 6. Social media account handles (only for channels we decide to actually run — see SOCIAL_PLAN.md)
 - **What:** Handle/account creation on the 1–2 channels the Market Intelligence + Social Growth analysis recommends starting with (likely YouTube + one short-form platform, not all seven).
+- **Brand name to register under:** **StackFront**. Use `stackfront` as the handle everywhere it's free (YouTube: @stackfront, X: @stackfront, Instagram: @stackfront, TikTok: @stackfront). If a platform's exact handle is taken, use `@getstackfront` or `@stackfronthq` consistently rather than a different handle per platform — cross-platform consistency matters more than winning the shortest handle. Note whichever variant you actually land on so it can be recorded in `SOCIAL_PLAN.md`.
 - **Why:** Claude can write scripts/captions/plans but cannot create accounts, verify phone numbers, or upload video from this environment.
 - **Where:** Standard signup flows.
 - **Cost:** $0.
 - **Permissions:** Phone/email verification the operator must complete.
-- **What Claude does next:** Deliver ready-to-post scripts, thumbnails concepts, and a publishing calendar the operator (or a scheduling tool) can execute with minimal editing.
+- **What Claude does next:** Deliver ready-to-post scripts, thumbnails concepts, and a publishing calendar the operator (or a scheduling tool) can execute with minimal editing. Also update `SOCIAL_PLAN.md` and `website/public/index.html` (footer/header) with the confirmed handles once created.
 
 ## 7. A dedicated email address for the business (e.g. via a free/cheap provider)
 - **What:** An inbox for affiliate program correspondence, newsletter sending (e.g. via a free-tier ESP like MailerLite/Brevo), and outreach replies.

@@ -1,6 +1,6 @@
 # COMPANY.md — Company Memory (Read This First)
 
-**Company (working name):** TBD — see BACKLOG.md for naming task
+**Company name:** StackFront — finalized 2026-08-27 (see DECISIONS.md; operator's initial pick "TradeStack" was overridden after a collision check found two active competitors — TradeStack Limited/tradestack.uk and tradestack.business — already operating under that exact name in the same trades/service-business-software niche). Site brand mark: "Stack" + accented "Front", live in `website/public/` header/footer/schema.
 **Type:** Autonomous AI-run affiliate marketing business
 **Mission:** Generate maximum recurring affiliate commission revenue (MRR) for the least capital and least ongoing human involvement, by helping small/medium businesses discover and adopt AI-powered business software.
 

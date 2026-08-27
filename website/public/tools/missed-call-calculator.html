@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Missed Call Revenue Calculator — How Much Are Missed Calls Costing Your Business?</title>
+<meta name="description" content="Free calculator: find out exactly how much monthly and annual revenue your business loses to missed calls and slow lead response — then see how to fix it.">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Missed Call Revenue Calculator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "description": "Free calculator estimating monthly and annual revenue lost to missed phone calls for local and home service businesses.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <div class="brand">Site<span>Name</span></div>
+    <nav class="site">
+      <a href="../index.html">Home</a>
+      <a href="../tools/index.html">Free Tools</a>
+      <a href="../compare/index.html">Compare</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <span class="badge">Free Tool</span>
+  <h1>Missed Call Revenue Calculator</h1>
+  <p class="lede">Every unanswered call from a potential customer is money walking out the door. Enter your numbers below to see exactly how much it's costing you per month and per year.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Your numbers</h3>
+
+      <label for="callsPerMonth">Inbound calls per month</label>
+      <input type="number" id="callsPerMonth" value="300" min="0">
+
+      <label for="missedPct">% of calls missed or unanswered</label>
+      <input type="number" id="missedPct" value="25" min="0" max="100">
+
+      <label for="closeRate">% of answered leads that become paying customers (close rate)</label>
+      <input type="number" id="closeRate" value="30" min="0" max="100">
+
+      <label for="avgTicket">Average job / sale value ($)</label>
+      <input type="number" id="avgTicket" value="450" min="0">
+
+      <label for="recallPct">% of missed callers who call a competitor instead of calling you back (typically 60-85%)</label>
+      <input type="number" id="recallPct" value="70" min="0" max="100">
+
+      <button class="btn" onclick="calculate()">Calculate my lost revenue</button>
+    </div>
+
+    <div class="card" id="resultsCard" style="display:none;">
+      <h3>Estimated revenue lost</h3>
+      <div class="result-sub">Missed calls per month</div>
+      <div class="result-num" id="missedCallsOut">–</div>
+
+      <div class="result-sub">Lost customers per month (missed calls that never call back)</div>
+      <div class="result-num" id="lostCustomersOut">–</div>
+
+      <div class="result-sub">Estimated revenue lost per month</div>
+      <div class="result-num" id="monthlyLossOut">–</div>
+
+      <div class="result-sub">Estimated revenue lost per year</div>
+      <div class="result-num" id="yearlyLossOut">–</div>
+
+      <p style="margin-top:20px; color:var(--text-dim); font-size:0.9rem;">
+        This is a directional estimate based on the inputs above, not a guarantee. Missed-call and repeat-call-rate figures vary by industry and local competition — adjust the assumptions to match your business.
+      </p>
+    </div>
+  </div>
+
+  <h2>Why this happens</h2>
+  <p>Most local service businesses (contractors, dentists, salons, auto shops, real estate teams) can't answer every call while they're on a job, with a patient, or after hours. Callers who don't get an answer frequently move on to the next result in a search or a competitor's ad rather than leaving a voicemail — the lead is gone before you even know it existed.</p>
+
+  <h2>How businesses fix this</h2>
+  <p>The two most common fixes are (1) hiring more front-desk staff, which is expensive and doesn't cover nights/weekends, or (2) an AI phone answering / AI receptionist service that answers every call 24/7, qualifies the caller, and books the appointment automatically. We compare the leading options below.</p>
+
+  <div class="disclosure">
+    Affiliate disclosure: some links on this page may be affiliate links. If you sign up through one, we may earn a commission at no extra cost to you. This does not affect which tools we recommend — see our <a href="../about.html">methodology</a>.
+  </div>
+
+  <p><a class="btn secondary" href="../compare/index.html">See AI receptionist comparisons →</a></p>
+</main>
+
+<footer class="site">
+  <div class="wrap">© 2026 SiteName. Estimates are illustrative; verify assumptions against your own business data.</div>
+</footer>
+
+<script>
+function calculate() {
+  const calls = parseFloat(document.getElementById('callsPerMonth').value) || 0;
+  const missedPct = (parseFloat(document.getElementById('missedPct').value) || 0) / 100;
+  const closeRate = (parseFloat(document.getElementById('closeRate').value) || 0) / 100;
+  const avgTicket = parseFloat(document.getElementById('avgTicket').value) || 0;
+  const recallPct = (parseFloat(document.getElementById('recallPct').value) || 0) / 100;
+
+  const missedCalls = calls * missedPct;
+  // Of the missed calls, `recallPct` never call back / go to a competitor and are lost outright.
+  const lostLeads = missedCalls * recallPct;
+  const lostCustomers = lostLeads * closeRate;
+  const monthlyLoss = lostCustomers * avgTicket;
+  const yearlyLoss = monthlyLoss * 12;
+
+  document.getElementById('missedCallsOut').textContent = Math.round(missedCalls).toLocaleString();
+  document.getElementById('lostCustomersOut').textContent = Math.round(lostCustomers).toLocaleString();
+  document.getElementById('monthlyLossOut').textContent = '$' + Math.round(monthlyLoss).toLocaleString();
+  document.getElementById('yearlyLossOut').textContent = '$' + Math.round(yearlyLoss).toLocaleString();
+  document.getElementById('resultsCard').style.display = 'block';
+}
+</script>
+</body>
+</html>

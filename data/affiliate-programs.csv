@@ -1,0 +1,58 @@
+program,category,commission_type,commission_pct_or_amount,cookie_days,est_customer_price_monthly,assumed_lifetime_months,commission_ltv_usd,aos_score,status,notes
+GoHighLevel,Agency/white-label platform,recurring_lifetime,40%,90,197,24,1891,91,shortlisted,"40% for life + 5% tier-2; likely the platform Votel is built on"
+Instantly.ai,AI sales/outreach,recurring_lifetime,up to 40%,,97,18,698,83,experimental,"volume-tiered; secondary agency/consultant segment"
+ClickFunnels,Funnel/marketing platform,recurring_tiered,up to 40%,,150,18,810,80,watchlist,
+Thryv,Local biz all-in-one,recurring_partner_only,20-30%,90,300,24,1800,78,watchlist,"recurring rate requires certified-partner status"
+NordLayer,SMB cybersecurity,recurring_lifetime,30-40%,30,45,18,284,76,watchlist,"multi-seat pricing assumed 5 seats"
+Seamless.AI,AI sales/lead gen,recurring_capped_12mo,up to 40%,90,147,12,706,74,watchlist,
+MyAIFrontDesk,AI receptionist,recurring_uncapped,30%,,65,12,234,73,shortlisted,"verified public terms, chosen over Votel"
+ActiveCampaign,Email/marketing automation,recurring_capped_12mo,20-30%,90,60,12,180,71,shortlisted,
+Close CRM,CRM,recurring_capped_12mo,30%,90,50,12,150,70,shortlisted,
+MailerLite,Email marketing,recurring_lifetime,30%,45,20,24,144,69,watchlist,
+Podium,Reputation management,recurring_12mo,30%,,289,12,867,68,shortlisted,
+AI-Receptionist.com,AI receptionist,recurring,20%,,50,12,120,65,watchlist,"price estimated, low confidence"
+Rosie (heyrosie.com),AI receptionist,recurring,20%,,49,12,118,64,watchlist,
+Smith.ai,AI receptionist,one_time_bounty,"$1000/client, $200/voice assistant",,285,,1000,62,watchlist,"strong one-time bounty, complementary track"
+Votel.ai,Agency/GHL-style bundle,unknown,unverifiable,,197,,,31,rejected_for_now,"no public affiliate terms found anywhere; likely GHL-based reseller"
+HubSpot,CRM,recurring_capped_12mo,30%,180,100,12,360,67,watchlist,
+Pipedrive,CRM,recurring_capped_12mo,20-30%,90,40,12,120,60,watchlist,
+Keap,CRM,recurring_capped_12mo_or_uncapped_certified,20-30%,,120,12,288,63,watchlist,
+Zoho,CRM,recurring_capped_12mo,15-20%,90,25,12,45,52,watchlist,
+monday.com,CRM,recurring_hybrid_cpl,15%,90,15,12,27,48,watchlist,
+Calendly,Scheduling,recurring_varies,10-30%,90,13,12,23,50,watchlist,
+Setmore,Scheduling,flat_pct,30%,60,14,,4.2,45,watchlist,"flat on premium plans only, not clearly recurring"
+Acuity Scheduling,Scheduling,one_time,$50 flat,,25,,50,40,watchlist,
+ConvertKit/Kit,Email marketing,recurring_24mo,30%,90,20,24,144,66,watchlist,
+Klaviyo,Email marketing,recurring_capped_12mo,20%,30,60,12,144,62,watchlist,
+Brevo,Email marketing,hybrid,€100 flat + €5/signup,90,20,,100,42,watchlist,
+Cloudways,Hosting,hybrid,$30+7% lifetime or up to $125 one-time,90,25,18,61.5,44,watchlist,
+Kinsta,Hosting,hybrid,10% lifetime + up to $500,60,60,18,108,43,watchlist,
+WP Engine,Hosting,one_time,$200+ flat,180,80,,200,38,watchlist,
+Hostinger,Hosting,one_time,40-60% of sale,30,6,,3,25,deprioritized,"commodity, weak recurring"
+Bluehost,Hosting,one_time,$65 flat,30,7,,65,26,deprioritized,
+Squarespace,Website builder,one_time,$50-300,45,30,,150,35,deprioritized,
+Wix,Website builder,recurring_undisclosed,unknown,,25,,,30,deprioritized,"% not published"
+Tidio,AI chatbot,recurring_lifetime,30%,30,60,18,324,64,watchlist,
+Chatfuel,AI chatbot,recurring_12mo,30-50%,30,20,12,72,55,watchlist,
+ManyChat,AI chatbot,recurring_tiered_12mo,30-40%,90,30,12,126,58,watchlist,
+Make.com,Workflow automation,recurring_12mo,35%,,20,12,84,56,watchlist,
+n8n,Workflow automation,recurring_12mo,30%,,50,12,180,60,watchlist,"no paid ads allowed per terms"
+Zapier,Workflow automation,gated_undisclosed,unknown,,50,,,30,deprioritized,
+QuickBooks,Accounting,one_time,10-15% or ~$55/sale,,80,,55,28,deprioritized,
+FreshBooks,Accounting,one_time,up to $200/sale,,35,,55,30,deprioritized,
+Wave,Accounting,hybrid,$50 flat or 30% capped $1000,,20,12,72,42,watchlist,
+Bill.com,Accounting,one_time,$250-350/sale,,60,,300,40,watchlist,
+Shopify,Ecommerce,recurring,20%,90,80,12,192,58,watchlist,
+BigCommerce,Ecommerce,one_time,200% of first month,90,90,,180,35,deprioritized,
+1Password,Cybersecurity,one_time,25% of first period,45,5,,1.25,20,deprioritized,
+NiceJob,Reputation management,recurring_12mo,25-30%,,120,12,396,61,watchlist,
+Birdeye,Reputation management,undisclosed,unknown,,300,,,32,deprioritized,
+Housecall Pro,Field service,one_time,$180-320/referral,90,150,,250,44,watchlist,
+Apollo.io,AI sales,recurring_capped_12mo,15-20%,,80,12,144,53,watchlist,
+Freshworks,CRM/sales,recurring_12mo,20-25%,90,30,12,72,54,watchlist,
+RingCentral,Telephony,one_time,up to $85/sale,,30,,85,35,deprioritized,
+OpenPhone,Telephony,recurring_capped_12mo,20%,,18,12,43.2,45,watchlist,
+Dialzara/Dialora.ai,AI receptionist,recurring_uncapped,up to 30%,,29,12,104,63,watchlist,
+Goodcall,AI receptionist,capped_annual,up to $140/yr,,59,,140,42,watchlist,
+Ruby Receptionists,AI receptionist,one_time,$150 flat,,349,,150,45,watchlist,
+AnswerConnect,AI receptionist,one_time,$150 flat,,399,,150,44,watchlist,

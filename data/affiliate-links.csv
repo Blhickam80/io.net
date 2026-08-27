@@ -1,0 +1,9 @@
+program,status,raw_affiliate_url,placeholder_id,notes
+GoHighLevel,pending_signup,,affiliate:gohighlevel,"Join at GHL affiliate portal once ACCESS_NEEDED #5 resolved; replace placeholder via automation/apply_affiliate_links.py"
+MyAIFrontDesk,pending_signup,,affiliate:myaifrontdesk,"myaifrontdesk.com/affiliate"
+Rosie,pending_signup,,affiliate:rosie,"heyrosie.com/ai-answering-service-affiliate-program"
+AI-Receptionist.com,pending_signup,,affiliate:ai-receptionist,"ai-receptionist.com/affiliate-program"
+Close CRM,pending_signup,,affiliate:close-crm,"close.com/partners (via PartnerStack)"
+ActiveCampaign,pending_signup,,affiliate:activecampaign,"activecampaign.com/partners/affiliate"
+Podium,pending_signup,,affiliate:podium,"podium.com/partners/affiliate"
+Instantly.ai,pending_signup,,affiliate:instantly,"instantly.ai/affiliate"

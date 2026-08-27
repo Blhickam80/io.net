@@ -209,6 +209,8 @@ def compute_metrics(trades, buy_sizes):
     last_trade_days_ago = min((now - t["sell_ts"]) / 86400 for t in trades)
     trades_last_7d = sum(1 for t in trades if (now - t["sell_ts"]) / 86400 <= 7)
     avg_hold_hr = sum(t["hold_seconds"] for t in trades) / n / 3600
+    hold_secs_sorted = sorted(t["hold_seconds"] for t in trades)
+    median_hold_seconds = hold_secs_sorted[n // 2]
     pnl_pcts = sorted(t["pnl_pct"] for t in trades)
     median_pct = pnl_pcts[n // 2]
 
@@ -229,6 +231,7 @@ def compute_metrics(trades, buy_sizes):
         "worst_trade_pnl_sol": worst["pnl_sol"],
         "profit_concentration": (best["pnl_sol"] / total_pos_pnl) if best["pnl_sol"] > 0 else 0,
         "avg_hold_hours": avg_hold_hr,
+        "median_hold_seconds": median_hold_seconds,
         "trades_last_7d": trades_last_7d,
         "last_trade_days_ago": last_trade_days_ago,
         "avg_buy_size_sol": mean_buy,
@@ -279,6 +282,22 @@ def score_wallet(m):
     if m["position_size_cv"] is not None and m["position_size_cv"] > 1.5:
         warnings.append("Highly inconsistent position sizing -- harder to copy predictably.")
         score -= 10
+
+    # Hold time floor: block-time resolution is ~1 second, so a median hold under a few blocks
+    # means buy-and-sell landed in the same or immediately adjacent block. That is not a
+    # "fast trader" -- it's a pattern (sniper bot, atomic bundle, or privileged/MEV execution)
+    # that a Telegram-bot copier, which necessarily lags by at least one block plus message and
+    # RPC round-trip time, structurally cannot replicate. You would very likely be buying into
+    # this wallet's exit, not their entry.
+    if m["median_hold_seconds"] <= 3:
+        warnings.append(
+            f"Median hold time ~{m['median_hold_seconds']:.1f}s -- buys and sells are landing in "
+            "the same/adjacent block. Likely a sniper bot, atomic bundle, or privileged execution "
+            "(private mempool/Jito bundle) rather than a repeatable read-and-react trade. A "
+            "Telegram copy bot cannot match this latency -- copying this wallet means buying "
+            "near the top of their flip, not at their entry. Treat as NOT COPYABLE regardless of score."
+        )
+        score -= 60
 
     # Frequency sanity: extreme frequency = hard to copy without huge slippage/fees on a small acct
     if m["trades_last_7d"] > 40:
@@ -338,7 +357,7 @@ def main():
     results.sort(key=lambda r: r.get("score", -1), reverse=True)
 
     print("\n" + "=" * 100)
-    print(f"{'RANK':<5}{'SCORE':<7}{'WALLET':<46}{'TRADES':<8}{'WIN%':<7}{'MED%':<8}{'LAST TRADE'}")
+    print(f"{'RANK':<5}{'SCORE':<7}{'WALLET':<46}{'TRADES':<8}{'WIN%':<7}{'MED%':<8}{'HOLD':<10}{'LAST TRADE'}")
     print("=" * 100)
     for i, r in enumerate(results, 1):
         if r.get("error"):
@@ -348,9 +367,11 @@ def main():
         if m is None:
             print(f"{i:<5}{r['score']:<7}{r['wallet']:<46}{'0':<8}")
             continue
+        hold_s = m["median_hold_seconds"]
+        hold_str = f"{hold_s:.0f}s" if hold_s < 120 else f"{hold_s/60:.1f}m"
         print(
             f"{i:<5}{r['score']:<7}{r['wallet']:<46}"
-            f"{m['n_trades']:<8}{m['win_rate']*100:<7.1f}{m['median_pnl_pct']:<8.1f}"
+            f"{m['n_trades']:<8}{m['win_rate']*100:<7.1f}{m['median_pnl_pct']:<8.1f}{hold_str:<10}"
             f"{m['last_trade_days_ago']:.1f}d ago"
         )
         for w_ in r["warnings"]:

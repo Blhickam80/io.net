@@ -3,3 +3,6 @@
 #
 # example:
 # 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM
+
+# "Early Bird" -- analyzed, NOT COPYABLE (sub-second flip pattern). See profiles/early_bird.md.
+# 3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE

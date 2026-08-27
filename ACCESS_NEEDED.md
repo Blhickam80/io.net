@@ -6,10 +6,10 @@ For each: What / Why / Where to get it / Cost / Permissions / What happens next.
 ---
 
 ## 1. ~~Approve the business architecture & niche~~ — RESOLVED
-Direction confirmed and brand name chosen: **StackFront** (operator's initial pick, TradeStack, was overridden after a collision check — see DECISIONS.md). Site already rebranded (header/footer/schema across all published pages). No longer blocking.
+Direction confirmed and brand name chosen: **Yardwick** (after TradeStack and StackFront were both ruled out by collision checks — see DECISIONS.md). Site already rebranded (header/footer/schema across all published pages). No longer blocking.
 
 ## 2. A domain name
-- **What:** Register **stackfront.com** if available; fall back to stackfront.io / stackfront.co / getstackfront.com / usestackfront.com in that order if .com is taken. A basic web search turned up no dedicated business or trademark currently operating under "StackFront" (unlike TradeStack), but registrar-level availability was not checked — confirm before paying for anything.
+- **What:** Register **yardwick.com** if available; fall back to yardwick.io / yardwick.co / getyardwick.com / useyardwick.com in that order if .com is taken. A web search turned up no dedicated business, trademark, or product currently operating under "Yardwick" in any industry, but registrar-level availability was not checked — confirm before paying for anything.
 - **Why:** Needed for a real, indexable, affiliate-program-eligible website. Most affiliate/partner programs require a live business website with real content and a business identity, not a raw GitHub Pages URL, though we can start on a free subdomain.
 - **Where:** Any registrar (Cloudflare Registrar has no markup; Namecheap/Porkbun are also cheap, ~$8–12/yr for a .com).
 - **Cost:** ~$8–15/year.
@@ -43,7 +43,7 @@ Direction confirmed and brand name chosen: **StackFront** (operator's initial pi
 
 ## 6. Social media account handles (only for channels we decide to actually run — see SOCIAL_PLAN.md)
 - **What:** Handle/account creation on the 1–2 channels the Market Intelligence + Social Growth analysis recommends starting with (likely YouTube + one short-form platform, not all seven).
-- **Brand name to register under:** **StackFront**. Use `stackfront` as the handle everywhere it's free (YouTube: @stackfront, X: @stackfront, Instagram: @stackfront, TikTok: @stackfront). If a platform's exact handle is taken, use `@getstackfront` or `@stackfronthq` consistently rather than a different handle per platform — cross-platform consistency matters more than winning the shortest handle. Note whichever variant you actually land on so it can be recorded in `SOCIAL_PLAN.md`.
+- **Brand name to register under:** **Yardwick**. Use `yardwick` as the handle everywhere it's free (YouTube: @yardwick, X: @yardwick, Instagram: @yardwick, TikTok: @yardwick). If a platform's exact handle is taken, use `@getyardwick` or `@yardwickhq` consistently rather than a different handle per platform — cross-platform consistency matters more than winning the shortest handle. Note whichever variant you actually land on so it can be recorded in `SOCIAL_PLAN.md`.
 - **Why:** Claude can write scripts/captions/plans but cannot create accounts, verify phone numbers, or upload video from this environment.
 - **Where:** Standard signup flows.
 - **Cost:** $0.

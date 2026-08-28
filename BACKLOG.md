@@ -3,6 +3,7 @@
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
 ## Done this session (2026-08-27 to 28, updated after launch)
+- ✅ **Close vs ActiveCampaign vs HubSpot comparison page published** (website/public/compare/close-vs-activecampaign-vs-hubspot.html) — CRM money page, completes the pattern of standalone comparisons for every leg of the Customer Monetization Stack
 - ✅ **Podium vs Birdeye vs NiceJob comparison page published** (website/public/compare/podium-vs-birdeye-vs-nicejob.html) — reputation-management money page, honest about Birdeye's undisclosed pricing/commission
 - ✅ **No-Show / Cancellation Cost Calculator published** (website/public/tools/no-show-calculator.html) — 3rd free tool, targets dental/med-spa/salon segment specifically, math verified in a real browser (400 appts → 48 no-shows → 38 unfilled slots → $6,912/mo → $82,944/yr), cross-sells ActiveCampaign/Calendly/Podium (reminder + rescheduling + two-way texting, the actual fix for this problem)
 - ✅ **Reconciled all 15 top-ranked AFFILIATES.md programs onto the rigorous `score_program.py` methodology** (previously only GoHighLevel/MyAIFrontDesk/Votel were rescored, the rest were older holistic estimates). Notable moves: NordLayer 76→55.7 and Seamless.AI/Instantly.ai both fell — all three had strong commission math but a poor TAM fit with our home-service SMB audience that the original pass under-weighted.
@@ -19,10 +20,10 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 - ✅ Votel.ai referral program verified (real terms, real live link) and wired into AFFILIATES.md, STRATEGY.md, data/*.csv, and the GoHighLevel-vs-Votel comparison page with a transparency note on the commission differential
 
 ## In progress / next up (not blocked)
-1. **CRM comparison cluster** (Close vs ActiveCampaign vs HubSpot for service businesses) — both already used individually in stack sections; a head-to-head page is the natural next money page.
-2. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
-3. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
-4. **Re-score the remaining ~40 surveyed-but-deprioritized programs** if any of them ever become relevant to a new content angle — not worth doing speculatively now since none are referenced in published content.
+1. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps). This is now the highest-value not-blocked item — all 4 planned money pages and all 3 planned calculators are published; the content pipeline should shift toward more keyword coverage and internal linking rather than more net-new page types.
+2. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
+3. **Re-score the remaining ~40 surveyed-but-deprioritized programs** if any of them ever become relevant to a new content angle — not worth doing speculatively now since none are referenced in published content.
+4. **First weekly CEO review** — due per `documentation/WORK_LOOP.md`; a lot has happened since launch, worth a proper structured look at the whole picture (see `.claude/skills/weekly-ceo-review/`).
 
 **On hold, not a standing item:** Posting Short 01 (delivered, real rendered video, sitting with the operator — upload whenever) and generating shorts-02/03 the same way — video is on-demand now, not a cadence (STRATEGY.md §5).
 

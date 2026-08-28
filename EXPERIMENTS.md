@@ -24,15 +24,26 @@ No experiments have concluded yet (Day 1). Planned first experiments (to launch 
 - Channel: Organic SEO (Engine H + A)
 - Target customer: Home-service/local business owners
 - Offer: Free calculator, no email gate initially (to maximize top-of-funnel reach and indexability), soft CTA to top-scored AI receptionist affiliate program
-- Content/asset: `website/public/tools/missed-call-calculator.html` (built Day 1)
+- Content/asset: `website/public/tools/missed-call-calculator.html` (built Day 1, live since site launch)
 - CTA: "See how [Product] fixes this" → affiliate link with UTM
-- Status: Built, not yet live (blocked on hosting — ACCESS_NEEDED #3)
-- Decision: pending traffic data
+- Started: 2026-08-28 (site went live; hosting blocker from ACCESS_NEEDED #3 is resolved)
+- Traffic / Clicks / Leads / Trials / Sales / Revenue / Recurring revenue: no data yet — analytics not wired up (ACCESS_NEEDED #4); zero on all measured figures as of this report
+- Cost: $0
+- Time invested: ~1 session to build
+- Result: Too early to call — check-in window (2 weeks or 100 sessions from 2026-08-28) has not elapsed
+- Decision: CONTINUE (evidence pending — see weekly-2026-08-28.md; do not force SCALE/MODIFY/KILL before the window elapses)
 
 ## EXP-002: "Best AI Receptionist for {Industry}" programmatic cluster
 - Hypothesis: Industry-specific comparison content outranks generic "best AI receptionist" pages because competition is lower and buyer intent is higher.
 - Channel: Engine A/C
-- Status: Planned — first 3 industries to be selected from Market Intelligence research (roofing, dental, real estate as initial guesses)
-- Decision: pending
+- Target customer: Home-service/local business owners in roofing, dental, and real estate specifically
+- Offer: Full industry comparison pages with Customer Monetization Stack cross-sell
+- Content/asset: `website/public/compare/best-ai-receptionist-{roofing,dental,real-estate}.html` — all 3 published and live since site launch
+- Started: 2026-08-28 (site went live)
+- Traffic / Clicks / Leads / Trials / Sales / Revenue / Recurring revenue: no data yet — analytics not wired up (ACCESS_NEEDED #4); zero on all measured figures as of this report
+- Cost: $0
+- Time invested: ~1 session to build all 3 pages
+- Result: Too early to call — check-in window (2 weeks or 100 sessions from 2026-08-28) has not elapsed
+- Decision: CONTINUE (evidence pending — see weekly-2026-08-28.md; do not force SCALE/MODIFY/KILL before the window elapses)
 
 Update this file every time an experiment starts, changes state, or concludes. Do not let a strategy linger in "CONTINUE" indefinitely without new evidence — force a SCALE/MODIFY/KILL decision within a defined check-in window (default: 2 weeks or 100 sessions, whichever first).

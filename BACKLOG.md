@@ -3,6 +3,7 @@
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
 ## Done this session (2026-08-27 to 28, updated after launch)
+- ✅ **First weekly CEO review published** (`reports/weekly-2026-08-28.md`) — honest pre-revenue/zero-traffic status, no SCALE/MODIFY/KILL forced on EXP-001/EXP-002 since their check-in window only starts today; `EXPERIMENTS.md` updated to reflect both are now live with a 2026-08-28 start date.
 - ✅ **Close vs ActiveCampaign vs HubSpot comparison page published** (website/public/compare/close-vs-activecampaign-vs-hubspot.html) — CRM money page, completes the pattern of standalone comparisons for every leg of the Customer Monetization Stack
 - ✅ **Podium vs Birdeye vs NiceJob comparison page published** (website/public/compare/podium-vs-birdeye-vs-nicejob.html) — reputation-management money page, honest about Birdeye's undisclosed pricing/commission
 - ✅ **No-Show / Cancellation Cost Calculator published** (website/public/tools/no-show-calculator.html) — 3rd free tool, targets dental/med-spa/salon segment specifically, math verified in a real browser (400 appts → 48 no-shows → 38 unfilled slots → $6,912/mo → $82,944/yr), cross-sells ActiveCampaign/Calendly/Podium (reminder + rescheduling + two-way texting, the actual fix for this problem)
@@ -19,11 +20,13 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 - ✅ SECURITY.md, APPROVAL_POLICY.md
 - ✅ Votel.ai referral program verified (real terms, real live link) and wired into AFFILIATES.md, STRATEGY.md, data/*.csv, and the GoHighLevel-vs-Votel comparison page with a transparency note on the commission differential
 
-## In progress / next up (not blocked)
-1. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps). This is now the highest-value not-blocked item — all 4 planned money pages and all 3 planned calculators are published; the content pipeline should shift toward more keyword coverage and internal linking rather than more net-new page types.
-2. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
-3. **Re-score the remaining ~40 surveyed-but-deprioritized programs** if any of them ever become relevant to a new content angle — not worth doing speculatively now since none are referenced in published content.
-4. **First weekly CEO review** — due per `documentation/WORK_LOOP.md`; a lot has happened since launch, worth a proper structured look at the whole picture (see `.claude/skills/weekly-ceo-review/`).
+## In progress / next up (not blocked) — re-ranked per weekly-2026-08-28.md
+1. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps). Highest-value not-blocked item — all planned money pages and calculators are published; the content pipeline should shift toward keyword coverage and internal linking rather than more net-new page types.
+2. **Check Votel.ai's own referral dashboard for early click/signup data** — doesn't require new tooling, just a login; would be the first real signal on which page/placement is actually driving affiliate interest, even before formal analytics exists.
+3. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
+4. **Re-score the remaining ~40 surveyed-but-deprioritized programs** if any of them ever become relevant to a new content angle — not worth doing speculatively now since none are referenced in published content.
+
+**Flagged again in the weekly review as the highest-leverage item the operator (not Claude) can unblock:** Google Search Console / Analytics access (ACCESS_NEEDED #4) — every Growth/Revenue metric in `reports/weekly-2026-08-28.md` reads "unknown" or "$0" until this exists.
 
 **On hold, not a standing item:** Posting Short 01 (delivered, real rendered video, sitting with the operator — upload whenever) and generating shorts-02/03 the same way — video is on-demand now, not a cadence (STRATEGY.md §5).
 
@@ -40,7 +43,7 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 - Outreach template set for marketing-agency partnerships (Engine K) — targets the Instantly.ai secondary segment
 - Competitor reverse-engineering pass (Section 28) — analyze 3-5 successful "GoHighLevel review" sites/YouTube channels for structure/backlink patterns once we can browse them properly
 - Newsletter setup plan (Engine I) — depends on ESP access
-- First weekly CEO review (`reports/weekly-2026-09-03.md`) — due ~1 week after launch
+- Next weekly CEO review (`reports/weekly-2026-09-04.md`) — due ~1 week after this one (2026-08-28)
 
 ## Killed / deprioritized
 - Paid advertising of any kind — explicitly against the $0-300 / minimal-paid-spend constraint.

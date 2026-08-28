@@ -59,5 +59,14 @@ Direction confirmed and brand name chosen: **Yardwick** (after TradeStack and St
 - **Permissions:** Account creation (phone verification likely required).
 - **What Claude does next:** Wire up the lead-magnet delivery and newsletter automation immediately.
 
+## 8. Playwright MCP (browser automation) for this Claude Code environment
+- **What:** Microsoft's official Playwright MCP server, so Claude can drive a real browser — log into affiliate dashboards, verify gated referral terms (e.g., Votel.ai's referral page, currently unverifiable per AFFILIATES.md), inspect competitor sites, and interact with approved SaaS dashboards — instead of relying only on search-engine snippets.
+- **Why:** Checked in this session — no Playwright MCP server is connected, and there's no tool available from inside this sandboxed Claude Code session that can add one (MCP server configuration is a client/environment-level setting, not a repo file Claude can edit). This has to be enabled from outside this conversation.
+- **Where:** If running Claude Code locally: `claude mcp add playwright npx @playwright/mcp@latest` (confirm the package is Microsoft's official `@playwright/mcp`, not a third-party fork, before running it — see SECURITY.md). If this is a hosted/remote Claude Code environment, the equivalent is whatever MCP-server setting exists in that environment's configuration — check the environment settings in whatever platform is hosting this session.
+- **Cost:** $0 (the MCP server itself is free; it drives a local/sandboxed browser).
+- **Permissions:** None beyond enabling the MCP server — it does not need any account credentials itself, though using it to log into a specific dashboard (e.g., an approved affiliate account) would require that account to already exist per item #5.
+- **What Claude does next:** Re-verify Votel.ai's referral terms directly, do deeper competitor site inspection, and (once affiliate accounts exist per #5) pull real click/commission data from dashboards that don't offer a clean API.
+- **Priority:** Genuinely useful, not urgent — the content pipeline (BACKLOG.md) doesn't depend on it. Add when convenient.
+
 ---
 *Nothing above blocks Claude from continuing to build content, scoring, code, and site structure in the meantime — see BACKLOG.md for what's proceeding in parallel without waiting on the human.*

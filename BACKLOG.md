@@ -2,23 +2,25 @@
 
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
-## Done this session (2026-08-27)
+## Done this session (2026-08-27 to 28)
 - ✅ Published "GoHighLevel vs Votel.ai" comparison page
-- ✅ Published "Best AI Receptionist for Roofing Companies" and "...for Dental Practices" industry pages
+- ✅ Published "Best AI Receptionist for Roofing Companies", "...for Dental Practices", and "...for Real Estate Agents" industry pages (full stack template on all three)
+- ✅ Published GoHighLevel Review page + reviews/index.html
 - ✅ Missed Call Revenue Calculator live in repo
-- ✅ Affiliate-link placeholder system + `automation/apply_affiliate_links.py` so real links can be dropped in without touching page content
+- ✅ Affiliate-link placeholder system + `automation/apply_affiliate_links.py`
+- ✅ `.claude/skills/affiliate-opportunity-scoring/` (with working `score_program.py`) and `.claude/skills/weekly-ceo-review/` project skills
+- ✅ SECURITY.md, APPROVAL_POLICY.md
 
 ## In progress / next up (not blocked)
-Reprioritized 2026-08-27 — see STRATEGY.md §5 and DECISIONS.md: video is downgraded to an operator-gated experiment (not a standing channel), written/SEO content is the real 80%+. Ordered accordingly:
+1. **Reconcile AFFILIATES.md scores against `score_program.py`** — the script's mechanical bucketing gives more conservative numbers than the original holistic estimates (e.g. MyAIFrontDesk 57.4 vs. 73). Re-run the top ~10 programs through the script with real judgment inputs and update AFFILIATES.md/data/affiliate-programs.csv to the reconciled numbers before relying on the ranking for a real decision.
+2. **Build 2nd free tool: Lead Response Time Calculator** (Engine H) — same pattern as the missed-call calculator, pairs with CRM/AI-receptionist content.
+3. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
+4. **Add GitHub Actions workflow to auto-deploy `website/public` to GitHub Pages** so the site goes live the moment Pages is enabled (removes a manual step from ACCESS_NEEDED #3).
+5. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
 
-1. **Best AI Receptionist for Real Estate Agents** — 3rd industry page, same stack-template pattern.
-2. **Write the GoHighLevel review/overview page** — foundational money page other content links into.
-3. **Build 2nd free tool: Lead Response Time Calculator** (Engine H) — same pattern as the missed-call calculator, pairs with CRM/AI-receptionist content.
-4. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
-5. **Add GitHub Actions workflow to auto-deploy `website/public` to GitHub Pages** so the site goes live the moment Pages is enabled (removes a manual step from ACCESS_NEEDED #3).
-6. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
+**On hold, not a standing item:** Posting Short 01 (delivered, real rendered video, sitting with the operator — upload whenever) and generating shorts-02/03 the same way — video is on-demand now, not a cadence (STRATEGY.md §5).
 
-**On hold, not a standing item:** Posting Short 01 (delivered, real rendered video, sitting with the operator — upload whenever) and generating shorts-02/03 the same way. Not queued as ongoing work — video is on-demand now, not a cadence.
+**Explicitly deferred, not forgotten** (see DECISIONS.md 2026-08-28 — revisit once there's real traffic/affiliate data to justify them, not before): the remaining ~18 proposed Claude Skills beyond opportunity-scoring/weekly-review, 8 formal subagents, a SQLite database, an attribution pipeline, a dashboard, and any community skill-collection imports.
 
 ## Blocked on human (see ACCESS_NEEDED.md for full detail)
 - Domain purchase (#2)

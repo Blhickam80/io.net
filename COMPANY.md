@@ -39,6 +39,7 @@ tasks and report back into this repo — they are not standing employees).
 
 ## Directory map
 ```
+/.claude/skills    project skills (repeatable procedures) — see .claude/skills/*/SKILL.md
 /research          market & competitor research, raw notes
 /affiliate-programs  (nested under research) program-by-program dossiers
 /strategy          architecture docs, scoring models

@@ -13,6 +13,7 @@ One research topic → 1 long article/comparison page (website) + 1 YouTube vide
 | 5 | Best AI Receptionist for Real Estate Agents | Industry page | **Published** | same |
 | 6 | GoHighLevel Review | Review page | **Published** (website/public/reviews) | GoHighLevel |
 | 7 | AI Automation Checklist for Local Businesses | Lead magnet (PDF/page) | Queued | multiple |
+| 8 | Lead Response Time Calculator | Free tool | **Published** (website/public/tools) | MyAIFrontDesk, Close CRM, ActiveCampaign |
 
 All published pages use affiliate-link placeholders (`href="#affiliate:<slug>"`) rather than live links — see `automation/apply_affiliate_links.py` and `data/affiliate-links.csv`. Real tracked links get swapped in automatically once accounts are approved (ACCESS_NEEDED.md #5).
 

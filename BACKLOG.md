@@ -2,7 +2,8 @@
 
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
-## Done this session (2026-08-27 to 28)
+## Done this session (2026-08-27 to 28, updated after merge)
+- ✅ Merged everything to `main` (PR #2) and ran the deploy workflow myself — it failed at the one step that requires the repo owner to flip GitHub Pages on in Settings (see ACCESS_NEEDED.md #3 for the exact status). Will re-run the moment that's done; no further push needed.
 - ✅ Published "GoHighLevel vs Votel.ai" comparison page
 - ✅ Published "Best AI Receptionist for Roofing Companies", "...for Dental Practices", and "...for Real Estate Agents" industry pages (full stack template on all three)
 - ✅ Published GoHighLevel Review page + reviews/index.html
@@ -16,8 +17,7 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 1. **Reconcile the remaining AFFILIATES.md scores against `score_program.py`** — GoHighLevel, MyAIFrontDesk, and Votel.ai are now rescored with the rigorous script; the other ~12 rows are still the original holistic estimates. Re-run them with real judgment inputs before relying on the full ranking for a decision.
 2. **Build 2nd free tool: Lead Response Time Calculator** (Engine H) — same pattern as the missed-call calculator, pairs with CRM/AI-receptionist content.
 3. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
-4. **Add GitHub Actions workflow to auto-deploy `website/public` to GitHub Pages** so the site goes live the moment Pages is enabled (removes a manual step from ACCESS_NEEDED #3).
-5. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
+4. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
 
 **Elevated priority note:** Votel's live link means ACCESS_NEEDED.md #3 (enabling GitHub Pages / hosting) is now the actual binding constraint on Milestone 1 (first affiliate commission) — not affiliate approval, which was true until today. Everything else on this list keeps compounding SEO value regardless, but getting the site publicly reachable is the one blocker standing directly between "real live affiliate link exists" and "real live affiliate link can earn something."
 

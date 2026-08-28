@@ -17,13 +17,13 @@ Direction confirmed and brand name chosen: **Yardwick** (after TradeStack and St
 - **What Claude does next:** Point DNS at the free hosting (Cloudflare Pages/GitHub Pages), finish site branding, and begin submitting to affiliate programs that require a live domain.
 - **Interim plan:** Build and deploy the MVP now on a free subdomain (e.g. GitHub Pages) so content and SEO groundwork start accruing immediately; migrate to the paid domain later with 301 redirects — no work is wasted by waiting.
 
-## 3. Free hosting account (Cloudflare Pages or GitHub Pages) — NOW THE TOP PRIORITY
-- **What:** Authorize/connect a Cloudflare account (free tier) or confirm GitHub Pages is fine to enable on this repo, so the site can actually be deployed and publicly reachable.
-- **Why:** A site that only exists as source code in this repo produces zero traffic, zero SEO, zero affiliate clicks. **This just became the single binding constraint on the first dollar of revenue:** a real, live, working Votel.ai affiliate link exists in the site right now (50% recurring commission, verified 2026-08-28), but nobody can click it until the site is actually reachable at a public URL. Every other item on this list can wait; this one is standing directly between existing work and the first possible commission.
-- **Where:** GitHub Pages needs only a repo setting toggle (Settings → Pages) — if the operator can do that, no new account is needed at all. Cloudflare Pages needs a free Cloudflare account + connecting this GitHub repo.
+## 3. Free hosting account (Cloudflare Pages or GitHub Pages) — THE ONLY THING LEFT BLOCKING LAUNCH
+- **Status (2026-08-28):** Everything on Claude's side is done — the site is merged to `main`, and the auto-deploy workflow ran on the merge. It failed at exactly one step: `actions/configure-pages`, which requires GitHub Pages to already be switched on for this repo. That's a repository-settings change gated to the repo owner; there's no API path to it available to Claude. The moment it's flipped, re-running the workflow (which Claude can do without any further help) will publish the site.
+- **What:** In this repo → **Settings → Pages → Source: "GitHub Actions"**. One click, then save. (Cloudflare Pages is a fallback if GitHub Pages isn't wanted — free tier, needs connecting this repo — but GitHub Pages needs zero new accounts and the workflow is already built for it.)
+- **Why:** A site that only exists as source code in this repo produces zero traffic, zero SEO, zero affiliate clicks. A real, live, working Votel.ai affiliate link exists in the site right now (50% recurring commission, verified 2026-08-28), but nobody can click it until the site is actually reachable at a public URL. This is the single binding constraint on the first dollar of revenue.
 - **Cost:** $0.
-- **Permissions:** Whoever owns this GitHub repo needs to flip the Pages setting, or create/connect a Cloudflare account.
-- **What Claude does next:** Verify the deployed site renders correctly, submit the sitemap to Google Search Console (needs #4), and begin the content publishing cadence.
+- **Permissions:** Whoever owns this GitHub repo needs to flip the Pages setting.
+- **What Claude does next:** Immediately re-run the deploy workflow (no push needed), verify the deployed site renders correctly, submit the sitemap to Google Search Console (needs #4), and continue the content publishing cadence.
 
 ## 4. Google Search Console + Google Analytics (or a free privacy-friendly alternative like Plausible/Umami self-host, Cloudflare Web Analytics) access
 - **What:** A Google account (can be a new free one dedicated to this business) verified against the domain, to get indexing and real keyword/traffic data.

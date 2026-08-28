@@ -3,6 +3,7 @@
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
 ## Done this session (2026-08-27 to 28, updated after launch)
+- ✅ **SEO keyword list expanded** (`seo/keywords.csv`) — 25 new long-tail keywords added across all 9 published pages (roofing/dental/real-estate industry pages, GoHighLevel/Votel comparison + review, all 3 calculators, Podium and Close/ActiveCampaign comparisons), plus 3 "planned" seeds for the next candidate industry verticals (HVAC, plumbing, law firms) per SEO_PLAN.md's seed list, not yet built into pages. No new page types shipped — deliberately, per this week's CEO review, since the content pipeline should prioritize coverage/internal-linking depth over new formats right now.
 - ✅ **First weekly CEO review published** (`reports/weekly-2026-08-28.md`) — honest pre-revenue/zero-traffic status, no SCALE/MODIFY/KILL forced on EXP-001/EXP-002 since their check-in window only starts today; `EXPERIMENTS.md` updated to reflect both are now live with a 2026-08-28 start date.
 - ✅ **Close vs ActiveCampaign vs HubSpot comparison page published** (website/public/compare/close-vs-activecampaign-vs-hubspot.html) — CRM money page, completes the pattern of standalone comparisons for every leg of the Customer Monetization Stack
 - ✅ **Podium vs Birdeye vs NiceJob comparison page published** (website/public/compare/podium-vs-birdeye-vs-nicejob.html) — reputation-management money page, honest about Birdeye's undisclosed pricing/commission
@@ -21,10 +22,11 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 - ✅ Votel.ai referral program verified (real terms, real live link) and wired into AFFILIATES.md, STRATEGY.md, data/*.csv, and the GoHighLevel-vs-Votel comparison page with a transparency note on the commission differential
 
 ## In progress / next up (not blocked) — re-ranked per weekly-2026-08-28.md
-1. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps). Highest-value not-blocked item — all planned money pages and calculators are published; the content pipeline should shift toward keyword coverage and internal linking rather than more net-new page types.
+1. **Weave the new long-tail keywords into on-page content** — `seo/keywords.csv` now has 25 new long-tails targeting already-published pages; the next step is adding direct-answer FAQ entries/copy for the highest-intent ones (e.g. "is gohighlevel worth it", "why is lead response time important") directly into those pages' existing FAQ schema, rather than leaving the keyword mapped with no on-page reinforcement.
 2. **Check Votel.ai's own referral dashboard for early click/signup data** — doesn't require new tooling, just a login; would be the first real signal on which page/placement is actually driving affiliate interest, even before formal analytics exists.
 3. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
 4. **Re-score the remaining ~40 surveyed-but-deprioritized programs** if any of them ever become relevant to a new content angle — not worth doing speculatively now since none are referenced in published content.
+5. **HVAC / plumbing / law-firm industry pages** — seeded as "planned" keywords in `seo/keywords.csv`; hold until the existing roofing/dental/real-estate pages show some real traffic signal, so we're not building the same page type 6x on pure speculation.
 
 **Flagged again in the weekly review as the highest-leverage item the operator (not Claude) can unblock:** Google Search Console / Analytics access (ACCESS_NEEDED #4) — every Growth/Revenue metric in `reports/weekly-2026-08-28.md` reads "unknown" or "$0" until this exists.
 

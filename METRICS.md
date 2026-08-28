@@ -12,17 +12,17 @@ Last updated: 2026-08-28
 - [ ] Milestone 7 — $10,000/mo
 - [ ] Milestone 8 — $25,000+/mo
 
-**Current status: pre-launch, but first live affiliate link is real.** Votel.ai's referral program is joined and verified (50% recurring + 5% second-tier, no cap) — a working tracked link is live in `compare/gohighlevel-vs-votel.html`. All other shortlisted programs still pending signup (ACCESS_NEEDED.md #5). No live traffic yet — the site itself isn't deployed to a public domain (blocked on #2/#3), so the Votel link currently only gets clicks from anyone viewing the repo's local preview, not real visitors. Getting the site actually live is now the binding constraint on Milestone 1, not affiliate approval.
+**Current status: LIVE.** The site is publicly reachable at **https://blhickam80.github.io/io.net/** (deployed and verified 2026-08-28 by fetching it directly). Votel.ai's referral program is joined and verified (50% recurring + 5% second-tier, no cap) — a working tracked link is live in `compare/gohighlevel-vs-votel.html` and can now actually be clicked by a real visitor. All other shortlisted programs still pending signup (ACCESS_NEEDED.md #5). No real traffic or clicks measured yet — that requires actual visitors finding the site (organic search takes time to ramp, and analytics isn't wired up yet, ACCESS_NEEDED #4) — but the technical/business blocker on Milestone 1 is gone. Milestone 1 is now genuinely reachable, not just theoretically possible.
 
-## Core KPIs (all zero until site is live — placeholders for the tracking schema)
+## Core KPIs (site is live; real numbers pending traffic + analytics access)
 | Metric | Value | Notes |
 |---|---|---|
 | Monthly Recurring Affiliate Revenue (MRR) | $0 | North star metric |
 | New affiliate revenue (this period) | $0 | |
 | Active referred customers | 0 | |
 | Revenue per referred customer | — | |
-| Traffic (sessions/mo) | 0 | site not deployed |
-| Affiliate clicks | 0 | |
+| Traffic (sessions/mo) | unknown | site is live but no analytics wired up yet (ACCESS_NEEDED #4) |
+| Affiliate clicks | unknown | no click tracking dashboard yet — Votel's own dashboard will show clicks/signups once checked |
 | Conversion rate (click→trial/signup) | — | |
 | Leads (email captures) | 0 | |
 | CAC | $0 (no paid spend) | organic-only strategy |

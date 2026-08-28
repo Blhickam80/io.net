@@ -10,13 +10,16 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 - ✅ Affiliate-link placeholder system + `automation/apply_affiliate_links.py`
 - ✅ `.claude/skills/affiliate-opportunity-scoring/` (with working `score_program.py`) and `.claude/skills/weekly-ceo-review/` project skills
 - ✅ SECURITY.md, APPROVAL_POLICY.md
+- ✅ Votel.ai referral program verified (real terms, real live link) and wired into AFFILIATES.md, STRATEGY.md, data/*.csv, and the GoHighLevel-vs-Votel comparison page with a transparency note on the commission differential
 
 ## In progress / next up (not blocked)
-1. **Reconcile AFFILIATES.md scores against `score_program.py`** — the script's mechanical bucketing gives more conservative numbers than the original holistic estimates (e.g. MyAIFrontDesk 57.4 vs. 73). Re-run the top ~10 programs through the script with real judgment inputs and update AFFILIATES.md/data/affiliate-programs.csv to the reconciled numbers before relying on the ranking for a real decision.
+1. **Reconcile the remaining AFFILIATES.md scores against `score_program.py`** — GoHighLevel, MyAIFrontDesk, and Votel.ai are now rescored with the rigorous script; the other ~12 rows are still the original holistic estimates. Re-run them with real judgment inputs before relying on the full ranking for a decision.
 2. **Build 2nd free tool: Lead Response Time Calculator** (Engine H) — same pattern as the missed-call calculator, pairs with CRM/AI-receptionist content.
 3. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
 4. **Add GitHub Actions workflow to auto-deploy `website/public` to GitHub Pages** so the site goes live the moment Pages is enabled (removes a manual step from ACCESS_NEEDED #3).
 5. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
+
+**Elevated priority note:** Votel's live link means ACCESS_NEEDED.md #3 (enabling GitHub Pages / hosting) is now the actual binding constraint on Milestone 1 (first affiliate commission) — not affiliate approval, which was true until today. Everything else on this list keeps compounding SEO value regardless, but getting the site publicly reachable is the one blocker standing directly between "real live affiliate link exists" and "real live affiliate link can earn something."
 
 **On hold, not a standing item:** Posting Short 01 (delivered, real rendered video, sitting with the operator — upload whenever) and generating shorts-02/03 the same way — video is on-demand now, not a cadence (STRATEGY.md §5).
 
@@ -40,7 +43,6 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 - First weekly CEO review (`reports/weekly-2026-09-03.md`) — due ~1 week after launch
 
 ## Killed / deprioritized
-- Votel.ai as a lead affiliate program — unverifiable economics (see AFFILIATES.md). Revisit only if a human creates an account and reports back real terms.
 - Paid advertising of any kind — explicitly against the $0-300 / minimal-paid-spend constraint.
 - Commodity hosting affiliate content (Hostinger/Bluehost) — weak one-time-only economics, saturated content space, low fit with target niche.
 - Pinterest/Facebook as primary channels — low buyer-intent fit for B2B SMB software audience (may revisit for reputation-management/local-business content specifically).

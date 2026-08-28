@@ -1,4 +1,5 @@
 program,status,raw_affiliate_url,placeholder_id,notes
+Votel.ai,approved,https://click.nocotel.com/c/referral-program/brye-hick,affiliate:votel,"Verified 2026-08-28: 50% recurring on $97/$297 plans + 5% second-tier, no earnings cap. First live, working affiliate link in the business."
 GoHighLevel,pending_signup,,affiliate:gohighlevel,"Join at GHL affiliate portal once ACCESS_NEEDED #5 resolved; replace placeholder via automation/apply_affiliate_links.py"
 MyAIFrontDesk,pending_signup,,affiliate:myaifrontdesk,"myaifrontdesk.com/affiliate"
 Rosie,pending_signup,,affiliate:rosie,"heyrosie.com/ai-answering-service-affiliate-program"

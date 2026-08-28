@@ -17,9 +17,9 @@ Direction confirmed and brand name chosen: **Yardwick** (after TradeStack and St
 - **What Claude does next:** Point DNS at the free hosting (Cloudflare Pages/GitHub Pages), finish site branding, and begin submitting to affiliate programs that require a live domain.
 - **Interim plan:** Build and deploy the MVP now on a free subdomain (e.g. GitHub Pages) so content and SEO groundwork start accruing immediately; migrate to the paid domain later with 301 redirects — no work is wasted by waiting.
 
-## 3. Free hosting account (Cloudflare Pages or GitHub Pages)
+## 3. Free hosting account (Cloudflare Pages or GitHub Pages) — NOW THE TOP PRIORITY
 - **What:** Authorize/connect a Cloudflare account (free tier) or confirm GitHub Pages is fine to enable on this repo, so the site can actually be deployed and publicly reachable.
-- **Why:** A site that only exists as source code in this repo produces zero traffic, zero SEO, zero affiliate clicks.
+- **Why:** A site that only exists as source code in this repo produces zero traffic, zero SEO, zero affiliate clicks. **This just became the single binding constraint on the first dollar of revenue:** a real, live, working Votel.ai affiliate link exists in the site right now (50% recurring commission, verified 2026-08-28), but nobody can click it until the site is actually reachable at a public URL. Every other item on this list can wait; this one is standing directly between existing work and the first possible commission.
 - **Where:** GitHub Pages needs only a repo setting toggle (Settings → Pages) — if the operator can do that, no new account is needed at all. Cloudflare Pages needs a free Cloudflare account + connecting this GitHub repo.
 - **Cost:** $0.
 - **Permissions:** Whoever owns this GitHub repo needs to flip the Pages setting, or create/connect a Cloudflare account.
@@ -34,7 +34,8 @@ Direction confirmed and brand name chosen: **Yardwick** (after TradeStack and St
 - **What Claude does next:** Wire up conversion tracking, start the analytics dashboard in `analytics/`, begin reporting real numbers in `METRICS.md`.
 
 ## 5. Affiliate/referral program signups (one business identity needed across programs)
-- **What:** Actually creating affiliate accounts with the top-scored programs from `AFFILIATES.md` (e.g. via Impact, PartnerStack, Rewardful, or direct signup forms). These require a real name/business, email, tax form (W-9 for US) or payment details (PayPal/bank), and sometimes a live website URL for approval.
+- **Status:** Votel.ai done — joined directly, real terms confirmed and live link wired into the site (see AFFILIATES.md, DECISIONS.md 2026-08-28). GoHighLevel and the rest of the shortlist (MyAIFrontDesk, Close CRM, ActiveCampaign, Podium) still pending.
+- **What:** Actually creating affiliate accounts with the remaining top-scored programs from `AFFILIATES.md` (e.g. via Impact, PartnerStack, Rewardful, or direct signup forms). These require a real name/business, email, tax form (W-9 for US) or payment details (PayPal/bank), and sometimes a live website URL for approval.
 - **Why:** Claude cannot pass identity verification, accept program legal terms on the operator's behalf, or receive commission payouts.
 - **Where:** Individual program pages — the shortlist and direct links will be maintained in `AFFILIATES.md`.
 - **Cost:** $0 to join (most SaaS affiliate programs are free to join).

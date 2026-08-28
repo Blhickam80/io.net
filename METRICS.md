@@ -1,6 +1,6 @@
 # METRICS.md — Current KPIs
 
-Last updated: 2026-08-27 (Day 1 — company founding)
+Last updated: 2026-08-28
 
 ## Revenue milestones (Section 27 tracker)
 - [ ] Milestone 1 — First affiliate commission
@@ -12,7 +12,7 @@ Last updated: 2026-08-27 (Day 1 — company founding)
 - [ ] Milestone 7 — $10,000/mo
 - [ ] Milestone 8 — $25,000+/mo
 
-**Current status: pre-launch.** No affiliate accounts approved yet (blocked on ACCESS_NEEDED.md #5 — requires human identity/tax info). No live traffic yet (blocked on #2/#3 — domain/hosting).
+**Current status: pre-launch, but first live affiliate link is real.** Votel.ai's referral program is joined and verified (50% recurring + 5% second-tier, no cap) — a working tracked link is live in `compare/gohighlevel-vs-votel.html`. All other shortlisted programs still pending signup (ACCESS_NEEDED.md #5). No live traffic yet — the site itself isn't deployed to a public domain (blocked on #2/#3), so the Votel link currently only gets clicks from anyone viewing the repo's local preview, not real visitors. Getting the site actually live is now the binding constraint on Milestone 1, not affiliate approval.
 
 ## Core KPIs (all zero until site is live — placeholders for the tracking schema)
 | Metric | Value | Notes |

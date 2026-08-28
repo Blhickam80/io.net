@@ -68,7 +68,11 @@ Every industry/money page must sell the *stack*, not a single product. One acqui
 
 **Illustrative stack economics** (per referred customer, all 5 core legs converting — an upper bound, not an expectation): $234 (AI receptionist) + $150 (CRM) + ~$180 (email/SMS) + $867 (reputation) + a scheduling commission ≈ **$1,400+ in blended Commission LTV from one acquired customer**, versus ~$120-$234 from a single-product page. Even a 20-30% stack-wide conversion rate on the secondary legs meaningfully changes unit economics — this is the single biggest lever available at zero additional traffic cost, since it's the same visitor.
 
-**Anchor program (highest individual AOS, leads the agency/reseller segment separately from the stack above):** GoHighLevel — 40% recurring for life, `#affiliate:gohighlevel`. GHL substitutes for several stack legs at once (it bundles CRM + scheduling + some marketing automation) for readers who want one platform instead of best-of-breed tools; present it as an alternative path, not an additional stack leg, to avoid double-pitching the same buying decision.
+**Anchor programs (agency/reseller segment, separate from the stack above — both substitute for several stack legs at once for readers who want one platform instead of best-of-breed tools):**
+- **GoHighLevel** — highest AOS (85.4), the safer *product* recommendation given its independently verifiable track record, `#affiliate:gohighlevel` — link still pending actual signup (ACCESS_NEEDED.md #5).
+- **Votel.ai** — verified 2026-08-28: 50% recurring + 5% second-tier, no cap, AOS 73.3, and critically **already has a real, live, working link** (`data/affiliate-links.csv`, `#affiliate:votel`) — usable for actual revenue today, unlike GoHighLevel. Editorial framing keeps the two claims separate: which program pays better (Votel) vs. which product is the safer recommendation for a reader (still GoHighLevel, pending independently verifiable reviews of Votel's actual software) — see `AFFILIATES.md`'s finding for the full reasoning and `compare/gohighlevel-vs-votel.html` for how it reads on-page.
+
+Present either as an alternative path, not an additional stack leg, to avoid double-pitching the same buying decision.
 
 ## 5. Acquisition engine priority (80/20 allocation for Phase 1–3)
 

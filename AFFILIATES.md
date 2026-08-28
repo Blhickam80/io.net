@@ -17,25 +17,31 @@ Full raw tables (AI receptionist, CRM, scheduling, email marketing, hosting, rep
 
 Commission LTV assumes conservative SMB-software lifetimes (12mo for newer/smaller vendors and lower-price tools, 18mo for established mid-market SaaS, 24mo for sticky agency/platform tools where switching cost is high) — stated per row.
 
+**Fully reconciled 2026-08-28:** every row below is now scored via the same rigorous `score_program.py` methodology (mechanically-derived Commission LTV bucket + explicit judgment inputs) rather than mixing that with earlier holistic estimates. Judgment inputs (retention, SEO opportunity, social/demo-ability, conversion ease, credibility, TAM) were assessed per-program from the research already on file (`research/affiliate-programs/market-survey.md`, `votel-ai.md`) — re-verify before a real decision if it's been a while.
+
 | Rank | Program | Category | Commission | Assumed price/mo | Lifetime (mo) | Commission LTV | AOS |
 |---:|---|---|---|---:|---:|---:|---:|
-| 1 | **GoHighLevel** | Agency/white-label platform | 40% recurring for life + 5% tier-2 | $197 | 24 | **$1,891** | **85.4**¹ |
-| 2 | **Instantly.ai** | AI sales/outreach | Up to 40% lifetime recurring (volume-tiered) | $97 | 18 | $698 | 83 |
-| 3 | **ClickFunnels** | Funnel/marketing platform | Up to 40% recurring (tiered) | $150 | 18 | $810 | 80 |
-| 4 | **Thryv (certified partner)** | Local biz all-in-one | 20-30% recurring for life | $300 | 24 | $1,800 | 78 |
-| 5 | **NordLayer** | SMB cybersecurity | 30-40% recurring, lifetime | $45 (5 seats) | 18 | $284 | 76 |
-| 6 | **Seamless.AI** | AI sales/lead gen | Up to 40% recurring, yr 1 | $147 | 12 | $706 | 74 |
-| 7 | **Votel.ai** | Agency/GHL-style bundle | **50% recurring + 5% tier-2, no cap** (verified, see finding below) | $197 | 18 | $1,773 | 73.3¹ |
-| 8 | **ActiveCampaign** | Email/marketing automation | 20-30% recurring, capped 12mo | $60 | 12 | $180 | 71 |
-| 9 | **Close CRM** | CRM | 30% recurring, capped 12mo | $50 | 12 | $150 | 70 |
-| 10 | **MailerLite** | Email marketing | 30% lifetime recurring | $20 | 24 | $144 | 69 |
-| 11 | **Podium** | Reputation management | 30% recurring, full year | $289 | 12 | $867 | 68 |
-| 12 | **AI-Receptionist.com** | AI receptionist | 20% recurring | $50 (est.) | 12 | $120 | 65 |
-| 13 | **Rosie (heyrosie.com)** | AI receptionist | 20% recurring | $49 | 12 | $118 | 64 |
-| 14 | **Smith.ai** | AI receptionist | $1,000 flat/client (one-time) | — | — | $1,000 (one-time) | 62 |
-| 15 | **MyAIFrontDesk** | AI receptionist | 30% monthly recurring, uncapped | $65 | 12 | $234 | 57.4¹ |
+| 1 | **GoHighLevel** | Agency/white-label platform | 40% recurring for life + 5% tier-2 | $197 | 24 | **$1,891** | **85.4** |
+| 2 | **Votel.ai** | Agency/GHL-style bundle | **50% recurring + 5% tier-2, no cap** (verified, see finding below) | $197 | 18 | $1,773 | 73.3 |
+| 3 | **Thryv (certified partner)** | Local biz all-in-one | 20-30% recurring for life | $300 | 24 | $1,800 | 69.7 |
+| 4 | **ClickFunnels** | Funnel/marketing platform | Up to 40% recurring (tiered) | $150 | 18 | $810 | 66.0 |
+| 5 | **Podium** | Reputation management | 30% recurring, full year | $289 | 12 | $867 | 65.0 |
+| 6 | **Instantly.ai** | AI sales/outreach | Up to 40% lifetime recurring (volume-tiered) | $97 | 18 | $698 | 63.1 |
+| 7 | **Seamless.AI** | AI sales/lead gen | Up to 40% recurring, yr 1 | $147 | 12 | $706 | 60.1 |
+| 8 | **ActiveCampaign** | Email/marketing automation | 20-30% recurring, capped 12mo | $60 | 12 | $180 | 57.6 |
+| 9 | **MyAIFrontDesk** | AI receptionist | 30% monthly recurring, uncapped | $65 | 12 | $234 | 57.4 |
+| 10 | **NordLayer** | SMB cybersecurity | 30-40% recurring, lifetime | $45 (5 seats) | 18 | $284 | 55.7 |
+| 11 | **MailerLite** | Email marketing | 30% lifetime recurring | $20 | 24 | $144 | 54.4 |
+| 12 | **Close CRM** | CRM | 30% recurring, capped 12mo | $50 | 12 | $150 | 53.6 |
+| 13 | **Smith.ai** | AI receptionist | $1,000 flat/client (one-time) | — | — | $1,000 (one-time) | 50.6 |
+| 14 | **Rosie (heyrosie.com)** | AI receptionist | 20% recurring | $49 | 12 | $118 | 44.5 |
+| 15 | **AI-Receptionist.com** | AI receptionist | 20% recurring | $50 (est.) | 12 | $120 | 41.5 |
 
-¹ Re-scored 2026-08-28 via `.claude/skills/affiliate-opportunity-scoring/scripts/score_program.py` (the rigorous version, mechanically-derived Commission LTV bucket + explicit judgment inputs). The other 12 rows are still the original holistic estimates from initial research and haven't been re-run through the script yet — see BACKLOG.md. MyAIFrontDesk's drop (73→57.4) reflects the script's more conservative Commission LTV bucketing at its price point, not new negative information about the program.
+**What moved and why (not just noise):**
+- **NordLayer fell from #5 to #10 (76→55.7).** Its raw commission mechanics are still strong, but SMB cybersecurity is a poor TAM fit for our home-service-business audience and it's harder to demo visually — the original estimate under-weighted that.
+- **Seamless.AI and Instantly.ai both fell** for a similar reason: strong commission math, but their audience (sales/outreach teams) doesn't overlap much with our primary readers, and both categories have real reputation/reliability complaints in public reviews that the original pass didn't fully price in.
+- **ClickFunnels and Podium held up well** — both are highly demoable, well-established, with strong review bases; the rigorous score confirms rather than contradicts the original read.
+- **Close CRM and Rosie dropped more than expected** — their Commission LTV is genuinely modest at their price points once bucketed on the same scale as the rest of the list, not because anything new was learned about the programs themselves.
 
 AOS methodology note: score = weighted sum per STRATEGY.md §1; Commission LTV and recurring-status dominate, offset by SEO/social demoability, conversion difficulty, cookie duration, credibility, and TAM growth. GoHighLevel still edges out Votel despite Votel's higher raw commission % (50% vs 40%) — the gap is entirely on the product-credibility and TAM axes (GoHighLevel has independently verifiable reviews and a longer track record; Votel's referral *program* is now verified, but its underlying *software's* reputation is not), not on the commission mechanics themselves.
 

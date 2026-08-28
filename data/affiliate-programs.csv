@@ -1,18 +1,18 @@
 program,category,commission_type,commission_pct_or_amount,cookie_days,est_customer_price_monthly,assumed_lifetime_months,commission_ltv_usd,aos_score,status,notes
 GoHighLevel,Agency/white-label platform,recurring_lifetime,40%,90,197,24,1891,85.4,shortlisted,"40% for life + 5% tier-2; likely the platform Votel is built on. AOS re-run via score_program.py 2026-08-28 (was 91 on original holistic estimate)"
-Instantly.ai,AI sales/outreach,recurring_lifetime,up to 40%,,97,18,698,83,experimental,"volume-tiered; secondary agency/consultant segment"
-ClickFunnels,Funnel/marketing platform,recurring_tiered,up to 40%,,150,18,810,80,watchlist,
-Thryv,Local biz all-in-one,recurring_partner_only,20-30%,90,300,24,1800,78,watchlist,"recurring rate requires certified-partner status"
-NordLayer,SMB cybersecurity,recurring_lifetime,30-40%,30,45,18,284,76,watchlist,"multi-seat pricing assumed 5 seats"
-Seamless.AI,AI sales/lead gen,recurring_capped_12mo,up to 40%,90,147,12,706,74,watchlist,
+Instantly.ai,AI sales/outreach,recurring_lifetime,up to 40%,,97,18,698,63.1,experimental,"volume-tiered; secondary agency/consultant segment. AOS re-run via score_program.py 2026-08-28 (was 83 on original holistic estimate)"
+ClickFunnels,Funnel/marketing platform,recurring_tiered,up to 40%,,150,18,810,66.0,watchlist,"AOS re-run via score_program.py 2026-08-28 (was 80 on original holistic estimate)"
+Thryv,Local biz all-in-one,recurring_partner_only,20-30%,90,300,24,1800,69.7,watchlist,"recurring rate requires certified-partner status. AOS re-run via score_program.py 2026-08-28 (was 78 on original holistic estimate)"
+NordLayer,SMB cybersecurity,recurring_lifetime,30-40%,30,45,18,284,55.7,watchlist,"multi-seat pricing assumed 5 seats. AOS re-run via score_program.py 2026-08-28 (was 76 on original holistic estimate) - low TAM fit with our home-service SMB niche"
+Seamless.AI,AI sales/lead gen,recurring_capped_12mo,up to 40%,90,147,12,706,60.1,watchlist,"AOS re-run via score_program.py 2026-08-28 (was 74 on original holistic estimate) - audience mismatch with our niche"
 MyAIFrontDesk,AI receptionist,recurring_uncapped,30%,,65,12,234,57.4,shortlisted,"verified public terms. AOS re-run via score_program.py 2026-08-28 (was 73 on original holistic estimate)"
-ActiveCampaign,Email/marketing automation,recurring_capped_12mo,20-30%,90,60,12,180,71,shortlisted,
-Close CRM,CRM,recurring_capped_12mo,30%,90,50,12,150,70,shortlisted,
-MailerLite,Email marketing,recurring_lifetime,30%,45,20,24,144,69,watchlist,
-Podium,Reputation management,recurring_12mo,30%,,289,12,867,68,shortlisted,
-AI-Receptionist.com,AI receptionist,recurring,20%,,50,12,120,65,watchlist,"price estimated, low confidence"
-Rosie (heyrosie.com),AI receptionist,recurring,20%,,49,12,118,64,watchlist,
-Smith.ai,AI receptionist,one_time_bounty,"$1000/client, $200/voice assistant",,285,,1000,62,watchlist,"strong one-time bounty, complementary track"
+ActiveCampaign,Email/marketing automation,recurring_capped_12mo,20-30%,90,60,12,180,57.6,shortlisted,"AOS re-run via score_program.py 2026-08-28 (was 71 on original holistic estimate)"
+Close CRM,CRM,recurring_capped_12mo,30%,90,50,12,150,53.6,shortlisted,"AOS re-run via score_program.py 2026-08-28 (was 70 on original holistic estimate)"
+MailerLite,Email marketing,recurring_lifetime,30%,45,20,24,144,54.4,watchlist,"AOS re-run via score_program.py 2026-08-28 (was 69 on original holistic estimate)"
+Podium,Reputation management,recurring_12mo,30%,,289,12,867,65.0,shortlisted,"AOS re-run via score_program.py 2026-08-28 (was 68 on original holistic estimate)"
+AI-Receptionist.com,AI receptionist,recurring,20%,,50,12,120,41.5,watchlist,"price estimated, low confidence. AOS re-run via score_program.py 2026-08-28 (was 65 on original holistic estimate)"
+Rosie (heyrosie.com),AI receptionist,recurring,20%,,49,12,118,44.5,watchlist,"AOS re-run via score_program.py 2026-08-28 (was 64 on original holistic estimate)"
+Smith.ai,AI receptionist,one_time_bounty,"$1000/client, $200/voice assistant",,285,,1000,50.6,watchlist,"strong one-time bounty, complementary track. AOS re-run via score_program.py 2026-08-28 (was 62 on original holistic estimate)"
 Votel.ai,Agency/GHL-style bundle,recurring_lifetime_plus_tier2,50% + 5% tier-2,,197,18,1773,73.3,shortlisted,"VERIFIED 2026-08-28 via operator's own dashboard: 50% recurring on $97/$297 plans + 5% second-tier, no earnings cap. Real working link in data/affiliate-links.csv. Referral-program terms now known; underlying product's independent reviews/reputation still unverified (see AFFILIATES.md) - that gap, not the commission terms, is what still separates it from GoHighLevel's 85.4"
 HubSpot,CRM,recurring_capped_12mo,30%,180,100,12,360,67,watchlist,
 Pipedrive,CRM,recurring_capped_12mo,20-30%,90,40,12,120,60,watchlist,

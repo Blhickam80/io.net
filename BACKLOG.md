@@ -3,6 +3,7 @@
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
 ## Done this session (2026-08-27 to 28, updated after launch)
+- ✅ **Reconciled all 15 top-ranked AFFILIATES.md programs onto the rigorous `score_program.py` methodology** (previously only GoHighLevel/MyAIFrontDesk/Votel were rescored, the rest were older holistic estimates). Notable moves: NordLayer 76→55.7 and Seamless.AI/Instantly.ai both fell — all three had strong commission math but a poor TAM fit with our home-service SMB audience that the original pass under-weighted.
 - ✅ **Lead Response Time Calculator published** (website/public/tools/lead-response-calculator.html) — 2nd free tool, verified in a real browser (Playwright) that the math is correct, wired into tools/index.html and the homepage, cross-links to the same Customer Monetization Stack (MyAIFrontDesk/Close CRM/ActiveCampaign)
 - ✅ **SITE IS LIVE: https://blhickam80.github.io/io.net/** — operator flipped GitHub Pages on, Claude re-ran the deploy and verified the live site by fetching it directly. The Votel.ai affiliate link can now earn a real commission.
 - ✅ Merged everything to `main` (PR #2 and #3) and handled the full merge/deploy/diagnose/re-run cycle without further pushes needed.
@@ -16,10 +17,10 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 - ✅ Votel.ai referral program verified (real terms, real live link) and wired into AFFILIATES.md, STRATEGY.md, data/*.csv, and the GoHighLevel-vs-Votel comparison page with a transparency note on the commission differential
 
 ## In progress / next up (not blocked)
-1. **Reconcile the remaining AFFILIATES.md scores against `score_program.py`** — GoHighLevel, MyAIFrontDesk, and Votel.ai are now rescored with the rigorous script; the other ~12 rows are still the original holistic estimates. Re-run them with real judgment inputs before relying on the full ranking for a decision.
-2. **No-show / cancellation cost calculator** (3rd free tool, Engine H) — same proven pattern, next logical calculator for the dental/med-spa/salon segment specifically.
-3. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
-4. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
+1. **No-show / cancellation cost calculator** (3rd free tool, Engine H) — same proven pattern, next logical calculator for the dental/med-spa/salon segment specifically.
+2. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
+3. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
+4. **Re-score the remaining ~40 surveyed-but-deprioritized programs** if any of them ever become relevant to a new content angle — not worth doing speculatively now since none are referenced in published content.
 
 **On hold, not a standing item:** Posting Short 01 (delivered, real rendered video, sitting with the operator — upload whenever) and generating shorts-02/03 the same way — video is on-demand now, not a cadence (STRATEGY.md §5).
 

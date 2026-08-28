@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No-Show & Cancellation Cost Calculator — What Empty Slots Cost You</title>
+<meta name="description" content="Free calculator: estimate how much monthly and annual revenue no-shows and late cancellations are costing your appointment-based business.">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "No-Show & Cancellation Cost Calculator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "description": "Free calculator estimating monthly and annual revenue lost to no-shows and late cancellations for appointment-based businesses like dental practices, med spas, and salons.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <div class="brand">Yard<span>wick</span></div>
+    <nav class="site">
+      <a href="../index.html">Home</a>
+      <a href="../tools/index.html">Free Tools</a>
+      <a href="../compare/index.html">Compare</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <span class="badge">Free Tool</span>
+  <h1>No-Show & Cancellation Cost Calculator</h1>
+  <p class="lede">An empty appointment slot isn't a neutral event — it's a chair, a room, or a stylist's time that could have been booked with someone else. This calculator estimates what that's actually costing an appointment-based business like a dental practice, med spa, or salon.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Your numbers</h3>
+
+      <label for="appointmentsPerMonth">Scheduled appointments per month</label>
+      <input type="number" id="appointmentsPerMonth" value="400" min="0">
+
+      <label for="noShowPct">% that no-show or cancel with too little notice to rebook</label>
+      <input type="number" id="noShowPct" value="12" min="0" max="100">
+
+      <label for="rebookPct">% of those slots you're able to fill with another customer anyway</label>
+      <input type="number" id="rebookPct" value="20" min="0" max="100">
+
+      <label for="apptValue">Average appointment value ($)</label>
+      <input type="number" id="apptValue" value="180" min="0">
+
+      <button class="btn" onclick="calculate()">Calculate my lost revenue</button>
+    </div>
+
+    <div class="card" id="resultsCard" style="display:none;">
+      <h3>Estimated revenue lost</h3>
+      <div class="result-sub">No-shows / late cancellations per month</div>
+      <div class="result-num" id="noShowsOut">–</div>
+
+      <div class="result-sub">Slots permanently lost per month (not refilled)</div>
+      <div class="result-num" id="lostSlotsOut">–</div>
+
+      <div class="result-sub">Estimated revenue lost per month</div>
+      <div class="result-num" id="monthlyLossOut">–</div>
+
+      <div class="result-sub">Estimated revenue lost per year</div>
+      <div class="result-num" id="yearlyLossOut">–</div>
+
+      <p style="margin-top:20px; color:var(--text-dim); font-size:0.9rem;">
+        This is a directional estimate based on the inputs above, not a guarantee — no-show and refill rates vary a lot by business type, location, and how much advance notice a "late" cancellation gives you. Adjust the assumptions to match your own scheduling data.
+      </p>
+    </div>
+  </div>
+
+  <h2>Why this adds up faster than it feels like it should</h2>
+  <p>A single no-show doesn't feel like a big loss in the moment. But multiply a modest no-show rate across hundreds of monthly appointments, and most of those slots go completely unfilled because there usually isn't enough notice to call someone in from a waitlist. For dental practices, med spas, and salons specifically, this is often one of the largest controllable revenue leaks in the business — bigger than most owners estimate until they run the actual numbers.</p>
+
+  <h2>How businesses reduce no-shows</h2>
+  <p>The most effective fixes are usually automated: reminder texts/emails sent a day and an hour before the appointment, easy self-service rescheduling links (so a patient reschedules instead of just not showing up), and two-way texting so front-desk staff can quickly fill a cancellation from a waitlist.</p>
+
+  <div class="disclosure">
+    Affiliate disclosure: some links on this page may be affiliate links. If you sign up through one, we may earn a commission at no extra cost to you. This does not affect which tools we recommend — see our <a href="../about.html">methodology</a>.
+  </div>
+
+  <h2>Tools that help reduce no-shows</h2>
+  <table class="compare">
+    <tr><th>Need</th><th>What it solves</th><th>Option</th></tr>
+    <tr><td>Automated appointment reminders</td><td>Email/SMS reminders sent automatically ahead of each appointment</td><td><a href="#affiliate:activecampaign">ActiveCampaign</a></td></tr>
+    <tr><td>Self-service rescheduling</td><td>Lets a customer reschedule with one click instead of no-showing silently</td><td><a href="#affiliate:calendly">Calendly</a></td></tr>
+    <tr><td>Two-way texting for last-minute fills</td><td>Quickly reach waitlisted customers when a slot opens up</td><td><a href="#affiliate:podium">Podium</a></td></tr>
+  </table>
+
+  <p><a class="btn secondary" href="../compare/index.html">See full software comparisons →</a></p>
+</main>
+
+<footer class="site">
+  <div class="wrap">© 2026 Yardwick. Estimates are illustrative; verify assumptions against your own business data.</div>
+</footer>
+
+<script>
+function calculate() {
+  const appts = parseFloat(document.getElementById('appointmentsPerMonth').value) || 0;
+  const noShowPct = (parseFloat(document.getElementById('noShowPct').value) || 0) / 100;
+  const rebookPct = (parseFloat(document.getElementById('rebookPct').value) || 0) / 100;
+  const apptValue = parseFloat(document.getElementById('apptValue').value) || 0;
+
+  const noShows = appts * noShowPct;
+  const lostSlots = noShows * (1 - rebookPct);
+  const monthlyLoss = lostSlots * apptValue;
+  const yearlyLoss = monthlyLoss * 12;
+
+  document.getElementById('noShowsOut').textContent = Math.round(noShows).toLocaleString();
+  document.getElementById('lostSlotsOut').textContent = Math.round(lostSlots).toLocaleString();
+  document.getElementById('monthlyLossOut').textContent = '$' + Math.round(monthlyLoss).toLocaleString();
+  document.getElementById('yearlyLossOut').textContent = '$' + Math.round(yearlyLoss).toLocaleString();
+  document.getElementById('resultsCard').style.display = 'block';
+}
+</script>
+</body>
+</html>

@@ -2,8 +2,9 @@
 
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
-## Done this session (2026-08-27 to 28, updated after merge)
-- ✅ Merged everything to `main` (PR #2) and ran the deploy workflow myself — it failed at the one step that requires the repo owner to flip GitHub Pages on in Settings (see ACCESS_NEEDED.md #3 for the exact status). Will re-run the moment that's done; no further push needed.
+## Done this session (2026-08-27 to 28, updated after launch)
+- ✅ **SITE IS LIVE: https://blhickam80.github.io/io.net/** — operator flipped GitHub Pages on, Claude re-ran the deploy and verified the live site by fetching it directly. The Votel.ai affiliate link can now earn a real commission.
+- ✅ Merged everything to `main` (PR #2 and #3) and handled the full merge/deploy/diagnose/re-run cycle without further pushes needed.
 - ✅ Published "GoHighLevel vs Votel.ai" comparison page
 - ✅ Published "Best AI Receptionist for Roofing Companies", "...for Dental Practices", and "...for Real Estate Agents" industry pages (full stack template on all three)
 - ✅ Published GoHighLevel Review page + reviews/index.html
@@ -19,15 +20,12 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 3. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
 4. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
 
-**Elevated priority note:** Votel's live link means ACCESS_NEEDED.md #3 (enabling GitHub Pages / hosting) is now the actual binding constraint on Milestone 1 (first affiliate commission) — not affiliate approval, which was true until today. Everything else on this list keeps compounding SEO value regardless, but getting the site publicly reachable is the one blocker standing directly between "real live affiliate link exists" and "real live affiliate link can earn something."
-
 **On hold, not a standing item:** Posting Short 01 (delivered, real rendered video, sitting with the operator — upload whenever) and generating shorts-02/03 the same way — video is on-demand now, not a cadence (STRATEGY.md §5).
 
 **Explicitly deferred, not forgotten** (see DECISIONS.md 2026-08-28 — revisit once there's real traffic/affiliate data to justify them, not before): the remaining ~18 proposed Claude Skills beyond opportunity-scoring/weekly-review, 8 formal subagents, a SQLite database, an attribution pipeline, a dashboard, and any community skill-collection imports.
 
 ## Blocked on human (see ACCESS_NEEDED.md for full detail)
-- Domain purchase (#2)
-- Enabling GitHub Pages / connecting Cloudflare Pages (#3)
+- Domain purchase (#2) — not urgent, site is live on GitHub Pages URL in the meantime
 - Search Console / Analytics account (#4)
 - Actually joining the 5 shortlisted affiliate programs — requires real identity/tax/payment info (#5)
 - Social/YouTube account creation (#6)

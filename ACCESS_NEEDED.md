@@ -15,15 +15,10 @@ Direction confirmed and brand name chosen: **Yardwick** (after TradeStack and St
 - **Cost:** ~$8–15/year.
 - **Permissions:** Payment authorization from the operator.
 - **What Claude does next:** Point DNS at the free hosting (Cloudflare Pages/GitHub Pages), finish site branding, and begin submitting to affiliate programs that require a live domain.
-- **Interim plan:** Build and deploy the MVP now on a free subdomain (e.g. GitHub Pages) so content and SEO groundwork start accruing immediately; migrate to the paid domain later with 301 redirects — no work is wasted by waiting.
+- **Interim plan — active now:** the MVP is live at https://blhickam80.github.io/io.net/ (see #3, resolved). Content and SEO groundwork can start accruing immediately on this URL; migrate to the paid domain later with 301 redirects — no work is wasted by waiting.
 
-## 3. Free hosting account (Cloudflare Pages or GitHub Pages) — THE ONLY THING LEFT BLOCKING LAUNCH
-- **Status (2026-08-28):** Everything on Claude's side is done — the site is merged to `main`, and the auto-deploy workflow ran on the merge. It failed at exactly one step: `actions/configure-pages`, which requires GitHub Pages to already be switched on for this repo. That's a repository-settings change gated to the repo owner; there's no API path to it available to Claude. The moment it's flipped, re-running the workflow (which Claude can do without any further help) will publish the site.
-- **What:** In this repo → **Settings → Pages → Source: "GitHub Actions"**. One click, then save. (Cloudflare Pages is a fallback if GitHub Pages isn't wanted — free tier, needs connecting this repo — but GitHub Pages needs zero new accounts and the workflow is already built for it.)
-- **Why:** A site that only exists as source code in this repo produces zero traffic, zero SEO, zero affiliate clicks. A real, live, working Votel.ai affiliate link exists in the site right now (50% recurring commission, verified 2026-08-28), but nobody can click it until the site is actually reachable at a public URL. This is the single binding constraint on the first dollar of revenue.
-- **Cost:** $0.
-- **Permissions:** Whoever owns this GitHub repo needs to flip the Pages setting.
-- **What Claude does next:** Immediately re-run the deploy workflow (no push needed), verify the deployed site renders correctly, submit the sitemap to Google Search Console (needs #4), and continue the content publishing cadence.
+## 3. ~~Free hosting account (Cloudflare Pages or GitHub Pages)~~ — RESOLVED, SITE IS LIVE
+**The site is live at https://blhickam80.github.io/io.net/** (confirmed 2026-08-28 by fetching it directly, not just checking the deploy succeeded). Operator flipped Settings → Pages → Source: GitHub Actions; Claude re-ran the deploy workflow immediately after with no further push needed. The Votel.ai affiliate link on `compare/gohighlevel-vs-votel.html` can now actually be clicked by a real visitor and earn a real commission. No longer blocking anything.
 
 ## 4. Google Search Console + Google Analytics (or a free privacy-friendly alternative like Plausible/Umami self-host, Cloudflare Web Analytics) access
 - **What:** A Google account (can be a new free one dedicated to this business) verified against the domain, to get indexing and real keyword/traffic data.

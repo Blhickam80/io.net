@@ -3,6 +3,7 @@
 **Company name:** Yardwick — finalized 2026-08-27 (see DECISIONS.md for the full naming history: TradeStack → StackFront → Yardwick, each step forced by a collision check turning up a real competitor). Coined word, deliberately not a real-word compound after "TradeStack," "StackFront," "Solvane," "RingCrew," and half a dozen other candidates all turned out to collide with active companies in this exact niche. Site brand mark: "Yard" + accented "wick", live in `website/public/` header/footer/schema.
 **Type:** Autonomous AI-run affiliate marketing business
 **Mission:** Generate maximum recurring affiliate commission revenue (MRR) for the least capital and least ongoing human involvement, by helping small/medium businesses discover and adopt AI-powered business software.
+**Status: LIVE** — https://blhickam80.github.io/io.net/ (public since 2026-08-28). A real, verified Votel.ai affiliate link (50% recurring) is on the site right now.
 
 ## How to resume work in this repo
 Read files in this order:

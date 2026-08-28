@@ -4,6 +4,13 @@ Append-only. Newest first. Each entry: date, decision, why, alternatives rejecte
 
 ---
 
+### 2026-08-28 (post-launch) — Reconciled all 15 top-ranked programs onto the rigorous scoring methodology
+**Decision:** Ran the remaining 12 top-15 programs (Instantly.ai, ClickFunnels, Thryv, NordLayer, Seamless.AI, ActiveCampaign, Close CRM, MailerLite, Podium, AI-Receptionist.com, Rosie, Smith.ai) through `score_program.py` with explicit judgment inputs, closing the gap flagged when the tool was first built. Deliberately did *not* re-score the other ~40 surveyed-but-deprioritized programs (commodity hosting, mainstream accounting, etc.) — none of them are referenced in any published content, so re-scoring them now would be speculative effort with no content decision riding on it.
+**What the reconciliation actually changed:** Three programs with strong raw commission mechanics (NordLayer, Seamless.AI, Instantly.ai) dropped meaningfully in rank because their TAM/audience-fit judgment score is genuinely weak for a home-service-SMB-focused site — that's a real signal the original holistic pass under-weighted, not noise from switching methodology. Programs already central to the Customer Monetization Stack (ActiveCampaign, Close CRM, Podium, MyAIFrontDesk) held roughly their relative order even though absolute scores dropped across the board, so no content or stack-template changes were needed as a result.
+**Why this matters:** The whole point of building a scoring script instead of trusting a per-program eyeball was to make later scores comparable to earlier ones. Leaving 12 of 15 rows on the old methodology indefinitely would have meant the ranked table was silently comparing apples to oranges every time someone read it.
+
+---
+
 ### 2026-08-28 (live) — Site is publicly live: https://blhickam80.github.io/io.net/
 **What happened:** Operator flipped Settings → Pages → Source: GitHub Actions. Claude re-ran the existing deploy workflow via the GitHub API (`actions_run_trigger`, no new push needed) — it succeeded end to end this time, confirmed step-by-step via the job log (configure-pages, upload-pages-artifact, deploy-pages all green). Verified the live site by actually fetching the URL and having its content summarized back, not just trusting a green checkmark.
 **Why this matters:** This is the moment the business goes from "fully built but inert" to "operating" — the Votel.ai referral link (50% recurring, verified 2026-08-28) can now be clicked by a real person and produce a real commission. Updated `ACCESS_NEEDED.md` #3 (resolved), `METRICS.md` (status flipped from pre-launch to live), and `BACKLOG.md` accordingly.

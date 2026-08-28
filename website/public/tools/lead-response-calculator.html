@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Response Time Calculator — What Slow Follow-Up Is Costing You</title>
+<meta name="description" content="Free calculator: estimate how much extra monthly revenue faster lead response time could realistically add to your business.">
+<link rel="stylesheet" href="../styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Lead Response Time Calculator",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "description": "Free calculator estimating additional monthly revenue from improving lead response time for local and home service businesses.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <div class="brand">Yard<span>wick</span></div>
+    <nav class="site">
+      <a href="../index.html">Home</a>
+      <a href="../tools/index.html">Free Tools</a>
+      <a href="../compare/index.html">Compare</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <span class="badge">Free Tool</span>
+  <h1>Lead Response Time Calculator</h1>
+  <p class="lede">A lead you respond to in 5 minutes converts at a different rate than one you respond to in 3 hours. This tool estimates the revenue difference for your specific numbers — using your own assumption about the improvement, not a generic industry multiplier.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3>Your numbers</h3>
+
+      <label for="leadsPerMonth">New leads per month</label>
+      <input type="number" id="leadsPerMonth" value="100" min="0">
+
+      <label for="currentResponseMin">Your current average response time (minutes)</label>
+      <input type="number" id="currentResponseMin" value="180" min="0">
+
+      <label for="currentCloseRate">Your current close rate at that response time (%)</label>
+      <input type="number" id="currentCloseRate" value="20" min="0" max="100">
+
+      <label for="dealValue">Average job / sale value ($)</label>
+      <input type="number" id="dealValue" value="400" min="0">
+
+      <label for="closeRateLift">Close-rate improvement you'd expect from responding within 5 minutes (percentage points)</label>
+      <input type="number" id="closeRateLift" value="10" min="0" max="100">
+
+      <button class="btn" onclick="calculate()">Calculate the difference</button>
+    </div>
+
+    <div class="card" id="resultsCard" style="display:none;">
+      <h3>Estimated impact</h3>
+      <div class="result-sub">Current monthly revenue from these leads</div>
+      <div class="result-num" id="currentRevenueOut">–</div>
+
+      <div class="result-sub">Projected monthly revenue at faster response time</div>
+      <div class="result-num" id="projectedRevenueOut">–</div>
+
+      <div class="result-sub">Estimated additional revenue per month</div>
+      <div class="result-num" id="deltaMonthlyOut">–</div>
+
+      <div class="result-sub">Estimated additional revenue per year</div>
+      <div class="result-num" id="deltaYearlyOut">–</div>
+
+      <p style="margin-top:20px; color:var(--text-dim); font-size:0.9rem;">
+        This is a directional estimate driven entirely by the close-rate improvement you entered above — we don't apply a hidden multiplier. Adjust that number based on your own experience or research before treating this as a real projection.
+      </p>
+    </div>
+  </div>
+
+  <h2>Why response time matters</h2>
+  <p>A lead who just filled out a form or called your business is actively comparing options right now, often with a browser tab open to a competitor. The longer the gap before you respond, the more likely they've already booked with someone else, lost urgency, or simply moved on. This effect is well documented in sales research generally — the exact size of the effect varies a lot by industry, lead source, and how "warm" the lead was to begin with, which is why this calculator asks you to enter your own improvement assumption rather than assuming one for you.</p>
+
+  <h2>How businesses close the gap</h2>
+  <p>The two common approaches are (1) staffing someone to monitor and respond to leads immediately, which is expensive and hard to sustain outside business hours, or (2) automated first-response tools — an AI receptionist that picks up calls instantly, or a CRM with instant lead-routing and auto-response for web form submissions — that close the gap without requiring a human to be watching every channel at all times.</p>
+
+  <div class="disclosure">
+    Affiliate disclosure: some links on this page may be affiliate links. If you sign up through one, we may earn a commission at no extra cost to you. This does not affect which tools we recommend — see our <a href="../about.html">methodology</a>.
+  </div>
+
+  <h2>Tools that help close the response-time gap</h2>
+  <table class="compare">
+    <tr><th>Need</th><th>What it solves</th><th>Option</th></tr>
+    <tr><td>Instant call answering</td><td>Picks up every call immediately instead of routing to voicemail</td><td><a href="#affiliate:myaifrontdesk">MyAIFrontDesk</a></td></tr>
+    <tr><td>CRM with lead routing</td><td>Instantly notifies the right person and tracks response time per lead</td><td><a href="#affiliate:close-crm">Close CRM</a></td></tr>
+    <tr><td>Automated email/SMS first response</td><td>Sends an immediate acknowledgment while a human follows up</td><td><a href="#affiliate:activecampaign">ActiveCampaign</a></td></tr>
+  </table>
+
+  <p><a class="btn secondary" href="../compare/index.html">See full AI receptionist comparisons →</a></p>
+</main>
+
+<footer class="site">
+  <div class="wrap">© 2026 Yardwick. Estimates are illustrative; verify assumptions against your own business data.</div>
+</footer>
+
+<script>
+function calculate() {
+  const leads = parseFloat(document.getElementById('leadsPerMonth').value) || 0;
+  const currentClose = (parseFloat(document.getElementById('currentCloseRate').value) || 0) / 100;
+  const dealValue = parseFloat(document.getElementById('dealValue').value) || 0;
+  const lift = (parseFloat(document.getElementById('closeRateLift').value) || 0) / 100;
+
+  const currentRevenue = leads * currentClose * dealValue;
+  const projectedClose = currentClose + lift;
+  const projectedRevenue = leads * projectedClose * dealValue;
+  const deltaMonthly = projectedRevenue - currentRevenue;
+  const deltaYearly = deltaMonthly * 12;
+
+  document.getElementById('currentRevenueOut').textContent = '$' + Math.round(currentRevenue).toLocaleString();
+  document.getElementById('projectedRevenueOut').textContent = '$' + Math.round(projectedRevenue).toLocaleString();
+  document.getElementById('deltaMonthlyOut').textContent = '$' + Math.round(deltaMonthly).toLocaleString();
+  document.getElementById('deltaYearlyOut').textContent = '$' + Math.round(deltaYearly).toLocaleString();
+  document.getElementById('resultsCard').style.display = 'block';
+}
+</script>
+</body>
+</html>

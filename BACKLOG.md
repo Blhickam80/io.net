@@ -3,6 +3,7 @@
 Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recurring Value) / (Capital × Effort × Time-to-Revenue × Complexity)` per STRATEGY.md/founding brief §22. Ordered highest expected-value first within each status group. Update after every work session.
 
 ## Done this session (2026-08-27 to 28, updated after launch)
+- ✅ **Lead Response Time Calculator published** (website/public/tools/lead-response-calculator.html) — 2nd free tool, verified in a real browser (Playwright) that the math is correct, wired into tools/index.html and the homepage, cross-links to the same Customer Monetization Stack (MyAIFrontDesk/Close CRM/ActiveCampaign)
 - ✅ **SITE IS LIVE: https://blhickam80.github.io/io.net/** — operator flipped GitHub Pages on, Claude re-ran the deploy and verified the live site by fetching it directly. The Votel.ai affiliate link can now earn a real commission.
 - ✅ Merged everything to `main` (PR #2 and #3) and handled the full merge/deploy/diagnose/re-run cycle without further pushes needed.
 - ✅ Published "GoHighLevel vs Votel.ai" comparison page
@@ -16,7 +17,7 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 
 ## In progress / next up (not blocked)
 1. **Reconcile the remaining AFFILIATES.md scores against `score_program.py`** — GoHighLevel, MyAIFrontDesk, and Votel.ai are now rescored with the rigorous script; the other ~12 rows are still the original holistic estimates. Re-run them with real judgment inputs before relying on the full ranking for a decision.
-2. **Build 2nd free tool: Lead Response Time Calculator** (Engine H) — same pattern as the missed-call calculator, pairs with CRM/AI-receptionist content.
+2. **No-show / cancellation cost calculator** (3rd free tool, Engine H) — same proven pattern, next logical calculator for the dental/med-spa/salon segment specifically.
 3. **SEO keyword list build-out** — expand `seo/keywords.csv` beyond the seed list (see SEO_PLAN.md) using free tools (Google autosuggest, AlsoAsked-style manual research, competitor sitemaps).
 4. **Draft 5-email lead-magnet nurture sequence** ("AI Automation Checklist for Local Businesses") — Engine G, to run once an ESP exists (ACCESS_NEEDED #7).
 
@@ -34,7 +35,6 @@ Scored (informally) by `(Revenue Potential × P(success) × Scalability × Recur
 ## Backlog (not yet started, lower urgency or waiting on evidence)
 - Reputation-management comparison page (Podium vs Birdeye vs NiceJob)
 - CRM comparison cluster (Close vs ActiveCampaign vs HubSpot for service businesses)
-- No-show / cancellation cost calculator (3rd free tool)
 - Outreach template set for marketing-agency partnerships (Engine K) — targets the Instantly.ai secondary segment
 - Competitor reverse-engineering pass (Section 28) — analyze 3-5 successful "GoHighLevel review" sites/YouTube channels for structure/backlink patterns once we can browse them properly
 - Newsletter setup plan (Engine I) — depends on ESP access

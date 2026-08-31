@@ -1,0 +1,159 @@
+[
+  {
+    "wallet": "JCCHjYkL1hM546GHxqqPM1bc7ych8ErLrLDiCivfAexy",
+    "score": 19.0,
+    "metrics": {
+      "n_trades": 6,
+      "win_rate": 1.0,
+      "total_pnl_sol": 1.6928005805271922,
+      "avg_pnl_pct": 4245024.849194131,
+      "median_pnl_pct": 1076560.0267003186,
+      "best_trade_pnl_sol": 0.7576029316024028,
+      "worst_trade_pnl_sol": 0.0020318622800085946,
+      "profit_concentration": 0.4475441114076538,
+      "avg_hold_hours": 0.0,
+      "median_hold_seconds": 0,
+      "trades_last_7d": 6,
+      "last_trade_days_ago": 0.46349738750192854,
+      "avg_buy_size_sol": 15.000094224249994,
+      "position_size_cv": 3.872973547828521
+    },
+    "warnings": [
+      "Small sample (6 closed trades) -- win rate is noisy.",
+      "Highly inconsistent position sizing -- harder to copy predictably.",
+      "Median hold time ~0.0s -- buys and sells are landing in the same/adjacent block. Likely a sniper bot, atomic bundle, or privileged execution (private mempool/Jito bundle) rather than a repeatable read-and-react trade. A Telegram copy bot cannot match this latency -- copying this wallet means buying near the top of their flip, not at their entry. Treat as NOT COPYABLE regardless of score."
+    ],
+    "n_closed_trades": 6
+  },
+  {
+    "wallet": "DhY8Ab5cFbZ2VXfiexmCSFkfjqukinVUzFJ514yeAumV",
+    "score": 15.0,
+    "metrics": {
+      "n_trades": 13,
+      "win_rate": 1.0,
+      "total_pnl_sol": 120.4699335229559,
+      "avg_pnl_pct": 73122686.1750522,
+      "median_pnl_pct": 14495599.324095491,
+      "best_trade_pnl_sol": 29.81411382181988,
+      "worst_trade_pnl_sol": 0.4883163212703885,
+      "profit_concentration": 0.24748178196793572,
+      "avg_hold_hours": 0.0,
+      "median_hold_seconds": 0,
+      "trades_last_7d": 13,
+      "last_trade_days_ago": 3.7683145873193387,
+      "avg_buy_size_sol": 3.905115399746032,
+      "position_size_cv": 2.752967812152871
+    },
+    "warnings": [
+      "Highly inconsistent position sizing -- harder to copy predictably.",
+      "Median hold time ~0.0s -- buys and sells are landing in the same/adjacent block. Likely a sniper bot, atomic bundle, or privileged execution (private mempool/Jito bundle) rather than a repeatable read-and-react trade. A Telegram copy bot cannot match this latency -- copying this wallet means buying near the top of their flip, not at their entry. Treat as NOT COPYABLE regardless of score."
+    ],
+    "n_closed_trades": 13
+  },
+  {
+    "wallet": "2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "7Dgv6HDjQ8kdgsDRtmgpVwiyfTGjzDaSkWVAZZJ2wiiW",
+    "score": 0,
+    "metrics": {
+      "n_trades": 7,
+      "win_rate": 0.0,
+      "total_pnl_sol": -9.546411335249601,
+      "avg_pnl_pct": -45.04519355643136,
+      "median_pnl_pct": -44.83355139001295,
+      "best_trade_pnl_sol": -0.15122604027132247,
+      "worst_trade_pnl_sol": -2.2004723836891174,
+      "profit_concentration": 0,
+      "avg_hold_hours": 0.0,
+      "median_hold_seconds": 0,
+      "trades_last_7d": 7,
+      "last_trade_days_ago": 0.6529778681612677,
+      "avg_buy_size_sol": 6.663854486956526,
+      "position_size_cv": 0.7399642089257092
+    },
+    "warnings": [
+      "Small sample (7 closed trades) -- win rate is noisy.",
+      "Low win rate (0%).",
+      "Median hold time ~0.0s -- buys and sells are landing in the same/adjacent block. Likely a sniper bot, atomic bundle, or privileged execution (private mempool/Jito bundle) rather than a repeatable read-and-react trade. A Telegram copy bot cannot match this latency -- copying this wallet means buying near the top of their flip, not at their entry. Treat as NOT COPYABLE regardless of score."
+    ],
+    "n_closed_trades": 7
+  },
+  {
+    "wallet": "AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "DAtJJbckkqADvpt7bhCqNHMpitYBVHfFP3ZsisNvbBTC",
+    "score": 0,
+    "metrics": {
+      "n_trades": 1,
+      "win_rate": 1.0,
+      "total_pnl_sol": 0.1065362295398612,
+      "avg_pnl_pct": 25.754887859494342,
+      "median_pnl_pct": 25.754887859494342,
+      "best_trade_pnl_sol": 0.1065362295398612,
+      "worst_trade_pnl_sol": 0.1065362295398612,
+      "profit_concentration": 1.0,
+      "avg_hold_hours": 0.0,
+      "median_hold_seconds": 0,
+      "trades_last_7d": 1,
+      "last_trade_days_ago": 2.0499342043891,
+      "avg_buy_size_sol": 12.746358131064518,
+      "position_size_cv": 2.986764471790097
+    },
+    "warnings": [
+      "Small sample (1 closed trades) -- win rate is noisy.",
+      "Profit concentration 100% in a single trade -- results likely driven by one lucky pump, not repeatable.",
+      "Highly inconsistent position sizing -- harder to copy predictably.",
+      "Median hold time ~0.0s -- buys and sells are landing in the same/adjacent block. Likely a sniper bot, atomic bundle, or privileged execution (private mempool/Jito bundle) rather than a repeatable read-and-react trade. A Telegram copy bot cannot match this latency -- copying this wallet means buying near the top of their flip, not at their entry. Treat as NOT COPYABLE regardless of score."
+    ],
+    "n_closed_trades": 1
+  },
+  {
+    "wallet": "uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "12a3vefnfb47xW537swVN777b3woZmvacNjZqGmfM21",
+    "score": 0,
+    "metrics": {
+      "n_trades": 1,
+      "win_rate": 1.0,
+      "total_pnl_sol": 0.15373189886905436,
+      "avg_pnl_pct": 28.915075660664375,
+      "median_pnl_pct": 28.915075660664375,
+      "best_trade_pnl_sol": 0.15373189886905436,
+      "worst_trade_pnl_sol": 0.15373189886905436,
+      "profit_concentration": 1.0,
+      "avg_hold_hours": 0.0,
+      "median_hold_seconds": 0,
+      "trades_last_7d": 1,
+      "last_trade_days_ago": 6.006355600914469,
+      "avg_buy_size_sol": 0.3113384174199998,
+      "position_size_cv": 1.44875267685461
+    },
+    "warnings": [
+      "Small sample (1 closed trades) -- win rate is noisy.",
+      "Profit concentration 100% in a single trade -- results likely driven by one lucky pump, not repeatable.",
+      "Median hold time ~0.0s -- buys and sells are landing in the same/adjacent block. Likely a sniper bot, atomic bundle, or privileged execution (private mempool/Jito bundle) rather than a repeatable read-and-react trade. A Telegram copy bot cannot match this latency -- copying this wallet means buying near the top of their flip, not at their entry. Treat as NOT COPYABLE regardless of score."
+    ],
+    "n_closed_trades": 1
+  }
+]

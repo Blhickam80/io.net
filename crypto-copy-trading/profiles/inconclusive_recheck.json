@@ -1,0 +1,47 @@
+[
+  {
+    "wallet": "2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z",
+    "score": 0,
+    "metrics": {
+      "n_trades": 2,
+      "win_rate": 0.0,
+      "total_pnl_sol": -0.003973301241561853,
+      "avg_pnl_pct": -32.436239715254786,
+      "median_pnl_pct": -27.78605832514816,
+      "best_trade_pnl_sol": -0.0017605510522367964,
+      "worst_trade_pnl_sol": -0.002212750189325057,
+      "profit_concentration": 0,
+      "avg_hold_hours": 0.0,
+      "median_hold_seconds": 0,
+      "trades_last_7d": 2,
+      "last_trade_days_ago": 4.614218042410083,
+      "avg_buy_size_sol": 16.78378247342857,
+      "position_size_cv": 4.4378698694758025
+    },
+    "warnings": [
+      "Small sample (2 closed trades) -- win rate is noisy.",
+      "Low win rate (0%).",
+      "Highly inconsistent position sizing -- harder to copy predictably.",
+      "Median hold time ~0.0s -- buys and sells are landing in the same/adjacent block. Likely a sniper bot, atomic bundle, or privileged execution (private mempool/Jito bundle) rather than a repeatable read-and-react trade. A Telegram copy bot cannot match this latency -- copying this wallet means buying near the top of their flip, not at their entry. Treat as NOT COPYABLE regardless of score."
+    ],
+    "n_closed_trades": 2
+  }
+]

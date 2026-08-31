@@ -8,11 +8,11 @@
 # 3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE
 
 # Batch 1 (2026-08-31) -- analyzed, NONE recommended. See profiles/batch1_review.md.
-# 2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj   -- inconclusive, no closed SOL-paired trades found
+# 2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj   -- rechecked 90d/400tx: barely active, not a trader. DROP
 # DhY8Ab5cFbZ2VXfiexmCSFkfjqukinVUzFJ514yeAumV   -- sniper bot, NOT COPYABLE
 # 7Dgv6HDjQ8kdgsDRtmgpVwiyfTGjzDaSkWVAZZJ2wiiW   -- losing sniper bot, NOT COPYABLE
-# AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t   -- inconclusive, no closed SOL-paired trades found
+# AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t   -- rechecked 90d/400tx: active but no swaps detected. UNRESOLVED, needs labeled data source
 # DAtJJbckkqADvpt7bhCqNHMpitYBVHfFP3ZsisNvbBTC   -- sniper bot + 1 trade sample, NOT COPYABLE
-# uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z   -- inconclusive, no closed SOL-paired trades found
+# uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z   -- rechecked 90d/400tx: losing sniper bot, NOT COPYABLE
 # JCCHjYkL1hM546GHxqqPM1bc7ych8ErLrLDiCivfAexy   -- sniper bot, NOT COPYABLE
 # 12a3vefnfb47xW537swVN777b3woZmvacNjZqGmfM21   -- sniper bot + 1 trade sample, NOT COPYABLE

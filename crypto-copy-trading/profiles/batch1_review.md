@@ -51,9 +51,25 @@ Worth re-checking with a longer lookback (`--lookback-days 60 --max-tx 400`) and
 RPC endpoint before ruling them out -- unlike the sniper-bot wallets, there's no
 disqualifying evidence here, just insufficient data yet.
 
+## Update: recheck of the 3 inconclusive wallets (90-day lookback, up to 400 tx)
+
+Raw output: [`inconclusive_recheck.json`](./inconclusive_recheck.json).
+
+| Wallet | Sigs fetched | Closed trades | Outcome |
+|---|---|---|---|
+| `2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj` | 71 (well under cap) | 0 | Low overall activity for a ~165 SOL wallet -- doesn't look like an active memecoin trader by this method. **Drop.** |
+| `AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t` | 400 (hit cap) | 0 | Heavy on-chain activity but none of it matches a SOL<->token swap shape. Either not a token trader, or trades in a pattern this script's balance-delta heuristic doesn't catch (e.g. no native-SOL leg). **Unresolved** -- would need a labeled data source (Solscan/Birdeye trade history) to confirm either way, not worth more guessing from raw RPC. |
+| `uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z` | 400 (hit cap) | 2 | Now has a real signal: 0% win rate, -27.8% median return, and the same 0-second hold time as the sniper-bot wallets. **Losing sniper bot -- disqualified.** |
+
+## Bottom line: 9 wallets analyzed, 0 recommended
+
+7 are disqualified outright (sniper-bot pattern, several losing). 1 (`2Pvub...`) doesn't look
+like an active trader at all. 1 (`AcVua...`) is a genuine unknown that this backtester can't
+resolve with public RPC data alone.
+
 ## Next step
 
-We need either: (a) more candidates from wallets that look like discretionary traders rather
-than the leaderboard's top absolute gainers, or (b) a deeper look at the 3 inconclusive
-wallets with a longer window. Send more addresses, or say which of the 3 inconclusive ones to
-dig into further.
+Stop pulling from "biggest gainers" style leaderboard views -- that's exactly where sniper
+bots cluster and is why 7 of 9 candidates so far were bots. Look for a 30-day win-rate or
+consistency sort on fomo.app instead, or a "most followed/copied" list if the app has one.
+Send whatever comes out of that and it'll go through the same process.

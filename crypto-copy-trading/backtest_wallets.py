@@ -323,7 +323,10 @@ def main():
         wallets.extend(w.strip() for w in args.wallets.split(",") if w.strip())
     if args.wallets_file:
         with open(args.wallets_file) as f:
-            wallets.extend(line.strip() for line in f if line.strip() and not line.startswith("#"))
+            for line in f:
+                line = line.split("#", 1)[0].strip()  # drop full-line and inline comments
+                if line:
+                    wallets.append(line)
     if not wallets:
         ap.error("Provide --wallets or --wallets-file")
 

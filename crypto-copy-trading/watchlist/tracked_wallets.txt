@@ -1,0 +1,96 @@
+# Master watchlist imported from user's wallet-tracker export, 2026-09-01.
+# 93 wallets. One address per line for backtest_wallets.py --wallets-file.
+
+4Be9CvxqHW6BYiRAxW9Q3xu1ycTMWaL5z8NX4HR3ha7t  # mitch
+AVAZvHLR2PcWpDf8BXY4rVxNHYRBytycHkcB5z5QNXYm  # ansem
+6S8GezkxYUfZy9JPtYnanbcZTMB87Wjt1qx3c6ELajKC  # nyerock
+ANfB2knFb7pC7jKadHnSP4xKZ31KJGNLhWRo89LWsFeW  # bundle2
+A5uxHmjTVyBd1Aj4BFUAekujpPjaWnCrLSRJhjAyvjH4  # rando
+Dpjpr2dmtLhGVR1xVn1e8uKfqLAy3cjnsqtcSqH1YVun  # new wallet
+EHg5YkU2SZBTvuT87rUsvxArGp3HLeye1fXaSDfuMyaf  # til
+6LChaYRYtEYjLEHhzo4HdEmgNwu2aia8CM8VhR9wn6n7  # mil.7
+3GzBLpxTWWTPWwBYQ8Jgrz5XLUCg9aY6HiB3GEBUBAv6  # Rename wallet
+BNnN2MqfWLvgThYBsv6v8JQaYZXYKYahC5YCy27Ct1cX  # Rename wallet
+69xxnEwKuQUS1reyCpLufMTxMV4MCRBqa2k8eBCtgNQc  # Rename wallet
+82XuEV5Ti4gXCBq4qpJP6tJcACUkCrSkpAgXXVLEUcAp  # Rename wallet
+3at1KDqwYyb2ho9vBbRUqriwfpBbiUHWzqqRyyqRBpi1  # Rename wallet
+7KU6rqkCY5XtLTskgCN71w4uGtKy6WgnunEDGTAAb3S8  # Rename wallet
+7hTFyrnHRwDTsF6C8n1GPTSpTYWXDJ5NJUt5cEd8A3xS  # Rename wallet
+6srqBeHmRHrUppik1F7vSfyWyRuHmhpQ13ZMpH2T7mVx  # bunde 1
+4dfJdwntJqhArbBPudMMSzgt1MbKY7aNKsnF5KCkWaCo  # IV
+97UKrjY8bt1A9XAMJfxqd2TCZw18eB9xezaYM7jvVzn2  # Rename wallet
+4S9U8HckRngscHWrW418cG6Suw62dhEZzmyrT2hxSye5  # 1 mil pnl
+DuQabFqdC9eeBULVa7TTdZYxe8vK8ct5DZr4Xcf7docy  # Orangie
+H8mCFAihhP9jqfA7nr9GKyiVBo8nwjeU7ULAN7GccXAC  # kabuto
+2WN4rnEmB9c9ouC7VTb4CBXbyiY7qTMcvWUxKKQ2D47T  # counter trade
+BC8yiFFQWFEKrEEj75zYsuK3ZDCfv6QEeMRif9oZZ9TW  # world
+sAdNbe1cKNMDqDsa4npB3TfL62T14uAo2MsUQfLvzLT  # Ethan Prosper
+J3dnz2QDVfiouCjWTXowtX9zpNzVp9eQdnTa1P1xMArB  # cupppper
+5hehGjeegAmwmaSw2r69GPbag6jwJ2YjBSKtgrXzqTWZ  # Rename wallet
+BtMBMPkoNbnLF9Xn552guQq528KKXcsNBNNBre3oaQtr  # letter
+2fg5QD1eD7rzNNCsvnhmXFm5hqNgwTTG8p7kQ6f3rx6f  # cupsey2
+HDHDZitPowLCJApgFYDeSZAfjB6EXHz4Y3KnqYkx7SQQ  # DEFAULT
+ACTbvbNm5qTLuofNRPxFPMtHAAtdH1CtzhCZatYHy831  # slidrz
+yHCxHBEaJW5tbndqC8JciSThr7U1cqLpdcsvHcx6PRe  # BB dev
+BCagckXeMChUKrHEd6fKFA1uiWDtcmCXMsqaheLiUPJd  # dv
+6GBG8SDMCESvhNzmVyHyQz8ZtonHqXKXWb6FMYZC3HWm  # Sod
+H31vEBxSJk1nQdUN11qZgZyhScyShhscKhvhZZU3dQoU  # mega
+EAov53rG4beBi7bmBVYgCf4yeHxBW7idgbUkCyyVxSCq  # tjr
+7BNaxx6KdUYrjACNQZ9He26NBFoFxujQMAfNLnArLGH5  # bot
+CropM1WPjKFu6Rb3sDipZZT4cYTBCpgdujHvRxbbVm5B  # Soddy
+73LnJ7G9ffBDjEBGgJDdgvLUhD5APLonKrNiHsKDCw5B  # waddles
+BMgsHTvcasRVtuevHJh8t6Vf5dmcWkDLAx6gSAQ3dsYm  # dipwheeler
+9tBVfGoprxwd4cdHgvzi4QcSU6XjYNEAyAfM3jq6i3D3  # profits
+Bz3mpRUmh79nphvRtJBea1QANbVMVZSN222WdoH6JNTe  # wuzie
+5ye4Vsdfr9YGrJzgSrV2ojCbbL6uJrgd1fyaoz8k6kw  # dip2
+4vw54BmAogeRV3vPKWyFet5yf8DTLcREzdSzx4rw9Ud9  # decu
+4BdKaxN8G6ka4GYtQQWk4G4dZRUTX2vQH9GcXdBREFUk  # jijo
+5aeEF11NHMwsvb3X16QyYd2CnVddpLDLejdHze9hXQY  # 960 holder
+C4wwBRwbRcJcbat9R4tXTC1s7U3Qy8NsHd699g5sJcJ1  # DEFAULT
+DfMxre4cKmvogbLrPigxmibVTTQDuzjdXojWzjCXXhzj  # chaad2
+EeXvxkcGqMDZeTaVeawzxm9mbzZwqDUMmfG3bF7uzumH  # milito
+4W5VLy2JEzFUK1Nq8DEaUVQBWeb1z5gmUFiz9B2Epump  # alohdevULT
+bwamJzztZsepfkteWRChggmXuiiCQvpLqPietdNfSXa  # Bwa dev
+8MaVa9kdt3NW4Q5HyNAm1X5LbR8PQRVDc1W8NMVK88D5  # daumen
+8deJ9xeUvXSJwicYptA9mHsU2rN2pDx37KWzkDkEXhU6  # cooker
+BAr5csYtpWoNpwhUjixX7ZPHXkUciFZzjBp9uNxZXJPh  # Jack Duval
+9yYya3F5EJoLnBNKW6z4bZvyQytMXzDcpU5D6yYr4jqL  # loopier
+CNudZYFgpbT26fidsiNrWfHeGTBMMeVWqruZXsEkcUPc  # gakje
+BXAWg4JbaeyvAHpiyYQ3Xr3bUh6FsyDHwwSkB5dmyGF  # unc dev
+CeHS3qdj5LayycEFJSx7dfpqVKocSSZfrFDuzF6BC9Ph  # noob
+3qCKoFHtYx1JgsiXL4Nnd6txcWZPzcYy18FjqmJd3FNq  # cousin
+9Y4rdEkQZspgjreqjW79yaDvNbBNRm24g6FPTkCPGmwg  # Rename wallet
+42FDWxPiQZkTUAraADVLu9mxrkqCmqQxVXZa3qMijQd6  # DEFAULT
+4v5VvAnKEccSfJ5kbWKCdui2pdurSsxdyxjaceWLHWh8  # DEFAULT
+6bQSN4d6anoTwnE6XDPGLA9RV8cqZPeNJro4iQUsWmso  # wrld
+F5XvCe4233m6mHRbkkq2ZsFvqrPAnRrDBExeQy2fwagQ  # dv dev wallet
+BBPKQwYLyiPjAX2KTFxanR7vxwa7majAF7c7yoaRX8oR  # big cup
+7E9jfxCczubz4FXkkVKzUMHXGwzJxyppC4m7y3ew8ATg  # gemz dev
+DxM1hfY8FQ8dNGrucuJzhJcF8KRbjk8WBwrgKvQ9spPv  # resell
+GV6UUmNxz2RpKxmNAPadYKb7uQpszwqQAu3qLJxVdC52  # real ansem
+GZVSEAajExLJEvACHHQcujBw7nJq98GWUEZtood9LM9b  # washy
+G6fUXjMKPJzCY1rveAE6Qm7wy5U3vZgKDJmN1VPAdiZC  # cluckz
+86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY  # real toly
+Bf4zji6S979QySiGNjPJ2VMZ5i2SRVtAzfx8QUBScJm6  # solcrow
+BbdWnFY3jyBvvX5HBSjN6p9CQEn6VZNnzStRykcL6GwM  # on a tear
+F3aJ28RrFAceShmtG1wJPmwgPZqQhVabzonsSao7qjEo  # keanu
+BCrTEXmWutwPz8qv6w1S5gDbaLnSLpXKM5kSGVWyyfxu  # rems
+5R4RJojpoKNwBcJNgVYGtwXdmhyEHWXGDBQqUnSpLfcW  # andy
+VJSDW6S74YXR4rRR9P4xwhMvLZJQMhrUb8XMFirUsy1  # beanz
+6ickcf4jsEDKqMx6xv2H5RvrCV9FiqTfU9cWNHKy23T  # dsada
+24BdmGDHrQ55qanLdvrdPzXJF8rNDMQeUZvZoQGA29kk  # asdsad
+4mwxxeq98uyaqmBfeMLZWvHyV55sFbWUacsgEsu62VR1  # ansem,,
+6Eegkyd2qNzxSzZz3PH3jiDyqL5HFcHdcsb9zfMzWHKB  # duve
+DkWzWsQT9ZThfkFfdZqzNT59dZMiJXp81oob8QBG9UcT  # duve3
+2sfVoyYrsERU1PpZKJP1agfDBiBzfBy4UZG14kqckJV7  # pump team
+ExyyiTjWfBfcSn6Qu25GdoxxC21dFAd71SiQM2KZRdn6  # ansem agent
+3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE  # jidn
+EaVboaPxFCYanjoNWdkxTbPvt57nhXGu5i6m9m6ZS2kK  # cladz
+498g1rVnFcnjBjpfw1xyqA1WvgQXUU8RWuELjxkjAayQ  # frank
+CyaE1VxvBrahnPWkqm5VsdCvyS2QmNht2UFrKJHga54o  # Cented
+FxN3VZ4BosL5urG2yoeQ156JSdmavm9K5fdLxjkPmaMR  # cupsey
+Af69G8vnw3zfgqyEPkkytboCRr8SbKWREowkRXAoVa2d  # pbot
+suqh5sHtr8HyJ7q8scBimULPkPpA557prMG47xCHQfK  # Cupsey
+DZAa55HwXgv5hStwaTEJGXZz1DhHejvpb7Yr762urXam  # Ozark
+BFC3aYVGtgsMPj87b928o1h6M3WdfxTY2ksKakKLkj4t  # jack side
+C6macjVoEMRtfpupFP4cQtCr49Uws5UFcxLVrGxAKMdr  # igetrugged

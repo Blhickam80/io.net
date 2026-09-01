@@ -141,6 +141,14 @@ def analyze_wallet(endpoint, wallet, lookback_days, max_tx, verbose=False):
     if verbose:
         print(f"  fetched {len(sigs)} signatures", file=sys.stderr)
 
+    # get_signatures returns newest-first (it paginates backward via `before`). FIFO lot
+    # matching below requires processing in chronological order -- otherwise a sell can be
+    # matched against a buy that happened *after* it in real time (because that buy appeared
+    # earlier in the newest-first list), producing a negative hold time that silently gets
+    # clamped to 0 by max(0, ...) downstream. That bug previously made every wallet look like
+    # a same-block sniper regardless of its real trade timing. Reverse to oldest-first here.
+    sigs = list(reversed(sigs))
+
     open_lots = defaultdict(deque)  # mint -> deque of [remaining_qty, cost_sol_per_unit, ts]
     closed_trades = []
     buy_sizes = []

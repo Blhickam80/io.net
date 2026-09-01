@@ -123,6 +123,12 @@ def extract_swap(tx, wallet):
             amt = bal["uiTokenAmount"].get("uiAmount") or 0.0
             token_deltas[bal["mint"]] += amt
 
+    # Some wallets keep a persistent wrapped-SOL token account instead of wrapping/unwrapping
+    # native SOL on every trade -- in that case the "SOL side" of the swap shows up as a token
+    # balance change on the wSOL mint, not as a native lamport change. Fold it into sol_delta so
+    # both trading styles are detected the same way.
+    sol_delta += token_deltas.pop(SOL_MINT, 0.0)
+
     # Drop near-zero noise
     token_deltas = {m: d for m, d in token_deltas.items() if abs(d) > 1e-9}
     if not token_deltas or abs(sol_delta) < 1e-6:

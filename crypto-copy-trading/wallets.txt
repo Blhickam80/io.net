@@ -4,15 +4,44 @@
 # example:
 # 9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM
 
-# "Early Bird" -- analyzed, NOT COPYABLE (sub-second flip pattern). See profiles/early_bird.md.
+# ⚠️ 2026-09-01: a chronological-ordering bug in backtest_wallets.py made every "sniper bot"
+# verdict recorded before this date unreliable (see the fix commit and
+# profiles/2026-09-01_corrected_findings.md). Corrected verdicts below supersede the old ones.
+
+# "Early Bird" -- re-analyzed post-fix: mediocre (47.4% win, -4.8% median), not a sniper bot,
+# just not profitable. NOT RECOMMENDED. See profiles/early_bird.md.
 # 3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE
 
-# Batch 1 (2026-08-31) -- analyzed, NONE recommended. See profiles/batch1_review.md.
-# 2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj   -- rechecked 90d/400tx: barely active, not a trader. DROP
-# DhY8Ab5cFbZ2VXfiexmCSFkfjqukinVUzFJ514yeAumV   -- sniper bot, NOT COPYABLE
-# 7Dgv6HDjQ8kdgsDRtmgpVwiyfTGjzDaSkWVAZZJ2wiiW   -- losing sniper bot, NOT COPYABLE
-# AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t   -- rechecked 90d/400tx: active but no swaps detected. UNRESOLVED, needs labeled data source
-# DAtJJbckkqADvpt7bhCqNHMpitYBVHfFP3ZsisNvbBTC   -- sniper bot + 1 trade sample, NOT COPYABLE
-# uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z   -- rechecked 90d/400tx: losing sniper bot, NOT COPYABLE
-# JCCHjYkL1hM546GHxqqPM1bc7ych8ErLrLDiCivfAexy   -- sniper bot, NOT COPYABLE
-# 12a3vefnfb47xW537swVN777b3woZmvacNjZqGmfM21   -- sniper bot + 1 trade sample, NOT COPYABLE
+# Batch 1 (2026-08-31) -- re-analyzed post-fix. See profiles/2026-09-01_corrected_findings.md.
+# 2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj   -- ★ TOP CANDIDATE: 35 trades, 80% win, +79.3% median, 9.2% profit concentration, 4.2min hold
+# DhY8Ab5cFbZ2VXfiexmCSFkfjqukinVUzFJ514yeAumV   -- real, 81.8% win, but astronomical returns (near-zero cost basis) + inconsistent sizing
+# 7Dgv6HDjQ8kdgsDRtmgpVwiyfTGjzDaSkWVAZZJ2wiiW   -- genuinely bad (14.8% win, -58.2% median)
+# AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t   -- still unresolved: heavy activity, no detected swaps (see corrected findings doc)
+# DAtJJbckkqADvpt7bhCqNHMpitYBVHfFP3ZsisNvbBTC   -- bad (0% win, -41.1% median)
+# uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z   -- still 0 trades detected post-fix
+# JCCHjYkL1hM546GHxqqPM1bc7ych8ErLrLDiCivfAexy   -- small sample, 73% profit concentration (one trade), risky
+# 12a3vefnfb47xW537swVN777b3woZmvacNjZqGmfM21   -- real, 86.5% win over 37 trades, but astronomical returns + inconsistent sizing
+
+# Priority watchlist batch (2026-09-01) -- see profiles/2026-09-01_corrected_findings.md
+# DZAa55HwXgv5hStwaTEJGXZz1DhHejvpb7Yr762urXam   -- Ozark: ★ SECONDARY CANDIDATE: 66.7% win, +8.1% median, no warnings
+# F3aJ28RrFAceShmtG1wJPmwgPZqQhVabzonsSao7qjEo   -- keanu: thin edge, too high frequency for a small account
+# GZVSEAajExLJEvACHHQcujBw7nJq98GWUEZtood9LM9b   -- washy: bad (31.5% win, -15.8% median)
+# Bf4zji6S979QySiGNjPJ2VMZ5i2SRVtAzfx8QUBScJm6   -- solcrow: bad, tiny sample
+# G6fUXjMKPJzCY1rveAE6Qm7wy5U3vZgKDJmN1VPAdiZC   -- cluckz: bad
+# BbdWnFY3jyBvvX5HBSjN6p9CQEn6VZNnzStRykcL6GwM   -- on a tear: bad, tiny sample
+# AVAZvHLR2PcWpDf8BXY4rVxNHYRBytycHkcB5z5QNXYm   -- ansem: bad (one lucky trade covering losses)
+# GV6UUmNxz2RpKxmNAPadYKb7uQpszwqQAu3qLJxVdC52   -- real ansem: 0 trades detected (see corrected findings doc re: unresolved wallets)
+# ExyyiTjWfBfcSn6Qu25GdoxxC21dFAd71SiQM2KZRdn6   -- ansem agent: inactive, 0 signatures
+# 4mwxxeq98uyaqmBfeMLZWvHyV55sFbWUacsgEsu62VR1   -- ansem,,: inactive, 0 signatures
+# FxN3VZ4BosL5urG2yoeQ156JSdmavm9K5fdLxjkPmaMR   -- cupsey: nearly inactive (1 sig)
+# suqh5sHtr8HyJ7q8scBimULPkPpA557prMG47xCHQfK   -- Cupsey: nearly inactive (1 sig)
+# 2fg5QD1eD7rzNNCsvnhmXFm5hqNgwTTG8p7kQ6f3rx6f   -- cupsey2: nearly inactive (1 sig)
+# CyaE1VxvBrahnPWkqm5VsdCvyS2QmNht2UFrKJHga54o   -- Cented: 0 trades detected, unresolved
+# 86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY   -- real toly: 0 trades detected, investigated -- not a normal signer/beneficiary in its own DEX txs, unresolved
+# 73LnJ7G9ffBDjEBGgJDdgvLUhD5APLonKrNiHsKDCw5B   -- waddles: 0 trades detected, unresolved
+# EAov53rG4beBi7bmBVYgCf4yeHxBW7idgbUkCyyVxSCq   -- tjr: inactive, 0 signatures
+# VJSDW6S74YXR4rRR9P4xwhMvLZJQMhrUb8XMFirUsy1   -- beanz: nearly inactive (12 sigs), 0 trades
+# 5R4RJojpoKNwBcJNgVYGtwXdmhyEHWXGDBQqUnSpLfcW   -- andy: 0 trades detected, unresolved
+# BCrTEXmWutwPz8qv6w1S5gDbaLnSLpXKM5kSGVWyyfxu   -- rems: 0 trades detected, unresolved
+
+# Remaining ~65 wallets in watchlist/tracked_wallets.txt not yet analyzed.

@@ -1,0 +1,476 @@
+[
+  {
+    "wallet": "2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj",
+    "score": 70.9,
+    "metrics": {
+      "n_trades": 35,
+      "win_rate": 0.8,
+      "total_pnl_sol": 36.20677823247103,
+      "avg_pnl_pct": 73.13823533858586,
+      "median_pnl_pct": 79.3239993166426,
+      "best_trade_pnl_sol": 3.910519898471016,
+      "worst_trade_pnl_sol": -2.2482258021107087,
+      "profit_concentration": 0.092068815245235,
+      "avg_hold_hours": 0.7635079365079365,
+      "median_hold_seconds": 251,
+      "trades_last_7d": 18,
+      "last_trade_days_ago": 0.7465518148188238,
+      "avg_buy_size_sol": 4.1741935085,
+      "position_size_cv": 0.5536854300935066
+    },
+    "warnings": [],
+    "n_closed_trades": 35
+  },
+  {
+    "wallet": "DhY8Ab5cFbZ2VXfiexmCSFkfjqukinVUzFJ514yeAumV",
+    "score": 66.8,
+    "metrics": {
+      "n_trades": 11,
+      "win_rate": 0.8181818181818182,
+      "total_pnl_sol": 232.14888091639165,
+      "avg_pnl_pct": 36963766.47138211,
+      "median_pnl_pct": 28270967.50153719,
+      "best_trade_pnl_sol": 45.038810950691875,
+      "worst_trade_pnl_sol": -1.1252361464999998,
+      "profit_concentration": 0.1924945649306293,
+      "avg_hold_hours": 60.74782828282829,
+      "median_hold_seconds": 255649,
+      "trades_last_7d": 11,
+      "last_trade_days_ago": 0.6213768142792914,
+      "avg_buy_size_sol": 6.39838214948,
+      "position_size_cv": 3.155492770095733
+    },
+    "warnings": [
+      "Highly inconsistent position sizing -- harder to copy predictably."
+    ],
+    "n_closed_trades": 11
+  },
+  {
+    "wallet": "12a3vefnfb47xW537swVN777b3woZmvacNjZqGmfM21",
+    "score": 61.5,
+    "metrics": {
+      "n_trades": 37,
+      "win_rate": 0.8648648648648649,
+      "total_pnl_sol": 128.14158276231865,
+      "avg_pnl_pct": 12083.352337410519,
+      "median_pnl_pct": 10158.445121898185,
+      "best_trade_pnl_sol": 14.749442365891113,
+      "worst_trade_pnl_sol": -0.45729069499999997,
+      "profit_concentration": 0.1145471454016967,
+      "avg_hold_hours": 1.114496996996997,
+      "median_hold_seconds": 625,
+      "trades_last_7d": 37,
+      "last_trade_days_ago": 5.967406562221823,
+      "avg_buy_size_sol": 0.3092203089999998,
+      "position_size_cv": 1.5570962150694443
+    },
+    "warnings": [
+      "Highly inconsistent position sizing -- harder to copy predictably."
+    ],
+    "n_closed_trades": 37
+  },
+  {
+    "wallet": "JCCHjYkL1hM546GHxqqPM1bc7ych8ErLrLDiCivfAexy",
+    "score": 59.0,
+    "metrics": {
+      "n_trades": 6,
+      "win_rate": 1.0,
+      "total_pnl_sol": 210.61989892611533,
+      "avg_pnl_pct": 39397136.82834867,
+      "median_pnl_pct": 15323205.814244278,
+      "best_trade_pnl_sol": 154.76422549180904,
+      "worst_trade_pnl_sol": 0.030285490269483795,
+      "profit_concentration": 0.7348034363367526,
+      "avg_hold_hours": 8.738425925925926,
+      "median_hold_seconds": 43547,
+      "trades_last_7d": 6,
+      "last_trade_days_ago": 0.11631599607291045,
+      "avg_buy_size_sol": 56.73834483033333,
+      "position_size_cv": 2.756958723554506
+    },
+    "warnings": [
+      "Small sample (6 closed trades) -- win rate is noisy.",
+      "Profit concentration 73% in a single trade -- results likely driven by one lucky pump, not repeatable.",
+      "Highly inconsistent position sizing -- harder to copy predictably."
+    ],
+    "n_closed_trades": 6
+  },
+  {
+    "wallet": "DZAa55HwXgv5hStwaTEJGXZz1DhHejvpb7Yr762urXam",
+    "score": 43.3,
+    "metrics": {
+      "n_trades": 15,
+      "win_rate": 0.6666666666666666,
+      "total_pnl_sol": 0.9667302029870362,
+      "avg_pnl_pct": 15.005657086341376,
+      "median_pnl_pct": 8.106400903752373,
+      "best_trade_pnl_sol": 1.288927511168743,
+      "worst_trade_pnl_sol": -2.621372571,
+      "profit_concentration": 0.29100937362333695,
+      "avg_hold_hours": 0.03361111111111111,
+      "median_hold_seconds": 82,
+      "trades_last_7d": 15,
+      "last_trade_days_ago": 0.01023942408186418,
+      "avg_buy_size_sol": 2.4710356874166672,
+      "position_size_cv": 0.9216914048539931
+    },
+    "warnings": [],
+    "n_closed_trades": 15
+  },
+  {
+    "wallet": "3h65MmPZksoKKyEpEjnWU2Yk2iYT5oZDNitGy5cTaxoE",
+    "score": 24.0,
+    "metrics": {
+      "n_trades": 19,
+      "win_rate": 0.47368421052631576,
+      "total_pnl_sol": 1.7085275030997233,
+      "avg_pnl_pct": 58.782878245112656,
+      "median_pnl_pct": -4.831849849960384,
+      "best_trade_pnl_sol": 1.6620652594512721,
+      "worst_trade_pnl_sol": -0.6565767010000001,
+      "profit_concentration": 0.41775209614192205,
+      "avg_hold_hours": 0.03710526315789473,
+      "median_hold_seconds": 202,
+      "trades_last_7d": 19,
+      "last_trade_days_ago": 0.002376779960813346,
+      "avg_buy_size_sol": 0.8923300597659575,
+      "position_size_cv": 1.0007116304090884
+    },
+    "warnings": [],
+    "n_closed_trades": 19
+  },
+  {
+    "wallet": "F3aJ28RrFAceShmtG1wJPmwgPZqQhVabzonsSao7qjEo",
+    "score": 17.7,
+    "metrics": {
+      "n_trades": 65,
+      "win_rate": 0.5230769230769231,
+      "total_pnl_sol": 54.81148719500002,
+      "avg_pnl_pct": 47.69028997056672,
+      "median_pnl_pct": 2.0449382514397163,
+      "best_trade_pnl_sol": 10.7735559694,
+      "worst_trade_pnl_sol": -0.39978656999999984,
+      "profit_concentration": 0.1893225534474625,
+      "avg_hold_hours": 0.004551282051282051,
+      "median_hold_seconds": 17,
+      "trades_last_7d": 65,
+      "last_trade_days_ago": 0.2028003373714509,
+      "avg_buy_size_sol": 10.031657087375,
+      "position_size_cv": 6.439258342880804e-05
+    },
+    "warnings": [
+      "Very high frequency (65 trades/7d) -- fees/slippage will eat a small account."
+    ],
+    "n_closed_trades": 65
+  },
+  {
+    "wallet": "7Dgv6HDjQ8kdgsDRtmgpVwiyfTGjzDaSkWVAZZJ2wiiW",
+    "score": 13.4,
+    "metrics": {
+      "n_trades": 27,
+      "win_rate": 0.14814814814814814,
+      "total_pnl_sol": -47.12522972008028,
+      "avg_pnl_pct": -39.40240051894631,
+      "median_pnl_pct": -58.24544753653568,
+      "best_trade_pnl_sol": 2.60972036,
+      "worst_trade_pnl_sol": -5.733190075749347,
+      "profit_concentration": 0.5634424054769719,
+      "avg_hold_hours": 16.587376543209878,
+      "median_hold_seconds": 85961,
+      "trades_last_7d": 27,
+      "last_trade_days_ago": 0.03546057522020958,
+      "avg_buy_size_sol": 4.881472411678571,
+      "position_size_cv": 0.7378362803224466
+    },
+    "warnings": [
+      "Low win rate (15%)."
+    ],
+    "n_closed_trades": 27
+  },
+  {
+    "wallet": "GZVSEAajExLJEvACHHQcujBw7nJq98GWUEZtood9LM9b",
+    "score": 11.8,
+    "metrics": {
+      "n_trades": 54,
+      "win_rate": 0.3148148148148148,
+      "total_pnl_sol": -53.27837011321287,
+      "avg_pnl_pct": -13.089947115508062,
+      "median_pnl_pct": -15.814778623032023,
+      "best_trade_pnl_sol": 1.223322562,
+      "worst_trade_pnl_sol": -11.87848561986069,
+      "profit_concentration": 0.2173136662260217,
+      "avg_hold_hours": 0.04372427983539095,
+      "median_hold_seconds": 35,
+      "trades_last_7d": 54,
+      "last_trade_days_ago": 0.28103678010956007,
+      "avg_buy_size_sol": 3.518434905477271,
+      "position_size_cv": 1.4218207422229268
+    },
+    "warnings": [
+      "Low win rate (31%).",
+      "Very high frequency (54 trades/7d) -- fees/slippage will eat a small account."
+    ],
+    "n_closed_trades": 54
+  },
+  {
+    "wallet": "DAtJJbckkqADvpt7bhCqNHMpitYBVHfFP3ZsisNvbBTC",
+    "score": 6.8,
+    "metrics": {
+      "n_trades": 21,
+      "win_rate": 0.0,
+      "total_pnl_sol": -8.059336545,
+      "avg_pnl_pct": -41.38559996225917,
+      "median_pnl_pct": -41.067380836562606,
+      "best_trade_pnl_sol": -0.04464866700000003,
+      "worst_trade_pnl_sol": -2.1197211979999997,
+      "profit_concentration": 0,
+      "avg_hold_hours": 0.032063492063492065,
+      "median_hold_seconds": 61,
+      "trades_last_7d": 21,
+      "last_trade_days_ago": 0.4210281425328166,
+      "avg_buy_size_sol": 16.159322078958336,
+      "position_size_cv": 2.6402162301490653
+    },
+    "warnings": [
+      "Low win rate (0%).",
+      "Highly inconsistent position sizing -- harder to copy predictably."
+    ],
+    "n_closed_trades": 21
+  },
+  {
+    "wallet": "Bf4zji6S979QySiGNjPJ2VMZ5i2SRVtAzfx8QUBScJm6",
+    "score": 4.3,
+    "metrics": {
+      "n_trades": 3,
+      "win_rate": 0.0,
+      "total_pnl_sol": -0.07216851715413797,
+      "avg_pnl_pct": -4.487212893742625,
+      "median_pnl_pct": -1.1517724177329873,
+      "best_trade_pnl_sol": -9.234710611022087e-05,
+      "worst_trade_pnl_sol": -0.04722155738313916,
+      "profit_concentration": 0,
+      "avg_hold_hours": 41.35203703703704,
+      "median_hold_seconds": 90320,
+      "trades_last_7d": 0,
+      "last_trade_days_ago": 12.77609189812508,
+      "avg_buy_size_sol": 14.7614300005,
+      "position_size_cv": 0.9352863180497438
+    },
+    "warnings": [
+      "Small sample (3 closed trades) -- win rate is noisy.",
+      "Low win rate (0%)."
+    ],
+    "n_closed_trades": 3
+  },
+  {
+    "wallet": "G6fUXjMKPJzCY1rveAE6Qm7wy5U3vZgKDJmN1VPAdiZC",
+    "score": 4.0,
+    "metrics": {
+      "n_trades": 17,
+      "win_rate": 0.058823529411764705,
+      "total_pnl_sol": -14.627598852000007,
+      "avg_pnl_pct": -11.242236733144804,
+      "median_pnl_pct": -5.2296126746534926,
+      "best_trade_pnl_sol": 0.18688606980005162,
+      "worst_trade_pnl_sol": -4.266822639064106,
+      "profit_concentration": 1.0,
+      "avg_hold_hours": 0.008333333333333333,
+      "median_hold_seconds": 6,
+      "trades_last_7d": 17,
+      "last_trade_days_ago": 0.09481041899157895,
+      "avg_buy_size_sol": 9.246509034285713,
+      "position_size_cv": 0.8191584266566139
+    },
+    "warnings": [
+      "Low win rate (6%).",
+      "Profit concentration 100% in a single trade -- results likely driven by one lucky pump, not repeatable."
+    ],
+    "n_closed_trades": 17
+  },
+  {
+    "wallet": "BbdWnFY3jyBvvX5HBSjN6p9CQEn6VZNnzStRykcL6GwM",
+    "score": 1.2,
+    "metrics": {
+      "n_trades": 2,
+      "win_rate": 0.0,
+      "total_pnl_sol": -5.193648756999998,
+      "avg_pnl_pct": -12.983124129077712,
+      "median_pnl_pct": -9.060573997142265,
+      "best_trade_pnl_sol": -1.8125115273523953,
+      "worst_trade_pnl_sol": -3.381137229647603,
+      "profit_concentration": 0,
+      "avg_hold_hours": 0.70125,
+      "median_hold_seconds": 2538,
+      "trades_last_7d": 2,
+      "last_trade_days_ago": 1.2110244146734477,
+      "avg_buy_size_sol": 1.0546159528461536,
+      "position_size_cv": 4.177103342662636
+    },
+    "warnings": [
+      "Small sample (2 closed trades) -- win rate is noisy.",
+      "Low win rate (0%).",
+      "Highly inconsistent position sizing -- harder to copy predictably."
+    ],
+    "n_closed_trades": 2
+  },
+  {
+    "wallet": "AcVua6Uss59mneonhV5TfBhoyW8kyz7mnTDhtocgez3t",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "uNksqSWy79L7vPizsU8r56wPmiJwLCtenL5yUk6LM7z",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "AVAZvHLR2PcWpDf8BXY4rVxNHYRBytycHkcB5z5QNXYm",
+    "score": 0,
+    "metrics": {
+      "n_trades": 10,
+      "win_rate": 0.1,
+      "total_pnl_sol": -206.44866205179915,
+      "avg_pnl_pct": -50.89676049714029,
+      "median_pnl_pct": -53.172653454841026,
+      "best_trade_pnl_sol": 2.4251520630000023,
+      "worst_trade_pnl_sol": -87.80409928632372,
+      "profit_concentration": 1.0,
+      "avg_hold_hours": 3.7528055555555557,
+      "median_hold_seconds": 12536,
+      "trades_last_7d": 10,
+      "last_trade_days_ago": 0.3220115151145944,
+      "avg_buy_size_sol": 35.3184791849,
+      "position_size_cv": 0.7950988057055564
+    },
+    "warnings": [
+      "Low win rate (10%).",
+      "Profit concentration 100% in a single trade -- results likely driven by one lucky pump, not repeatable."
+    ],
+    "n_closed_trades": 10
+  },
+  {
+    "wallet": "GV6UUmNxz2RpKxmNAPadYKb7uQpszwqQAu3qLJxVdC52",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "ExyyiTjWfBfcSn6Qu25GdoxxC21dFAd71SiQM2KZRdn6",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "4mwxxeq98uyaqmBfeMLZWvHyV55sFbWUacsgEsu62VR1",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "FxN3VZ4BosL5urG2yoeQ156JSdmavm9K5fdLxjkPmaMR",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "suqh5sHtr8HyJ7q8scBimULPkPpA557prMG47xCHQfK",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "2fg5QD1eD7rzNNCsvnhmXFm5hqNgwTTG8p7kQ6f3rx6f",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "CyaE1VxvBrahnPWkqm5VsdCvyS2QmNht2UFrKJHga54o",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "86xCnPeV69n6t3DnyGvkKobf9FdN2H9oiVDdaMpo2MMY",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "73LnJ7G9ffBDjEBGgJDdgvLUhD5APLonKrNiHsKDCw5B",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "EAov53rG4beBi7bmBVYgCf4yeHxBW7idgbUkCyyVxSCq",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "VJSDW6S74YXR4rRR9P4xwhMvLZJQMhrUb8XMFirUsy1",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "5R4RJojpoKNwBcJNgVYGtwXdmhyEHWXGDBQqUnSpLfcW",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  },
+  {
+    "wallet": "BCrTEXmWutwPz8qv6w1S5gDbaLnSLpXKM5kSGVWyyfxu",
+    "score": 0,
+    "metrics": null,
+    "warnings": [
+      "No closed trades found in lookback window -- cannot score."
+    ],
+    "n_closed_trades": 0
+  }
+]

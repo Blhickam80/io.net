@@ -1,9 +1,18 @@
 # Candidate batch 1 -- review
 
+> **⚠️ SUPERSEDED, 2026-09-01.** Every "sniper bot" verdict in this document was produced by a
+> version of `backtest_wallets.py` with a chronological-ordering bug that made hold times
+> (and in some cases win rates/trade counts) unreliable. Two of the wallets below --
+> `2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj` and `12a3vefnfb47xW537swVN777b3woZmvacNjZqGmfM21`
+> -- turned out to be real, worth-a-look candidates once corrected (the first is now this
+> session's top pick). See [`2026-09-01_corrected_findings.md`](./2026-09-01_corrected_findings.md)
+> for the corrected numbers on all of these wallets. This file is kept for the record only --
+> do not use the verdicts below.
+
 8 wallets submitted 2026-08-31. 30-day lookback, up to 150 tx each, public RPC.
 Raw output: [`batch1_results.json`](./batch1_results.json).
 
-**Verdict: none of these 8 are recommended for `mofocopytradingbot` right now.**
+**Original (incorrect) verdict: none of these 8 are recommended for `mofocopytradingbot` right now.**
 
 ## Summary
 

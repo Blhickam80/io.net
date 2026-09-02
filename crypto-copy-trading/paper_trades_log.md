@@ -3,3 +3,8 @@
 
 [2026-09-02 02:14:57 UTC] Ozark: BUY 4oFcrU1i... (their size 1.545 SOL -> our paper buy 0.1 SOL, sig 2y5k8wfdNE)
 [2026-09-02 02:15:11 UTC] Ozark: SELL 4oFcrU1i... paper PnL -0.0022 SOL (-4.6%), sig 4mxjVm4nbx
+[2026-09-02 03:17:27 UTC] Ozark: BUY DUZN7M6e... (their size 7.813 SOL -> our paper buy 0.1 SOL, sig UhH2kGVf6b)
+[2026-09-02 03:17:27 UTC] Ozark: BUY DUZN7M6e... (their size 7.073 SOL -> our paper buy 0.1 SOL, sig 65SZs8Vgqt)
+[2026-09-02 03:17:27 UTC] Ozark: BUY DUZN7M6e... (their size 7.195 SOL -> our paper buy 0.1 SOL, sig 3SP7SR8meQ)
+[2026-09-02 03:17:27 UTC] Ozark: BUY DUZN7M6e... (their size 7.136 SOL -> our paper buy 0.1 SOL, sig 65C7Qnrb1j)
+[2026-09-02 03:17:28 UTC] Ozark: BUY DUZN7M6e... (their size 8.246 SOL -> our paper buy 0.1 SOL, sig 3CTnAMAEik)

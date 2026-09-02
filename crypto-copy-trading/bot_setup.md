@@ -42,10 +42,30 @@ Backtest: 15 trades/30d, 66.7% win rate, +8.1% median return, no warnings, ~82s 
 | Priority fee | **Medium-high** | |
 | Rug/honeypot + liquidity filters | **On** | Same as Wallet 1. |
 
+## ⚠️ Added 2026-09-02, from live paper-trade observation: per-token exposure cap
+
+Live-watching Ozark surfaced a gap in the settings above. At 03:17-03:21 UTC, Ozark bought the
+same token 13 separate times in under 4 minutes (5 large buys ~7-8 SOL each, then 8 uniform
+0.352 SOL buys -- the uniform sizing suggests a bot/script, not manual trading), committing
+**40.28 SOL (~$4,016) total to one token**. Mirroring 1:1 at the fixed per-trade size would
+have put **~$130 (30%+ of a $400 account) into a single volatile, ~$54k-liquidity, bot-swarmed
+token** -- "max concurrent positions" doesn't stop this, because it counts distinct tokens, not
+repeated buys of the same one.
+
+**Fix: cap total exposure per token (per mint), separate from the per-trade size and the
+concurrent-position count.** Concretely: **stop copying further buy signals into a token once
+you've already committed ~2x your normal per-trade size to it** (e.g. for Wallet 1's 0.15 SOL
+base size, stop adding to a position past ~0.30 SOL total in that token, no matter how many
+more buy signals the wallet fires for it). If `mofocopytradingbot` doesn't expose a native
+per-token cap, this has to be enforced manually -- watch for a wallet you're copying suddenly
+firing many rapid buys of one token, and stop matching them past the cap.
+
 ## Combined account-level rules (once both are live)
 
 - **Max 4 total concurrent positions** across both wallets (3 + adjust down, not 3+3=6 --
   don't let two wallets firing at once double your intended exposure).
+- **Per-token cap (see above): no more than ~2x a wallet's base per-trade size into any single
+  mint, regardless of how many buy signals that wallet fires for it.**
 - **Daily loss cap: -20% of account (~$80 on $400).** Hit it → stop copying for the day,
   don't average down.
 - **Weekly re-check:** re-run `backtest_wallets.py` against both wallets. If live results

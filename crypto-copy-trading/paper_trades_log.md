@@ -17,3 +17,4 @@
 [2026-09-02 03:21:20 UTC] Ozark: BUY DUZN7M6e... (their size 0.352 SOL -> our paper buy 0.1 SOL, sig pcJcyxLE1u)
 [2026-09-02 03:21:20 UTC] Ozark: BUY DUZN7M6e... (their size 0.352 SOL -> our paper buy 0.1 SOL, sig Xbr7f35P61)
   (skip 3XwhCf82wP: rpc_call failed after 5 retries: getTransaction)
+[2026-09-02 07:26:44 UTC] Ozark: BUY 659xrvMd... (their size 3.256 SOL -> our paper buy 0.1 SOL, sig 4wbEA4Vr7C)

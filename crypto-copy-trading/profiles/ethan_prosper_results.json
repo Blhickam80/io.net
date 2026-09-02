@@ -1,0 +1,27 @@
+[
+  {
+    "wallet": "sAdNbe1cKNMDqDsa4npB3TfL62T14uAo2MsUQfLvzLT",
+    "score": 10.3,
+    "metrics": {
+      "n_trades": 43,
+      "win_rate": 0.2558139534883721,
+      "total_pnl_sol": -10.156488568658503,
+      "avg_pnl_pct": -22.669385404118902,
+      "median_pnl_pct": -23.27582385449785,
+      "best_trade_pnl_sol": 1.421865560462545,
+      "worst_trade_pnl_sol": -3.6187048733006457,
+      "profit_concentration": 0.47884376661070566,
+      "avg_hold_hours": 0.09328811369509044,
+      "median_hold_seconds": 118,
+      "trades_last_7d": 43,
+      "last_trade_days_ago": 0.008120626291191136,
+      "avg_buy_size_sol": 1.2236288469999994,
+      "position_size_cv": 1.1269968403844262
+    },
+    "warnings": [
+      "Low win rate (26%).",
+      "Very high frequency (43 trades/7d) -- fees/slippage will eat a small account."
+    ],
+    "n_closed_trades": 43
+  }
+]

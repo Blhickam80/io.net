@@ -44,4 +44,9 @@
 # 5R4RJojpoKNwBcJNgVYGtwXdmhyEHWXGDBQqUnSpLfcW   -- andy: 0 trades detected, unresolved
 # BCrTEXmWutwPz8qv6w1S5gDbaLnSLpXKM5kSGVWyyfxu   -- rems: 0 trades detected, unresolved
 
-# Remaining ~65 wallets in watchlist/tracked_wallets.txt not yet analyzed.
+# "Ethan Prosper" (2026-09-02) -- analyzed, NOT RECOMMENDED. 43 trades/30d, 25.6% win, -23.3%
+# median, 118s holds. Genuinely bad, not a sniper-bot artifact. 489 pump.fun followers but no
+# verified identity. See profiles/ethan_prosper_results.json.
+# sAdNbe1cKNMDqDsa4npB3TfL62T14uAo2MsUQfLvzLT
+
+# Remaining ~64 wallets in watchlist/tracked_wallets.txt not yet analyzed.

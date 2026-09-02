@@ -34,3 +34,5 @@
 [2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0583 SOL (-58.3%), sig 565UaGpRS3
 [2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0413 SOL (-41.3%), sig 565UaGpRS3
 [2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0317 SOL (-31.7%), sig 565UaGpRS3
+[2026-09-02 19:40:18 UTC] Ozark: SELL 6zSqTexg... paper PnL +0.0278 SOL (+27.8%), sig 5TJzmwPd3y
+[2026-09-02 19:40:18 UTC] Ozark: SELL 6zSqTexg... paper PnL +0.0083 SOL (+8.3%), sig 5TJzmwPd3y

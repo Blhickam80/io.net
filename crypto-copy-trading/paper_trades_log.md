@@ -22,3 +22,15 @@
   (skip 48jZBgLPnM: rpc_call failed after 5 retries: getTransaction)
 [2026-09-02 19:28:34 UTC] Ozark: BUY 6zSqTexg... (their size 3.098 SOL -> our paper buy 0.1 SOL, sig 5ZVsnNPA7e)
 [2026-09-02 19:28:40 UTC] Ozark: BUY 6zSqTexg... (their size 1.184 SOL -> our paper buy 0.1 SOL, sig 3zuoquf9g7)
+[2026-09-02 19:37:51 UTC] Ozark: BUY Gv9fjtT9... (their size 1.938 SOL -> our paper buy 0.1 SOL, sig 4EUPUVbBdz)
+[2026-09-02 19:37:52 UTC] Ozark: BUY Gv9fjtT9... (their size 1.139 SOL -> our paper buy 0.1 SOL, sig 2fhSCKBFdZ)
+[2026-09-02 19:37:55 UTC] Ozark: BUY Gv9fjtT9... (their size 0.193 SOL -> our paper buy 0.1 SOL, sig 3AUBRLSL9k)
+[2026-09-02 19:37:55 UTC] Ozark: BUY Gv9fjtT9... (their size 0.191 SOL -> our paper buy 0.1 SOL, sig 51wboMJuEP)
+[2026-09-02 19:37:58 UTC] Ozark: BUY Gv9fjtT9... (their size 0.160 SOL -> our paper buy 0.1 SOL, sig 42ngEhDqoV)
+[2026-09-02 19:37:59 UTC] Ozark: BUY Gv9fjtT9... (their size 0.189 SOL -> our paper buy 0.1 SOL, sig 5FWZEub5cH)
+[2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0405 SOL (-40.5%), sig 565UaGpRS3
+[2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0657 SOL (-65.7%), sig 565UaGpRS3
+[2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0564 SOL (-56.4%), sig 565UaGpRS3
+[2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0583 SOL (-58.3%), sig 565UaGpRS3
+[2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0413 SOL (-41.3%), sig 565UaGpRS3
+[2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0317 SOL (-31.7%), sig 565UaGpRS3

@@ -36,3 +36,7 @@
 [2026-09-02 19:38:01 UTC] Ozark: SELL Gv9fjtT9... paper PnL -0.0317 SOL (-31.7%), sig 565UaGpRS3
 [2026-09-02 19:40:18 UTC] Ozark: SELL 6zSqTexg... paper PnL +0.0278 SOL (+27.8%), sig 5TJzmwPd3y
 [2026-09-02 19:40:18 UTC] Ozark: SELL 6zSqTexg... paper PnL +0.0083 SOL (+8.3%), sig 5TJzmwPd3y
+
+## 2Pvub summary: 0 closed, 0/0 wins, total paper PnL +0.0000 SOL
+
+## Ozark summary: 10 closed, 3/10 wins, total paper PnL -0.2484 SOL

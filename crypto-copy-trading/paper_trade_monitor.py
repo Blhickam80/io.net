@@ -25,16 +25,15 @@ from collections import defaultdict, deque
 sys.path.insert(0, "/home/user/io.net/crypto-copy-trading")
 from backtest_wallets import PUBLIC_RPC, get_transaction, extract_swap, rpc_call
 
-STATE_FILE = "/home/user/io.net/crypto-copy-trading/paper_trade_state.json"
-LOG_FILE = "/home/user/io.net/crypto-copy-trading/paper_trades_log.md"
+STATE_FILE = "/home/user/io.net/crypto-copy-trading/paper_trade_state_2pvub.json"
+LOG_FILE = "/home/user/io.net/crypto-copy-trading/paper_trades_log_2pvub.md"
 
 WALLETS = [
     {"address": "2PvubwzjkSwBQ1YyjWedJVuCJ9FTSTEjFYYeyqrMHCGj", "label": "2Pvub", "fixed_size_sol": 0.15},
-    {"address": "DZAa55HwXgv5hStwaTEJGXZz1DhHejvpb7Yr762urXam", "label": "Ozark", "fixed_size_sol": 0.10},
 ]
 
-TARGET_CLOSED_TRADES = 4
-MAX_RUNTIME_HOURS = 24
+TARGET_CLOSED_TRADES = 5
+MAX_RUNTIME_HOURS = 168  # 7 days -- open-ended confirmation watch, not a bounded 24h test
 POLL_SECONDS = 150
 
 
